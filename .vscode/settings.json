@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 100,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "ta18320007",
+            "database": "peersupervision",
+            "username": "root",
+            "password": "Simatic73"
+        }
+    ],
+    "dart.showTodos": false
+}

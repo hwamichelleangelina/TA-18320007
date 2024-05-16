@@ -1,0 +1,699 @@
+{
+	"info": {
+		"_postman_id": "1a16c92d-382a-4006-b377-b4b2ea201885",
+		"name": "API TA Testing",
+		"description": "Pengujian koneksi API ke MySQL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34586624"
+	},
+	"item": [
+		{
+			"name": "Connection to DBBK",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/bkusers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"bkusers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Connection to DBPS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/psusers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"psusers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register BK",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "bkname",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "bknpm",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "bkusername",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "bkpasswordhash",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/bkusers/registerBKUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"bkusers",
+						"registerBKUsers"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Register BK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "bkname",
+									"value": "Wilhelm",
+									"type": "text"
+								},
+								{
+									"key": "bknpm",
+									"value": "18320090",
+									"type": "text"
+								},
+								{
+									"key": "bkusername",
+									"value": "wilhelm",
+									"type": "text"
+								},
+								{
+									"key": "bkpasswordhash",
+									"value": "wilhelm",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/bkusers/registerBKUsers?",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bkusers",
+								"registerBKUsers"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "186"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"ba-PLHVx8vmWCPLYNsw/ZUWqQX5/GQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 May 2024 14:05:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User successfully registered, please continue login.\",\n    \"bkregist\": {\n        \"fieldCount\": 0,\n        \"affectedRows\": 1,\n        \"insertId\": 24,\n        \"info\": \"\",\n        \"serverStatus\": 2,\n        \"warningStatus\": 0,\n        \"changedRows\": 0\n    }\n}"
+				},
+				{
+					"name": "Register BK Not Unique",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "bkname",
+									"value": "Wilhelm",
+									"type": "text"
+								},
+								{
+									"key": "bknpm",
+									"value": "18320090",
+									"type": "text"
+								},
+								{
+									"key": "bkusername",
+									"value": "wilhelm",
+									"type": "text"
+								},
+								{
+									"key": "bkpasswordhash",
+									"value": "wilhelm",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/bkusers/registerBKUsers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bkusers",
+								"registerBKUsers"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "43"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2b-4NCDuh9pwW4vd39hkQb/POr7Ib0\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 May 2024 14:29:34 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Error while registering user.\"\n}"
+				},
+				{
+					"name": "Register BK Not Unique",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "bkname",
+									"value": "Mike Darren",
+									"type": "text"
+								},
+								{
+									"key": "bknpm",
+									"value": "18320092",
+									"type": "text"
+								},
+								{
+									"key": "bkusername",
+									"value": "wilhelm",
+									"type": "text"
+								},
+								{
+									"key": "bkpasswordhash",
+									"value": "wilhelm",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/bkusers/registerBKUsers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bkusers",
+								"registerBKUsers"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "43"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2b-4NCDuh9pwW4vd39hkQb/POr7Ib0\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 May 2024 14:30:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Error while registering user.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Login BK",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "bkusername",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "bkpasswordhash",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/bkusers/loginBKUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"bkusers",
+						"loginBKUsers"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login BK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "bkusername",
+									"value": "wilhelm",
+									"type": "text"
+								},
+								{
+									"key": "bkpasswordhash",
+									"value": "wilhelm",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/bkusers/loginBKUsers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bkusers",
+								"loginBKUsers"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "203"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"cb-elp1lIu1+Z15x98IB1SGKZ44oLA\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 May 2024 14:27:59 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User successfully logged in.\",\n    \"bklogin\": {\n        \"bkid\": 24,\n        \"bkname\": \"Wilhelm\",\n        \"bknpm\": 18320090,\n        \"bkusername\": \"wilhelm\",\n        \"bkpasswordhash\": \"$2b$10$vKEPChAZ1b9x2m6I2uk1PekxSNvnWa4uH4z4eRxALkG2LPPIno7AO\"\n    }\n}"
+				},
+				{
+					"name": "Login BK Failed",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "bkusername",
+									"value": "wilhelm",
+									"type": "text"
+								},
+								{
+									"key": "bkpasswordhash",
+									"value": "wilhelms",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/bkusers/loginBKUsers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bkusers",
+								"loginBKUsers"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "52"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"34-n8AP9XBLLQADr0KTB8wfeCYko8E\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 May 2024 14:29:13 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Invalid credentials. Please try again.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Register PS by BK",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "psname",
+							"value": "Nelly Huntsman",
+							"type": "text"
+						},
+						{
+							"key": "psnim",
+							"value": "12202231",
+							"type": "text"
+						},
+						{
+							"key": "pspasswordhash",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "psisActive",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "psisAdmin",
+							"value": "0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/psusers/registerPSUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"psusers",
+						"registerPSUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login PS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "psnim",
+							"value": "18320007",
+							"type": "text"
+						},
+						{
+							"key": "pspasswordhash",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/psusers/loginPSUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"psusers",
+						"loginPSUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete PS",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "psnim",
+							"value": "16520043",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/psusers/deletePSUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"psusers",
+						"deletePSUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Anggota PS",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "psnim",
+							"value": "13219007",
+							"type": "text"
+						},
+						{
+							"key": "psname",
+							"value": "William Joshua",
+							"type": "text"
+						},
+						{
+							"key": "pspasswordhash",
+							"value": "newpassword",
+							"type": "text"
+						},
+						{
+							"key": "psisActive",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "psisAdmin",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/psusers/updatePSUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"psusers",
+						"updatePSUsers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
