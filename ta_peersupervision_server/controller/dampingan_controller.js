@@ -25,16 +25,6 @@ exports.getAllDampingan = (req, res) => {
     });
 };
 
-exports.importDampingan = (req, res) => {
-    const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, tanggal, psname } = req.body;
-    dampingan.createDampingan({ initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, tanggal, psname }, (err, result) => {
-        if (err) {
-            res.status(500).json({ error: 'Database error' });
-        } else {
-            res.status(201).json({ message: 'Dampingan created', reqid: result.insertId });
-        }
-    });
-};
 
 exports.updateDataDampingan = (req, res) => {
     const { reqid, newData } = req.body;
@@ -79,6 +69,38 @@ exports.deleteDampingan = (req, res) => {
                 res.status(200).json({ message: 'Dampingan deleted successfully.' });
             } else {
                 res.status(404).json({ message: 'Dampingan not found.' });
+            }
+        }
+    });
+};
+
+
+exports.createDampingan = (req, res) => {
+    const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, tanggal, psnim } = req.body;
+
+    // Persiapkan data untuk dimasukkan ke dalam model
+    const dampinganData = {
+        initial,
+        fakultas,
+        gender,
+        angkatan,
+        kampus,
+        mediakontak,
+        kontak,
+        katakunci,
+        sesi,
+        tanggal,
+        psnim
+    };
+
+    dampingan.createDampingan(dampinganData, (err, result) => {
+        if (err) {
+            res.status(500).json({ message: 'Failed to create dampingan.', error: err });
+        } else {
+            if (result.affectedRows > 0) {
+                res.status(201).json({ message: 'Dampingan created successfully.' });
+            } else {
+                res.status(404).json({ message: 'User not found or no rows affected.' });
             }
         }
     });

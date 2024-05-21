@@ -1,7 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:ta_peersupervision/api/logic/dampingan_logic.dart';
 import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
@@ -86,19 +89,23 @@ class DampinganRepository {
   }
 
 
-  Future<void> updateDampinganTanggal({required JadwalPendampingan dampingan}) async {
+  Future<void> updateDampinganTanggal({required JadwalPendampingan jadwalPendampingan}) async {
     final response = await http.put(
       Uri.parse('$serverUrl/updateDampinganTanggal'),
       headers: {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'reqid': dampingan.reqid,
-        'tanggal': dampingan.tanggal,
+        'reqid': jadwalPendampingan.reqid,
+        'tanggal': jadwalPendampingan.tanggal, // Ensure the date is in the correct format
       }),
     );
 
     if (response.statusCode == 200) {
+//      print('Selected Date Dampingan Repo: ${DateFormat('yyyy-MM-dd').format(jadwalPendampingan.tanggal!)}');
+//      print(DateFormat('yyyy-MM-dd').format(jadwalPendampingan.tanggal!).runtimeType);
+      print(jadwalPendampingan.tanggal.runtimeType);
+      print(jadwalPendampingan.tanggal);
       final Map<String, dynamic> responseData = jsonDecode(response.body);
       final String message = responseData["message"];
       Get.snackbar('Jadwalkan Pendampingan', message,

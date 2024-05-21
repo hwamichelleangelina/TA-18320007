@@ -9,5 +9,6 @@ routerJadwal.post('/', (req, res) => {
 });
 
 routerJadwal.get('/getJadwal/', jadwalController.getAllJadwal);
+routerJadwal.post('/createJadwal', jadwalController.createJadwal);
 
 module.exports = routerJadwal;

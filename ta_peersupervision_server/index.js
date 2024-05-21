@@ -14,12 +14,14 @@ var routerPSUser = require('./routers/psuser_routes');
 var routerResetPassUser = require('./routers/resetpass_routes');
 var routerDampingan = require('./routers/dampingan_routes');
 const routerJadwal = require('./routers/jadwal_routes');
+const routerLaporan = require('./routers/laporan_routes');
 
 app.use('/bkusers', routerBKUser);
 app.use('/psusers', routerPSUser);
 app.use('/users', routerResetPassUser);
 app.use('/dampingan', routerDampingan);
 app.use('/jadwal', routerJadwal);
+app.use('/laporan', routerLaporan);
 
 app.listen(app.get('port'), () => {
     console.log('Server is on port', app.get('port'));

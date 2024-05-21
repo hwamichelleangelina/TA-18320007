@@ -34,29 +34,51 @@ class dampingan {
         });
     }
 
-    static createDampingan(dampinganData, callback) {
-        if (!dampinganData || Object.keys(dampinganData).length === 0) {
-            callback('Dampingan data is empty', null);
-            return;
-        }
+        /*
+        INSERT INTO dampingan (initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, tanggal, psnim, psname)
+        SELECT (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, psusers.psnim, psusers.psname)
+        FROM psusers
+        WHERE psusers.psnim = ?;
+
+        const values = [
+        'initial_value',
+        'fakultas_value',
+        'gender_value',
+        'angkatan_value',
+        'kampus_value',
+        'mediakontak_value',
+        'kontak_value',
+        'katakunci_value',
+        'sesi_value',
+        'tanggal_value',
+        'psnim_value'
+        ];
+
+        */
     
-        const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, tanggal, psname } = dampinganData;
-        const createDampinganQuery = `
-            INSERT INTO dampingan (initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, tanggal, psname) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-        `;
-    
-        mysqlConn.query(createDampinganQuery, [
-            initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, tanggal, psname
-        ], (err, result) => {
-            if (err) {
-                console.error('Error creating dampingan:', err);
-                callback(err, null);
-            } else {
-                callback(null, result);
+        static createDampingan(dampinganData, callback) {
+            if (!dampinganData || Object.keys(dampinganData).length === 0) {
+                callback('Dampingan data is empty', null);
+                return;
             }
-        });
-    }
+        
+            const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim } = dampinganData;
+            const createDampinganQuery = `
+            INSERT INTO dampingan (initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, psname)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT psname FROM psusers WHERE psnim = ?));
+            `;
+        
+            mysqlConn.query(createDampinganQuery, [
+                initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, psnim
+            ], (err, result) => {
+                if (err) {
+                    console.error('Error creating dampingan:', err);
+                    callback(err, null);
+                } else {
+                    callback(null, result);
+                }
+            });
+        }
     
     
 

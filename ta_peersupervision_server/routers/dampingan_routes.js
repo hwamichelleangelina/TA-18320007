@@ -12,7 +12,7 @@ routerDampingan.put('/:updateDampinganTanggal', dampinganController.updateDampin
 routerDampingan.put('/:updateDataDampingan', dampinganController.updateDataDampingan);
 routerDampingan.get('/getDampingan/:psnim', dampinganController.getDampingan);
 routerDampingan.get('/getDampingan/', dampinganController.getAllDampingan);
-routerDampingan.post('/importDampingan', dampinganController.importDampingan);
+routerDampingan.post('/createDampingan', dampinganController.createDampingan);
 routerDampingan.delete('/:deleteDampingan', dampinganController.deleteDampingan);
 
 module.exports = routerDampingan;

@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:ta_peersupervision/api/logic/dampingan_logic.dart';
 import 'package:ta_peersupervision/api/repository/dampingan_repository.dart';
 
@@ -20,6 +21,23 @@ class _DampinganListState extends State<DampinganList> {
   DateTime? selectedDate;
 
   DampinganRepository repository = DampinganRepository();
+
+  // Konversi DateTime ke String
+  String formatDate(DateTime? date) {
+    if (date == null) {
+      return 'N/A';
+    }
+    final DateFormat formatter = DateFormat('d MMMM y');
+    return formatter.format(date);
+  }
+
+  String formatDateSQL(DateTime? date) {
+    if (date == null) {
+      return 'N/A';
+    }
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    return formatter.format(date);
+  }
 
   @override
   
@@ -57,22 +75,25 @@ class _DampinganListState extends State<DampinganList> {
                 const SizedBox(height: 8.0),
                 OutlinedButton(
                   onPressed: () async {
-                    final DateTime? pickedDate = await showDatePicker(
+                    var pickedDate = await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialDate: 
+                        item.tanggal ?? DateTime.now(),
                       firstDate: DateTime(2000),
                       lastDate: DateTime(2101),
                     );
+
                     if (pickedDate != null) {
                       setState(() {
                         selectedDate = pickedDate;
+                        pickedDate = null;
                       });
                     }
                   },
                   child: Text(
-                    selectedDate == null
+                    item.tanggal == null
                         ? 'Pilih Tanggal'
-                        : '${selectedDate!.day}-${selectedDate!.month}-${selectedDate!.year}',
+                        : formatDate(item.tanggal),
                   ),
                 ),
               ],
@@ -98,19 +119,20 @@ class _DampinganListState extends State<DampinganList> {
                     colorText: Colors.white);
                 }
                 else {
-                  DateTime fixedDate = DateTime.now();
-                  fixedDate = selectedDate!;
-                  
                   JadwalPendampingan jadwal = JadwalPendampingan(
                     reqid: item.reqid,
-                    tanggal: fixedDate,
+                    tanggal: formatDateSQL(selectedDate),
                   );
 
-                  repository.updateDampinganTanggal(dampingan: jadwal).then((value) {
+                  print('SelectedDate: $selectedDate');
+                  print('reqID: ${item.reqid}');
+                  repository.updateDampinganTanggal(jadwalPendampingan: jadwal).then((value) {
                     Navigator.of(context).pop();
                   });
                     Get.snackbar('Rencanakan jadwal Pendampingan', 'Pendampingan berhasil dijadwalkan',
                       backgroundColor: Colors.green, colorText: Colors.white); 
+                  selectedDate = null;
+                  print('SelectedDate erase: $selectedDate');
                   }
               },
             ),
@@ -146,7 +168,7 @@ class _DampinganListState extends State<DampinganList> {
                       child: 
                         ListTile(
                           title: Text(item.initial),
-                          subtitle: /*const Text(''),*/ Text('Tanggal Pendampingan: ${item.tanggal ?? 'N/A'}'),
+                          subtitle: /*const Text(''),*/ Text('Tanggal Pendampingan: ${formatDate(item.tanggal)}'),
                           onTap: () {
                             _showDetailsDialog(item);
                           },

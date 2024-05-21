@@ -10,7 +10,7 @@ class Dampingan {
   final String katakunci;
   final String sesi;
   final int? psnim;
-  final DateTime? tanggal;
+  late final DateTime? tanggal;
   final String? psname;
 
   Dampingan({
@@ -30,9 +30,6 @@ class Dampingan {
   });
 
   factory Dampingan.fromJson(Map<String, dynamic> json) {
-    if (json['tanggal'] == null) {
-      json['tanggal'] = '';
-    }
 
     return Dampingan(
       reqid: json['reqid'],
@@ -46,7 +43,7 @@ class Dampingan {
       katakunci: json['katakunci'],
       sesi: json['sesi'],
       psnim: json['psnim'],
-      tanggal: DateTime.parse(json['tanggal']!),
+      tanggal: json['tanggal'] != null ? DateTime.parse(json['tanggal']) : null, // Nullable value,
       psname: json['psname'],
     );
   }
@@ -55,18 +52,26 @@ class Dampingan {
 
 
 class JadwalPendampingan {
-  final int reqid;
-  final DateTime tanggal;
+  int? reqid;
+  String? tanggal;
 
   JadwalPendampingan({
-    required this.reqid,
-    required this.tanggal,
+    this.reqid,
+    this.tanggal,
   });
 
-  factory JadwalPendampingan.fromJson(Map<String, dynamic> json) {
-    return JadwalPendampingan(
-      reqid: json['reqid'],
-      tanggal: json['tanggal'],
-    );
+  JadwalPendampingan.fromJson(Map<String, dynamic> json) {
+    reqid = json['reqid'];
+    tanggal = json['tanggal'];
+
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['reqid'] = reqid;
+    data['tanggal'] = DateTime.parse(tanggal!);
+
+    return data;
+  }
+  
 }
