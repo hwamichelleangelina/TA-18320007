@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ta_peersupervision/api/logic/dampingan_logic.dart';
 import 'package:ta_peersupervision/api/repository/dampingan_repository.dart';
+import 'package:ta_peersupervision/pages/jadwal_page/apsjadwal_page.dart';
 
 class DampinganList extends StatefulWidget {
   final int psnim;
@@ -71,10 +72,10 @@ class _DampinganListState extends State<DampinganList> {
                 Text('NIM Pendamping Sebaya: ${item.psnim}'),
 
                 const SizedBox(height: 16),
-                const Text('Tanggal Pertemuan:'),
-                const SizedBox(height: 8.0),
-                OutlinedButton(
-                  onPressed: () async {
+//                const Text('Tanggal Pertemuan:'),
+//                const SizedBox(height: 8.0),
+//                OutlinedButton(
+/*                  onPressed: () async {
                     var pickedDate = await showDatePicker(
                       context: context,
                       initialDate: 
@@ -95,7 +96,7 @@ class _DampinganListState extends State<DampinganList> {
                         ? 'Pilih Tanggal'
                         : formatDate(item.tanggal),
                   ),
-                ),
+                ),*/
               ],
             ),
           ),
@@ -104,36 +105,37 @@ class _DampinganListState extends State<DampinganList> {
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 146, 139)),
               ),
-              child: const Text('Batal'),
+              child: const Text('Tutup'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Simpan'),
+              child: const Text('Jadwalkan Pendampingan'),
               onPressed: () async {
+                Get.to(() => const APSJadwalPage());
                 // Penyimpanan tanggal pendampingan
-                if (selectedDate == null) {
+/*                if (selectedDate == null) {
                   Get.snackbar('Rencanakan jadwal Pendampingan', 'Tanggal harus terisi!',
                     backgroundColor: Colors.red,
                     colorText: Colors.white);
                 }
                 else {
-                  JadwalPendampingan jadwal = JadwalPendampingan(
-                    reqid: item.reqid,
-                    tanggal: formatDateSQL(selectedDate),
-                  );
+//                  JadwalPendampingan jadwal = JadwalPendampingan(
+//                    reqid: item.reqid,
+//                    tanggal: formatDateSQL(selectedDate),
+//                  );
 
-                  print('SelectedDate: $selectedDate');
-                  print('reqID: ${item.reqid}');
-                  repository.updateDampinganTanggal(jadwalPendampingan: jadwal).then((value) {
-                    Navigator.of(context).pop();
-                  });
-                    Get.snackbar('Rencanakan jadwal Pendampingan', 'Pendampingan berhasil dijadwalkan',
-                      backgroundColor: Colors.green, colorText: Colors.white); 
-                  selectedDate = null;
-                  print('SelectedDate erase: $selectedDate');
-                  }
+//                  print('SelectedDate: $selectedDate');
+//                  print('reqID: ${item.reqid}');
+//                  repository.updateDampinganTanggal(jadwalPendampingan: jadwal).then((value) {
+//                    Navigator.of(context).pop();
+//                  });
+//                    Get.snackbar('Rencanakan jadwal Pendampingan', 'Pendampingan berhasil dijadwalkan',
+//                      backgroundColor: Colors.green, colorText: Colors.white); 
+//                  selectedDate = null;
+//                  print('SelectedDate erase: $selectedDate');
+                  }*/
               },
             ),
           ],
@@ -168,7 +170,7 @@ class _DampinganListState extends State<DampinganList> {
                       child: 
                         ListTile(
                           title: Text(item.initial),
-                          subtitle: /*const Text(''),*/ Text('Tanggal Pendampingan: ${formatDate(item.tanggal)}'),
+                          subtitle: /*const Text(''),*/ Text('Kontak Dampingan: ${item.kontak}\nKata Kunci Masalah: ${item.katakunci}\nRequest ID: ${item.reqid}'),
                           onTap: () {
                             _showDetailsDialog(item);
                           },

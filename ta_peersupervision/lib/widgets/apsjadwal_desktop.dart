@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/pages/dampingan_page/apsdampingan_page.dart';
 import 'package:ta_peersupervision/pages/jadwal_page/apsjadwal_page.dart';
 import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_page.dart';
@@ -34,32 +35,31 @@ class APSJadwalDesktop extends StatelessWidget {
                   title: 'Permintaan Pendampingan',
                   imagePath: 'assets/images/Form Entry.png',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const APSFormEntry()),
-                    );
+                    Get.to(() => const APSFormEntry());
                   },
                 ),
                 ListTileButton(
                   title: 'Buat Jadwal Pendampingan',
                   imagePath: 'assets/images/Penjadwalan.png', // Lokasi gambar Anda
                   onPressed: () {
-                    // Navigasi ke halaman lain untuk Button 2
-                    Navigator.push(
+                    // Navigasi ke halaman lain
+                    Get.to(() => const APSJadwalPage());
+/*                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const APSJadwalPage()),
-                    );
+                    );*/
                   },
                 ),
                 ListTileButton(
                   title: 'Dampingan Saya',
                   imagePath: 'assets/images/Dampingan.png',
                   onPressed: () {
-                    Navigator.push(
+                    Get.to(() => const APSDampinganPage());
+/*                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const APSDampinganPage(),
                       )
-                    );
+                    ); */
                   },
                 ),
               ],

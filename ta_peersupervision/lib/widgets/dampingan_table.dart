@@ -33,7 +33,6 @@ class _EventTablePageState extends State<EventTablePage> {
                 DataCell(Text('${event.date.day}/${event.date.month}/${event.date.year}')),
                 DataCell(Text(event.initial)),
                 DataCell(Text(event.media)),
-                DataCell(Text(event.peerSupport)),
               ],
             );
           }).toList(),

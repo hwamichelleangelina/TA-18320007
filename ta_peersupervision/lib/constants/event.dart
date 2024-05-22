@@ -1,13 +1,13 @@
 class Event {
   final DateTime date;
-  final String initial;
+  final int reqid;
   final String media;
-  final String peerSupport;
+  final String initial;
 
   Event({
     required this.date,
-    required this.initial,
+    required this.reqid,
     required this.media,
-    required this.peerSupport,
+    required this.initial,
   });
 }

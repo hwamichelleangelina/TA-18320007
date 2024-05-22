@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:ta_peersupervision/api/logic/dampingan_logic.dart';
 import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
@@ -88,7 +87,7 @@ class DampinganRepository {
     }
   }
 
-
+/*
   Future<void> updateDampinganTanggal({required JadwalPendampingan jadwalPendampingan}) async {
     final response = await http.put(
       Uri.parse('$serverUrl/updateDampinganTanggal'),
@@ -123,6 +122,7 @@ class DampinganRepository {
         colorText: Colors.white,);
     }
   }
+*/
 
   Future<void> deleteDampingan({required int reqid}) async {
     final response = await http.delete(

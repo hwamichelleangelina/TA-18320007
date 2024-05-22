@@ -1,17 +1,17 @@
 class Dampingan {
-  final int reqid;
-  final String initial;
-  final String? fakultas;
-  final int? angkatan;
-  final String? gender;
-  final String? kampus;
-  final String mediakontak;
-  final String kontak;
-  final String katakunci;
-  final String sesi;
-  final int? psnim;
-  late final DateTime? tanggal;
-  final String? psname;
+  int reqid;
+  String initial;
+  String? fakultas;
+  int? angkatan;
+  String? gender;
+  String? kampus;
+  String mediakontak;
+  String kontak;
+  String katakunci;
+  String sesi;
+  int? psnim;
+  late DateTime? tanggal;
+  String? psname;
 
   Dampingan({
     required this.reqid,
@@ -47,31 +47,24 @@ class Dampingan {
       psname: json['psname'],
     );
   }
-}
 
-
-
-class JadwalPendampingan {
-  int? reqid;
-  String? tanggal;
-
-  JadwalPendampingan({
-    this.reqid,
-    this.tanggal,
-  });
-
-  JadwalPendampingan.fromJson(Map<String, dynamic> json) {
-    reqid = json['reqid'];
-    tanggal = json['tanggal'];
-
-  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['reqid'] = reqid;
-    data['tanggal'] = DateTime.parse(tanggal!);
+    data['initial'] = initial;
+    data['fakultas'] = fakultas;
+    data['angkatan'] = angkatan;
+    data['gender'] = gender;
+    data['kampus'] = kampus;
+    data['mediakontak'] = mediakontak;
+    data['kontak'] = kontak;
+    data['katakunci'] = katakunci;
+    data['sesi'] = sesi;
+    data['psnim'] = psnim;
+    data['psname'] = psname;
+    data['tanggal'] = tanggal;
 
     return data;
   }
-  
 }

@@ -1,5 +1,6 @@
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/pages/report_list_page/psreport_page.dart';
 
@@ -55,10 +56,7 @@ class MainMobile extends StatelessWidget {
                   backgroundColor: CustomColor.purpleTersier,
                 ),
                 onPressed: (){
-                    Navigator.push(
-                    context,
-                      MaterialPageRoute(builder: (context) => const PSReportPage()),
-                    );
+                    Get.to(() => const PSReportPage());
                 },
                 child: const Text(
                   "Isi Laporan Pendampingan",

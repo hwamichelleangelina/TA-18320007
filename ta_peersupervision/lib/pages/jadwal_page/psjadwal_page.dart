@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/event.dart';
 import 'package:ta_peersupervision/constants/size.dart';
@@ -82,10 +84,8 @@ void _showEventDialog(DateTime date, List<Event> events) {
       event.date.month == date.month &&
       event.date.day == date.day).toList();
 
-  TextEditingController initialController = TextEditingController();
-  TextEditingController peerSupportController = TextEditingController();
-
-  String? selectedMedia; // Variabel untuk menyimpan media pendampingan yang dipilih
+  TextEditingController mediaController = TextEditingController();
+  TextEditingController reqidController = TextEditingController();
 
   showDialog(
     context: context,
@@ -97,32 +97,16 @@ void _showEventDialog(DateTime date, List<Event> events) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
-                controller: initialController,
-                decoration: const InputDecoration(labelText: 'Inisial Dampingan'),
-              ),
-              DropdownButtonFormField(
-                value: selectedMedia,
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedMedia = newValue;
-                  });
-                },
-                items: ['WA', 'Line', 'Email']
-                    .map((String media) {
-                      return DropdownMenuItem(
-                        value: media,
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.05, // Menetapkan tinggi setiap item
-                          child: Center(child: Text(media)),
-                        ),
-                      );
-                    })
-                    .toList(),
-                decoration: const InputDecoration(labelText: 'Media Pendampingan'),
+                controller: reqidController,
+                decoration: const InputDecoration(labelText: 'Request ID Dampingan'),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly,
+                ]
               ),
               TextField(
-                controller: peerSupportController,
-                decoration: const InputDecoration(labelText: 'Pendamping Sebaya'),
+                controller: mediaController,
+                decoration: const InputDecoration(labelText: 'Media Pendampingan'),
               ),
               const SizedBox(height: 16),
               const Text('Pendampingan Hari Ini:', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -137,7 +121,7 @@ void _showEventDialog(DateTime date, List<Event> events) {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text('${event.initial} - ${event.peerSupport}\nMedia Pendampingan: ${event.media}'),
+                          child: Text('${event.initial}\nRequest ID: ${event.reqid}\nMedia Pendampingan: ${event.media}'),
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
@@ -145,6 +129,7 @@ void _showEventDialog(DateTime date, List<Event> events) {
                             _events.remove(event);
                             setState(() {
                               _events.remove(event);
+                              Navigator.of(context).pop();
                             });
                           },
                         ),
@@ -158,25 +143,24 @@ void _showEventDialog(DateTime date, List<Event> events) {
         actions: <Widget>[
           ElevatedButton(
             onPressed: () {
-              if (initialController.text.isEmpty ||
-                  selectedMedia == null ||
-                  peerSupportController.text.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Harap isi semua kolom teks yang tersedia'),
-                    backgroundColor: Color.fromARGB(255, 248, 146, 139), // Warna merah pada Snackbar
-                  ),
-                );
-              } else {
+              if (mediaController.text.isEmpty ||
+                  reqidController.text.isEmpty) {
+                Get.snackbar('Rencanakan jadwal Pendampingan', 'Kolom harus terisi!',
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white);
+              } else if (reqidController.text.isNumericOnly) {
                 setState(() {
                   events.add(Event(
                     date: date,
-                    initial: initialController.text,
-                    media: selectedMedia ?? '', // Menetapkan nilai default jika selectedMedia bernilai null,
-                    peerSupport: peerSupportController.text,
+                    media: mediaController.text,
+                    reqid: int.parse(reqidController.text),
+                    initial: ""
                   ));
                 });
                 Navigator.of(context).pop();
+              }
+              else {
+
               }
             },
             child: const Text('Simpan'),

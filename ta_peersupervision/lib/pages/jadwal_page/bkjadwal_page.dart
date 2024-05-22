@@ -27,7 +27,7 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
       date: DateTime.now().add(const Duration(days: 1)),
       initial: 'ABC',
       media: 'WhatsApp',
-      peerSupport: 'John Doe',
+      reqid: 2,
     ),
   ];
 
@@ -111,7 +111,7 @@ void _showEventDialog(DateTime date, List<Event> events) {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text('${event.initial} - ${event.peerSupport}\nMedia Pendampingan: ${event.media}'),
+                          child: Text('${event.initial}\nMedia Pendampingan: ${event.media}'),
                         ),
                       ],
                     );

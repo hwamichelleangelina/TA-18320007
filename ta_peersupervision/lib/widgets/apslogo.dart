@@ -1,5 +1,6 @@
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/pages/home_page/apshome_page.dart';
 
@@ -11,9 +12,7 @@ class APSSiteLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, 
-          MaterialPageRoute(builder: (context) => const APSHomePage())
-        );
+        Get.to(() => const APSHomePage());
       },
       child:
       const DropShadow(

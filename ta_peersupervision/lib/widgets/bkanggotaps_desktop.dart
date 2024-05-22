@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/pages/anggota_page/bkdata_anggota_page.dart';
 import 'package:ta_peersupervision/pages/anggota_page/bkeditdata_anggota.dart';
 import 'package:ta_peersupervision/pages/anggota_page/bktambahdata_anggota.dart';
@@ -35,10 +36,7 @@ class BKAnggotaPSITB extends StatelessWidget {
                   imagePath: 'assets/images/Add Dampingan.png', // Lokasi gambar Anda
                   onPressed: () {
                     // Navigasi ke halaman tambahkan anggota baru
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const BKTambahAnggota()),
-                    );
+                    Get.to(() => const BKTambahAnggota());
                   },
                 ),
                 ListTileButton(
@@ -46,20 +44,14 @@ class BKAnggotaPSITB extends StatelessWidget {
                   imagePath: 'assets/images/Member.png', // Lokasi gambar Anda
                   onPressed: () {
                     // Navigasi ke halaman lain untuk Button 2
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const BKDataAnggota()),
-                    );
+                    Get.to(() => const BKDataAnggota());
                   },
                 ),
                 ListTileButton(
                   title: 'Perbarui Data Anggota',
                   imagePath: 'assets/images/Edit.png',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const BKEditAnggota()),
-                    );
+                    Get.to(() => const BKEditAnggota());
                   },
                 ),
               ],

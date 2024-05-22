@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/pages/dampingan_page/apsdampingan_page.dart';
 import 'package:ta_peersupervision/pages/jadwal_page/apsjadwal_page.dart';
 import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_page.dart';
@@ -34,10 +35,7 @@ class APSJadwalMobile extends StatelessWidget {
                   title: 'Permintaan Pendampingan',
                   imagePath: 'assets/images/Form Entry.png',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const APSFormEntry()),
-                    );
+                    Get.to(() => const APSFormEntry());
                   },
                 ),
                 ListTileButton(
@@ -45,20 +43,14 @@ class APSJadwalMobile extends StatelessWidget {
                   imagePath: 'assets/images/Penjadwalan.png', // Lokasi gambar Anda
                   onPressed: () {
                     // Navigasi ke halaman lain untuk Button 2
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const APSJadwalPage()),
-                    );
+                    Get.to(() => const APSJadwalPage());
                   },
                 ),
                 ListTileButton(
                   title: 'Dampingan Saya',
                   imagePath: 'assets/images/Dampingan.png',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const APSDampinganPage()),
-                    );
+                    Get.to(() => const APSDampinganPage());
                   },
                 ),
               ],

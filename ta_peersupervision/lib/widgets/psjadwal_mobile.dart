@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/pages/dampingan_page/psdampingan_page.dart';
 import 'package:ta_peersupervision/pages/jadwal_page/psjadwal_page.dart';
 import 'package:ta_peersupervision/widgets/list_button.dart';
@@ -32,10 +33,7 @@ class JadwalPSMobile extends StatelessWidget {
                   imagePath: 'assets/images/Penjadwalan.png', // Lokasi gambar Anda
                   onPressed: () {
                     // Navigasi ke halaman lain untuk Button 2
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const PSJadwalPage()),
-                    );
+                    Get.to(() => const PSJadwalPage());
                   },
                 ),
                 ListTileButton(
