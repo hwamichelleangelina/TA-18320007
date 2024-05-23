@@ -10,6 +10,21 @@ exports.getAllJadwal = (req, res) => {
     });
 };
 
+exports.getJadwal = (req, res) => {
+    const psnim = req.params.psnim; // Mendapatkan reqid dari parameter URL
+    jadwal.getJadwal(psnim, (err, jadwal) => {
+        if (err) {
+            res.status(500).json({ message: 'Failed to get schedule.' });
+        } else {
+            if (jadwal.length > 0) {
+                res.status(200).json({ message: 'Successfully retrieved schedule.', jadwal });
+            } else {
+                res.status(404).json({ message: 'Schedule not found.' });
+            }
+        }
+    });
+};
+
 exports.createJadwal = (req, res) => {
     const { reqid, tanggal, mediapendampingan } = req.body;
 

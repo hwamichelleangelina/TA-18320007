@@ -2,7 +2,7 @@ import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/pages/report_list_page/apsreport_page.dart';
+import 'package:ta_peersupervision/pages/dampingan_page/apsdampingan_page.dart';
 
 class APSMainMobile extends StatelessWidget {
   const APSMainMobile({super.key});
@@ -56,10 +56,10 @@ class APSMainMobile extends StatelessWidget {
                   backgroundColor: CustomColor.purpleTersier,
                 ),
                 onPressed: (){
-                    Get.to(() => const APSReportPage());
+                    Get.to(() => const APSDampinganPage());
                 },
                 child: const Text(
-                  "Isi Laporan Pendampingan",
+                  "Cek Dampingan Saya",
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 14.0,

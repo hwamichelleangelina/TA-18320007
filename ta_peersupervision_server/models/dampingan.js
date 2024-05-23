@@ -2,7 +2,7 @@ const mysqlConn = require('../config/db');
 
 class dampingan {
     static getDampingan(psnim, callback) {
-        const getDampinganQuery = 'select * from dampingan where psnim = ?;';
+        const getDampinganQuery = 'SELECT * FROM dampingan WHERE psnim = ?;';
         mysqlConn.query(getDampinganQuery, [psnim], (err, result) => {
             if (err) {
                 callback(err, null);

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:ta_peersupervision/api/logic/jadwal_logic.dart';
+import 'package:ta_peersupervision/api/repository/event.dart';
+import 'package:ta_peersupervision/api/repository/jadwal_repository.dart';
+import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/constants/event.dart';
 import 'package:ta_peersupervision/constants/size.dart';
 import 'package:ta_peersupervision/widgets/calendar_widget.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
@@ -11,7 +15,9 @@ import 'package:ta_peersupervision/widgets/psdrawer_mobile.dart';
 import 'package:ta_peersupervision/widgets/psheader_kembalihome.dart';
 
 class PSJadwalPage extends StatefulWidget {
-  const PSJadwalPage({super.key});
+  final int psnim;
+
+  const PSJadwalPage({super.key, required this.psnim});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -23,8 +29,42 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
   final scrollController = ScrollController();
   final List<GlobalKey> navbarKeys = List.generate(4, (index) => GlobalKey());
 
-  final List<Event> _events = [
-  ];
+  Map<DateTime, List<MyJadwal>> jadwal = {};
+
+  TextEditingController mediaController = TextEditingController();
+  TextEditingController reqidController = TextEditingController();
+
+  JadwalRepository repository = JadwalRepository();
+
+  String formatDateSQL(DateTime date) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    return formatter.format(date);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchEvents(widget.psnim);
+    // Mengambil nilai dari ReqidStorage dan mengatur nilai awal TextEditingController
+    reqidController.text = ReqidStorage.getReqid().toString();
+  }
+
+  Future<void> _fetchEvents(int psnim) async {
+    try {
+      Map<DateTime, List<MyJadwal>> fetchedEvents = await repository.fetchJadwal(widget.psnim);
+      setState(() {
+        jadwal = fetchedEvents;
+      });
+    } catch (e) {
+      Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
+    }
+  }
+
+  @override
+  void dispose() {
+    reqidController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +103,7 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
 
                 CalendarWidget(
                   onDaySelected: _showEventDialog,
-                  events: _events, focusedDay: DateTime.now(),
+                  focusedDay: DateTime.now(), jadwal: jadwal,
                 ),
 
                 const SizedBox(height: 30,),
@@ -78,14 +118,11 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
    );
   }
 
-void _showEventDialog(DateTime date, List<Event> events) {
-  List<Event> selectedEvents = events.where((event) =>
-      event.date.year == date.year &&
-      event.date.month == date.month &&
-      event.date.day == date.day).toList();
-
-  TextEditingController mediaController = TextEditingController();
-  TextEditingController reqidController = TextEditingController();
+void _showEventDialog(DateTime date, List<MyJadwal> events) {
+  List<MyJadwal> selectedEvents = events.where((event) =>
+      event.tanggal.year == date.year &&
+      event.tanggal.month == date.month &&
+      event.tanggal.day == date.day).toList();
 
   showDialog(
     context: context,
@@ -98,7 +135,7 @@ void _showEventDialog(DateTime date, List<Event> events) {
             children: [
               TextField(
                 controller: reqidController,
-                decoration: const InputDecoration(labelText: 'Request ID Dampingan'),
+                decoration: const InputDecoration(labelText: 'ID Dampingan'),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.digitsOnly,
@@ -121,15 +158,15 @@ void _showEventDialog(DateTime date, List<Event> events) {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text('${event.initial}\nRequest ID: ${event.reqid}\nMedia Pendampingan: ${event.media}'),
+                          child: Text('${event.initial}\nRequest ID: ${event.reqid}\nMedia Pendampingan: ${event.mediapendampingan}'),
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            _events.remove(event);
+                            jadwal.remove(event);
                             setState(() {
-                              _events.remove(event);
-                              Navigator.of(context).pop();
+                              jadwal.remove(event);
+                              Navigator.pop(context);
                             });
                           },
                         ),
@@ -148,19 +185,22 @@ void _showEventDialog(DateTime date, List<Event> events) {
                 Get.snackbar('Rencanakan jadwal Pendampingan', 'Kolom harus terisi!',
                     backgroundColor: Colors.red,
                     colorText: Colors.white);
-              } else if (reqidController.text.isNumericOnly) {
-                setState(() {
-                  events.add(Event(
-                    date: date,
-                    media: mediaController.text,
-                    reqid: int.parse(reqidController.text),
-                    initial: ""
-                  ));
-                });
-                Navigator.of(context).pop();
-              }
-              else {
+              } else {
 
+                Jadwal jadwal = Jadwal(
+                    reqid: int.parse(reqidController.text),
+                    tanggal: formatDateSQL(date),
+                    mediapendampingan: mediaController.text
+                  );
+
+//                  print('SelectedDate: ${formatDateSQL(date)}');
+//                  print("Date toIso8601String: ${date.toIso8601String()}");
+//                  print('reqID: ${reqidController.text}');
+                  repository.createJadwal(jadwal: jadwal).then((value) {
+                    Navigator.of(context).pop();
+                  });
+                  reqidController.clear();
+                  mediaController.clear();
               }
             },
             child: const Text('Simpan'),

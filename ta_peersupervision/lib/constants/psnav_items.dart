@@ -1,5 +1,5 @@
 List<String> navPSTitles = [
-  "Jadwal Pendampingan",
+  "Dampingan Saya",
   "Laporan Pendampingan",
   "Keluar",
 ];

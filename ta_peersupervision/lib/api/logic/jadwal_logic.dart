@@ -9,11 +9,11 @@ class Jadwal {
 
   Jadwal({
     required this.reqid,
-    required this.initial,
+    this.initial,
     this.psnim,
-    this.tanggal,
+    required this.tanggal,
     this.psname,
-    this.mediapendampingan
+    required this.mediapendampingan
   });
 
   Jadwal.fromJson(Map<String, dynamic> json) {

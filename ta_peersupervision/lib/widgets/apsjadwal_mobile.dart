@@ -39,7 +39,7 @@ class APSJadwalMobile extends StatelessWidget {
                   },
                 ),
                 ListTileButton(
-                  title: 'Buat Jadwal Pendampingan',
+                  title: 'Cek Jadwal Pendampingan',
                   imagePath: 'assets/images/Penjadwalan.png', // Lokasi gambar Anda
                   onPressed: () {
                     // Navigasi ke halaman lain untuk Button 2

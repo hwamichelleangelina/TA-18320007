@@ -1,20 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first, library_private_types_in_public_api, must_be_immutable
 import 'package:flutter/material.dart';
+import 'package:ta_peersupervision/api/repository/event.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:ta_peersupervision/constants/event.dart';
 
 class CalendarWidget extends StatefulWidget {
-  final Function(DateTime, List<Event>) onDaySelected;
-  final List<Event> events;
+  final Function(DateTime, List<MyJadwal>) onDaySelected;
+  final Map<DateTime, List<MyJadwal>> jadwal;
   final DateTime focusedDay;
 
-  const CalendarWidget({super.key, 
+  // Menambahkan inisialisasi langsung pada deklarasi field
+  List<MyJadwal> events = [];
+
+  CalendarWidget({super.key, 
     required this.onDaySelected,
-    required this.events,
+    required this.jadwal,
     required this.focusedDay,
-  });
+  }) {
+    // Inisialisasi events di sini
+    events = jadwal.values.expand((events) => events).toList();
+  }
 
   @override
-  // ignore: library_private_types_in_public_api
   _CalendarWidgetState createState() => _CalendarWidgetState();
 }
 
@@ -24,7 +30,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20.0), // Tambahkan margin di sini
+      margin: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TableCalendar(
         calendarFormat: _calendarFormat,
         focusedDay: widget.focusedDay,
@@ -35,9 +41,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         ),
         eventLoader: (day) {
           return widget.events.where((event) {
-            return event.date.year == day.year &&
-                event.date.month == day.month &&
-                event.date.day == day.day;
+            return event.tanggal.year == day.year &&
+                event.tanggal.month == day.month &&
+                event.tanggal.day == day.day;
           }).toList();
         },
         onFormatChanged: (format) {

@@ -80,6 +80,7 @@ class _APSHomePageState extends State<APSHomePage> {
                       // title
                       const Text(
                         "Penjadwalan Pendampingan",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -108,6 +109,7 @@ class _APSHomePageState extends State<APSHomePage> {
                       // title
                       Text(
                         "Ingin mengganti Password?",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,

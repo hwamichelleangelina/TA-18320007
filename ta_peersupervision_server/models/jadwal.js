@@ -1,8 +1,20 @@
 const mysqlConn = require('../config/db');
 
 class jadwal {
+    static getJadwal(psnim, callback) {
+        const getJadwalQuery = 'SELECT * FROM jadwal WHERE psnim = ?;';
+        mysqlConn.query(getJadwalQuery, [psnim], (err, result) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, result);
+            }
+        });
+    }
+
+    // Untuk Admin BK
     static getAllJadwal(callback) {
-        const getJadwalQuery = 'select initial, tanggal, psname , mediadampingan from jadwal;';
+        const getJadwalQuery = 'SELECT * FROM jadwal;';
         mysqlConn.query(getJadwalQuery, (err, result) => {
             if (err) {
                 callback(err, null);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ta_peersupervision/api/repository/event.dart';
+import 'package:ta_peersupervision/api/repository/jadwal_repository.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/constants/event.dart';
 import 'package:ta_peersupervision/constants/size.dart';
 import 'package:ta_peersupervision/pages/home_page/bkhome_page.dart';
 import 'package:ta_peersupervision/widgets/bkdrawer_mobile.dart';
@@ -22,15 +23,11 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
   final scrollController = ScrollController();
   final List<GlobalKey> navbarKeys = List.generate(4, (index) => GlobalKey());
 
-  final List<Event> _events = [
-    Event(
-      date: DateTime.now().add(const Duration(days: 1)),
-      initial: 'ABC',
-      media: 'WhatsApp',
-      reqid: 2,
-    ),
-  ];
+  Map<DateTime, List<MyJadwal>> jadwal = {};
+  JadwalRepository repository = JadwalRepository();
 
+
+  
   @override
   Widget build(BuildContext context) {
    return LayoutBuilder(
@@ -68,7 +65,7 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
 
                 CalendarWidget(
                   onDaySelected: _showEventDialog,
-                  events: _events, focusedDay: DateTime.now(),
+                  focusedDay: DateTime.now(), jadwal: jadwal,
                 ),
 
                 const SizedBox(height: 30,),
@@ -83,11 +80,11 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
    );
   }
 
-void _showEventDialog(DateTime date, List<Event> events) {
-  List<Event> selectedEvents = events.where((event) =>
-      event.date.year == date.year &&
-      event.date.month == date.month &&
-      event.date.day == date.day).toList();
+void _showEventDialog(DateTime date, List<MyJadwal> events) {
+  List<MyJadwal> selectedEvents = events.where((event) =>
+      event.tanggal.year == date.year &&
+      event.tanggal.month == date.month &&
+      event.tanggal.day == date.day).toList();
 
   showDialog(
     context: context,
@@ -111,7 +108,7 @@ void _showEventDialog(DateTime date, List<Event> events) {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text('${event.initial}\nMedia Pendampingan: ${event.media}'),
+                          child: Text('${event.initial}\nMedia Pendampingan: ${event.mediapendampingan}'),
                         ),
                       ],
                     );

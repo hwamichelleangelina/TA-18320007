@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ta_peersupervision/constants/event.dart';
+import 'package:ta_peersupervision/api/repository/event.dart';
 
 class EventTablePage extends StatefulWidget {
-  final List<Event> userEvents;
+  final List<MyJadwal> userEvents;
 
   const EventTablePage({required Key key, required this.userEvents}) : super(key: key);
 
@@ -30,9 +30,9 @@ class _EventTablePageState extends State<EventTablePage> {
           rows: widget.userEvents.map((event) {
             return DataRow(
               cells: [
-                DataCell(Text('${event.date.day}/${event.date.month}/${event.date.year}')),
+                DataCell(Text('${event.tanggal.day}/${event.tanggal.month}/${event.tanggal.year}')),
                 DataCell(Text(event.initial)),
-                DataCell(Text(event.media)),
+                DataCell(Text(event.mediapendampingan)),
               ],
             );
           }).toList(),

@@ -68,10 +68,12 @@ class _PSHomePageState extends State<PSHomePage> {
                       // title
                       const Text(
                         "Jadwal Pendampingan PS",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: CustomColor.whitePrimary,
+                    
                         ),
                       ),
 
@@ -96,6 +98,7 @@ class _PSHomePageState extends State<PSHomePage> {
                       // title
                       Text(
                         "Ingin mengganti Password?",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,

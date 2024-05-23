@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ta_peersupervision/api/logic/dampingan_logic.dart';
 import 'package:ta_peersupervision/api/repository/dampingan_repository.dart';
+import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
 import 'package:ta_peersupervision/pages/jadwal_page/apsjadwal_page.dart';
 
 class DampinganList extends StatefulWidget {
@@ -20,6 +21,7 @@ class DampinganList extends StatefulWidget {
 class _DampinganListState extends State<DampinganList> {
   late Future<List<Dampingan>> futureDampingan;
   DateTime? selectedDate;
+  int psnim = 0;
 
   DampinganRepository repository = DampinganRepository();
 
@@ -29,14 +31,6 @@ class _DampinganListState extends State<DampinganList> {
       return 'N/A';
     }
     final DateFormat formatter = DateFormat('d MMMM y');
-    return formatter.format(date);
-  }
-
-  String formatDateSQL(DateTime? date) {
-    if (date == null) {
-      return 'N/A';
-    }
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
     return formatter.format(date);
   }
 
@@ -113,7 +107,11 @@ class _DampinganListState extends State<DampinganList> {
             TextButton(
               child: const Text('Jadwalkan Pendampingan'),
               onPressed: () async {
-                Get.to(() => const APSJadwalPage());
+//                print(item.reqid);
+                // Menyimpan nilai di ReqidStorage
+                ReqidStorage.setReqid(item.reqid);
+//                print(ReqidStorage.getReqid().toString());
+                Get.to(() => APSJadwalPage(psnim: psnim));
                 // Penyimpanan tanggal pendampingan
 /*                if (selectedDate == null) {
                   Get.snackbar('Rencanakan jadwal Pendampingan', 'Tanggal harus terisi!',
@@ -169,8 +167,8 @@ class _DampinganListState extends State<DampinganList> {
                       ),
                       child: 
                         ListTile(
-                          title: Text(item.initial),
-                          subtitle: /*const Text(''),*/ Text('Kontak Dampingan: ${item.kontak}\nKata Kunci Masalah: ${item.katakunci}\nRequest ID: ${item.reqid}'),
+                          title: Text('ID Dampingan: ${item.reqid.toString()} - ${item.initial}'),
+                          subtitle: /*const Text(''),*/ Text('Kontak Dampingan: ${item.kontak}\nKata Kunci Masalah: ${item.katakunci}'),
                           onTap: () {
                             _showDetailsDialog(item);
                           },

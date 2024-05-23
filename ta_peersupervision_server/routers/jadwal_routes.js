@@ -10,5 +10,6 @@ routerJadwal.post('/', (req, res) => {
 
 routerJadwal.get('/getJadwal/', jadwalController.getAllJadwal);
 routerJadwal.post('/createJadwal', jadwalController.createJadwal);
+routerJadwal.get('/getJadwal/:psnim', jadwalController.getJadwal);
 
 module.exports = routerJadwal;
