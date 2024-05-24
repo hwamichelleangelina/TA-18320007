@@ -11,6 +11,7 @@ class JadwalPSDesktop extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
+    int psnim = 0;
 
     return 
       // platform jadwal
@@ -35,7 +36,7 @@ class JadwalPSDesktop extends StatelessWidget {
                   imagePath: 'assets/images/Penjadwalan.png', // Lokasi gambar Anda
                   onPressed: () {
                     // Navigasi ke halaman lain untuk Button 2
-                    Get.to(() => const PSJadwalPage());
+                    Get.to(() => PSJadwalPage(psnim: psnim,));
                   },
                 ),
                 ListTileButton(

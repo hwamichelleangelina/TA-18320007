@@ -53,10 +53,15 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
   Future<void> _fetchEvents(int psnim) async {
     try {
       Map<DateTime, List<MyJadwal>> fetchedEvents = await repository.fetchJadwal(widget.psnim);
+      print('psnim fetchEvents: $psnim');
+
       setState(() {
         jadwal = fetchedEvents;
       });
+      print('fetchEvents success');
+      print('$fetchedEvents');
     } catch (e) {
+//      print('Failed to fetch events: $e');
       Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
     }
   }

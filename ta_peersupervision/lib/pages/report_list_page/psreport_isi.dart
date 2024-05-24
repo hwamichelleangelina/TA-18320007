@@ -81,7 +81,7 @@ class _PSReportFormState extends State<PSReportForm> {
                                 isYesChecked = newYesValue;
                                 isNoChecked = newNoValue;
                               });
-                            }, onSubmit: (gambar , proses , hasil , kendala , isRujukan ) {  },
+                            }, onSubmit: (gambar , proses , hasil , kendala , isRujukan , isAgree) {  },
                       ),
 
                 const SizedBox(height: 30,),

@@ -6,7 +6,7 @@ class FillingForm extends StatefulWidget {
   final bool isNoChecked;   // Status checkbox "Tidak"
   final Function(bool, bool) onCheckboxChanged;  // Callback untuk perubahan checkbox
 
-  final Function(String, String, String, String, bool) onSubmit;
+  final Function(String, String, String, String, bool, bool) onSubmit;
 
   final String penname;  // Menerima data nama dari halaman tabel
   final String penps;
@@ -36,12 +36,14 @@ class _FillingFormState extends State<FillingForm> {
   final TextEditingController kendalatextFieldController = TextEditingController();
   bool isYesChecked = false;
   bool isNoChecked = false;
+  bool isAgreeChecked = false;
 
   String _gambar = '';
   String _proses = '';
   String _hasil = '';
   String _kendala = '';
   bool _isRujukan = false;
+  bool _isAgree = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,7 @@ class _FillingFormState extends State<FillingForm> {
             ),
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
@@ -106,6 +108,7 @@ class _FillingFormState extends State<FillingForm> {
             child: Text(
               'Gambaran Permasalahan Dampingan',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
           ),
 
@@ -147,6 +150,7 @@ class _FillingFormState extends State<FillingForm> {
             child: Text(
               'Proses Pendampingan yang Dilakukan',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
           ),
 
@@ -188,6 +192,7 @@ class _FillingFormState extends State<FillingForm> {
             child: Text(
               'Hasil Akhir dari Proses Pendampingan',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
           ),
 
@@ -229,6 +234,7 @@ class _FillingFormState extends State<FillingForm> {
             child: Text(
               'Kendala Selama Pendampingan',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
           ),
 
@@ -315,6 +321,38 @@ class _FillingFormState extends State<FillingForm> {
           ),
 
           const SizedBox(height: 30.0),
+          
+          Center(  // Judul checkbox dan isinya berada di tengah
+            child: Column(
+              children: [
+                Text(
+                  'Saya, ${widget.penps}, pendamping sebaya yang mendampingi ${widget.penname} dengan sadar menyatakan bahwa pengisian laporan dan rekomendasi tindak lanjut selama kegiatan pendampingan telah diberitahukan kepada ${widget.penname} dan ${widget.penname} secara sadar menyetujui tindakan tersebut. Apabila terdapat tindak lanjut pendampingan, dampingan telah mengizinkan akses informasi pribadi dampingan oleh psikolog dan tenaga medis terkait.',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 15),
+                ),
+            
+                const SizedBox(height: 10),
+
+                Row(  // Baris untuk checkbox "Ya" dan "Tidak"
+                mainAxisAlignment: MainAxisAlignment.center,  // Menjaga checkbox tetap di tengah
+                children: [
+                    Checkbox(
+                      value: isAgreeChecked,
+                      onChanged: (bool? newValue) {
+                        setState(() {
+                          isAgreeChecked = newValue!;  // Atur status checkbox "Ya"
+                          _isAgree = true;
+                        });
+                      },
+                    ),
+                    const Text('Saya menyetujui'),
+                  ],
+                ),
+              ]
+            ),
+          ),
+
+          const SizedBox(height: 30.0),
 
           SizedBox(
             width: double.infinity*0.6,
@@ -332,7 +370,7 @@ class _FillingFormState extends State<FillingForm> {
                     );
                   }
                 else {
-                    widget.onSubmit(_gambar, _proses, _hasil, _kendala, _isRujukan);
+                    widget.onSubmit(_gambar, _proses, _hasil, _kendala, _isRujukan, _isAgree);
                     Navigator.of(context).pop();
                     _showSnackbar(context, 'Laporan Proses Pendampingan Berhasil Disimpan');
                 }

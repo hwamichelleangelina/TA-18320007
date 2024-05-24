@@ -82,7 +82,7 @@ class _APSReportFormState extends State<APSReportForm> {
                                 isYesChecked = newYesValue;
                                 isNoChecked = newNoValue;
                               });
-                            }, onSubmit: (gambar , proses , hasil , kendala , isRujukan ) {  },
+                            }, onSubmit: (gambar , proses , hasil , kendala , isRujukan , isAgree) {  },
                       ),
 
                 const SizedBox(height: 30,),

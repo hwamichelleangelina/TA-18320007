@@ -54,7 +54,7 @@ class APSMainDesktop extends StatelessWidget {
                     Get.to(() => const APSDampinganPage());
                   },
                   child: const Text(
-                    "Cek Dampingan Saya",
+                    "Cek Dampingan Saya Hari ini",
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 20,
