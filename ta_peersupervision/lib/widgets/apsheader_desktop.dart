@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ta_peersupervision/constants/apsnavigator_items.dart';
+import 'package:ta_peersupervision/constants/apsnavigator_items_desktop.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/apsnav_items.dart';
 import 'package:ta_peersupervision/pages/home_page/apshome_page.dart';
@@ -42,7 +42,7 @@ class HeaderDesktop extends StatelessWidget {
                         if (navTitles[i] != "Keluar") {
                           Navigator.push(
                         context,
-                          MaterialPageRoute(builder: (context) => naviAPS[i]),
+                          MaterialPageRoute(builder: (context) => naviAPSDesktop[i]),
                         );
                         }
                         else {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ta_peersupervision/constants/apsnav_icons_items.dart';
 import 'package:ta_peersupervision/constants/apsnavigator_items.dart';
-import 'package:ta_peersupervision/constants/bknav_icons_items.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/widgets/popup_logout.dart';
 
@@ -32,7 +31,7 @@ class APSDrawerMobile extends StatelessWidget {
               ),
             ),
 
-            for (int i = 0; i < naviBKItems.length; i++)
+            for (int i = 0; i < naviItems.length; i++)
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 30.0,

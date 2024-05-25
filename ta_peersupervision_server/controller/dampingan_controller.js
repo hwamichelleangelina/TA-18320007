@@ -59,7 +59,7 @@ exports.updateDampinganTanggal = (req, res) => {
 };
 
 exports.deleteDampingan = (req, res) => {
-    const { reqid } = req.body;
+    const reqid = req.params.reqid;
 
     dampingan.deleteDampingan(reqid, (err, result) => {
         if (err) {
@@ -74,9 +74,8 @@ exports.deleteDampingan = (req, res) => {
     });
 };
 
-
 exports.createDampingan = (req, res) => {
-    const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, tanggal, psnim } = req.body;
+    const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, tanggal, psname } = req.body;
 
     // Persiapkan data untuk dimasukkan ke dalam model
     const dampinganData = {
@@ -90,7 +89,7 @@ exports.createDampingan = (req, res) => {
         katakunci,
         sesi,
         tanggal,
-        psnim
+        psname
     };
 
     dampingan.createDampingan(dampinganData, (err, result) => {
@@ -103,5 +102,19 @@ exports.createDampingan = (req, res) => {
                 res.status(404).json({ message: 'User not found or no rows affected.' });
             }
         }
+    });
+};
+
+exports.getCountPendampingan = (req, res) => {
+    const reqid = req.params.reqid;
+
+    dampingan.getCountPendampingan(reqid, (err, result) => {
+        if (err) {
+            console.error('Error checking pertemuan:', err);
+            res.status(500).send('Error checking pertemuan');
+            return;
+          }
+          const hasMeeting = result[0].count > 0;
+          res.json({ hasMeeting });
     });
 };

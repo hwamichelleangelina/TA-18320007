@@ -11,9 +11,10 @@ import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.d
 class DampinganRepository {
   final String serverUrl = 'http://localhost:3000/dampingan';
 
+
   Future<void> importDampingan({required Dampingan dampingan}) async {
     final response = await http.post(
-      Uri.parse('$serverUrl/importDampingan'),
+      Uri.parse('$serverUrl/createDampingan'),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -27,18 +28,16 @@ class DampinganRepository {
         'kontak': dampingan.kontak,
         'katakunci': dampingan.katakunci,
         'sesi': dampingan.sesi,
-        'psnim': dampingan.psnim,
-        'tanggal': dampingan.tanggal,
         'psname': dampingan.psname,
       }),
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
+/*      final Map<String, dynamic> responseData = jsonDecode(response.body);
       final String message = responseData["message"];
       Get.snackbar('Tambahkan Permintaan Dampingan', message,
         backgroundColor: Colors.green,
-        colorText: Colors.white,);
+        colorText: Colors.white,);*/
     } else if (response.statusCode == 500) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
       final String message = responseData["message"];
@@ -49,16 +48,6 @@ class DampinganRepository {
       Get.snackbar('Tambahkan Permintaan Dampingan', "Failed to create Dampingan",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
-    }
-  }
-
-  Future<List<Dampingan>> getAllDampingan() async {
-    final response = await http.get(Uri.parse('$serverUrl/getAllDampingan'));
-    if (response.statusCode == 200) {
-      final List<dynamic> responseData = jsonDecode(response.body);
-      return responseData.map((json) => Dampingan.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load Dampingan list');
     }
   }
 

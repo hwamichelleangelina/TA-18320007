@@ -10,7 +10,7 @@ class CustomColor {
   static const Color purpleprimary = Color.fromARGB(255, 26, 3, 45);
   static const Color purpleTersier = Color.fromARGB(255, 227, 194, 255);
   static const Color purpleBg = Color.fromARGB(255, 27, 27, 39);
-  static const Color purpleBg2 =Color.fromARGB(255, 29, 31, 46);
+  static const Color purpleBg2 =Color.fromARGB(255, 33, 35, 52);
   static const Color whitePrimary = Color(0xffEAEAEB);
   static const Color whiteSecondary = Color(0xffC8C9CE);
 }

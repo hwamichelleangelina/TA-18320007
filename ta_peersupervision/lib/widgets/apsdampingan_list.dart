@@ -109,7 +109,7 @@ class _DampinganListState extends State<DampinganList> {
               onPressed: () async {
 //                print(item.reqid);
                 // Menyimpan nilai di ReqidStorage
-                ReqidStorage.setReqid(item.reqid);
+                ReqidStorage.setReqid(item.reqid!);
 //                print(ReqidStorage.getReqid().toString());
                 Get.to(() => APSJadwalPage(psnim: psnim));
                 // Penyimpanan tanggal pendampingan

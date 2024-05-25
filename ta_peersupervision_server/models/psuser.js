@@ -149,6 +149,24 @@ class psUser {
             }
         });
     }
+
+    // SELECT psname FROM psusers WHERE psisActive = 1;
+    static getActivePS(callback) {
+        const query =
+        `SELECT
+            psname
+        FROM
+            psusers
+        WHERE
+            psisActive = 1;`;
+        mysqlConn.query(query, (err, results) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, results);
+            }
+        });
+    } 
 }
 
 module.exports = psUser;

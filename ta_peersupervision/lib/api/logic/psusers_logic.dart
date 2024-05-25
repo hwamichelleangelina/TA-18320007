@@ -98,3 +98,17 @@ class NonActiveUser {
   String get nanimAsString => nanim.toString();
   String get yearAsString => year.toString();
 }
+
+class ActiveUser {
+  final String psname;
+
+  ActiveUser({
+    required this.psname,
+  });
+
+  factory ActiveUser.fromJson(Map<String, dynamic> json) {
+    return ActiveUser(
+      psname: json['psname'],
+    );
+  }
+}

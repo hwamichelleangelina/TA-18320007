@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:ta_peersupervision/api/repository/dampingan_provider.dart';
 import 'package:ta_peersupervision/pages/splashscreen.dart';
 
 void main() async {
@@ -16,14 +18,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        fontFamily: 'Montserrat',
-      ),
-      title: 'Pengawasan PS ITB',
-      home: const SplashScreen(),
+    return ChangeNotifierProvider(
+      create: (context) => DampinganProvider(),
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          fontFamily: 'Montserrat',
+        ),
+        title: 'Pengawasan PS ITB',
+        home: const SplashScreen(),
+      )
     );
   }
 }

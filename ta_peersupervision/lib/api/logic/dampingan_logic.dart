@@ -1,5 +1,5 @@
 class Dampingan {
-  int reqid;
+  int? reqid;
   String initial;
   String? fakultas;
   int? angkatan;
@@ -10,11 +10,10 @@ class Dampingan {
   String katakunci;
   String sesi;
   int? psnim;
-  late DateTime? tanggal;
   String? psname;
 
   Dampingan({
-    required this.reqid,
+    this.reqid,
     required this.initial,
     this.fakultas,
     this.angkatan,
@@ -25,7 +24,6 @@ class Dampingan {
     required this.katakunci,
     required this.sesi,
     this.psnim,
-    this.tanggal,
     this.psname,
   });
 
@@ -43,7 +41,6 @@ class Dampingan {
       katakunci: json['katakunci'],
       sesi: json['sesi'],
       psnim: json['psnim'],
-      tanggal: json['tanggal'] != null ? DateTime.parse(json['tanggal']) : null, // Nullable value,
       psname: json['psname'],
     );
   }
@@ -63,7 +60,6 @@ class Dampingan {
     data['sesi'] = sesi;
     data['psnim'] = psnim;
     data['psname'] = psname;
-    data['tanggal'] = tanggal;
 
     return data;
   }

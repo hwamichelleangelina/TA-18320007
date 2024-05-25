@@ -98,3 +98,13 @@ exports.getNAPSUsers = (req, res) => {
         }
     });
 }
+
+exports.getActivePS = (req, res) => {
+    psUser.getActivePS((err, users) => {
+        if (err) {
+            res.status(500).json({ message: 'Error retrieving Active PS users.' });
+        } else {
+            res.status(200).json(users);
+        }
+    });
+}

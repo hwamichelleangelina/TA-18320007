@@ -4,9 +4,8 @@ import 'package:ta_peersupervision/constants/size.dart';
 import 'package:ta_peersupervision/widgets/bkdrawer_mobile.dart';
 import 'package:ta_peersupervision/widgets/bkheader_mobile.dart';
 import 'package:ta_peersupervision/widgets/bkheader_report.dart';
-import 'package:ta_peersupervision/widgets/data_visualization.dart';
+// import 'package:ta_peersupervision/widgets/data_visualization.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
-import 'package:ta_peersupervision/widgets/temp.dart';
 
 class StatistikPS extends StatefulWidget {
   const StatistikPS({super.key});
@@ -63,7 +62,7 @@ class _StatistikPSState extends State<StatistikPS> {
                 const SizedBox(height: 30,),
 
                 // Tabel bagian list laporannya
-                NameAndOriginFrequency(),
+                // NameAndOriginFrequency(),
 
                 const SizedBox(height: 30,),
                 // Footer

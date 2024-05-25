@@ -171,4 +171,15 @@ class PSUsersRepository {
       throw Exception('Failed to load Non Active PS users');
     }
   }
+
+  Future<List<ActiveUser>> fetchPSNames() async {
+    final response = await http.get(Uri.parse('$serverUrl/getActivePS'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data.map((user) => ActiveUser.fromJson(user)).toList();
+    } else {
+      throw Exception('Failed to load Active PS users');
+    }
+  }
 }

@@ -24,7 +24,7 @@ class dampingan {
     }
 
     static getAllDampingan(callback) {
-        const getAllDampinganQuery = 'select * from dampingan;';
+        const getAllDampinganQuery = 'SELECT * FROM dampingan;';
         mysqlConn.query(getAllDampinganQuery, (err, result) => {
             if (err) {
                 callback(err, null);
@@ -62,14 +62,14 @@ class dampingan {
                 return;
             }
         
-            const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim } = dampinganData;
+            const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psname } = dampinganData;
             const createDampinganQuery = `
             INSERT INTO dampingan (initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, psname)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT psname FROM psusers WHERE psnim = ?));
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT psnim FROM psusers WHERE psname = ?), ?);
             `;
         
             mysqlConn.query(createDampinganQuery, [
-                initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, psnim
+                initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psname, psname
             ], (err, result) => {
                 if (err) {
                     console.error('Error creating dampingan:', err);
@@ -115,6 +115,20 @@ class dampingan {
                 callback(null, result);
             }
         });
+    }
+
+    static getCountPendampingan(reqid, callback) {
+        const getCountPendampinganQuery = 'SELECT COUNT(*) as count FROM jadwal WHERE reqid = ?;';
+        mysqlConn.query(getCountPendampinganQuery, [reqid], (err, result) => {
+            if (err) {
+                console.error('Error checking pertemuan:', err);
+                res.status(500).send('Error checking pertemuan');
+                return;
+              }
+            else {
+                callback(null, result);
+            }
+            });
     }
 }
 

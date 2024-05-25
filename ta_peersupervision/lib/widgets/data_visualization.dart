@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+//import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:ta_peersupervision/dummy/usereport_database.dart';
 
 class TabelFrekuensi extends StatelessWidget {

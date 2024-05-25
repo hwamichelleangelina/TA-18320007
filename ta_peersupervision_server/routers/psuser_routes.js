@@ -17,5 +17,6 @@ routerPSUser.put('/updatePSUsers', psUserController.updatePSUsers);
 routerPSUser.put('/nonActivateUsers', psUserController.nonActiveUsers);
 routerPSUser.get('/getAllPSUsers', psUserController.getAllPSUsers);
 routerPSUser.get('/getNAUsers', psUserController.getNAPSUsers);
+routerPSUser.get('/getActivePS', psUserController.getActivePS);
 
 module.exports = routerPSUser;

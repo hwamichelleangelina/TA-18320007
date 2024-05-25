@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 const dampinganController = require('../controller/dampingan_controller');
+const dampingan = require('../models/dampingan');
 
 const routerDampingan = Router();
 
@@ -13,6 +14,7 @@ routerDampingan.put('/:updateDataDampingan', dampinganController.updateDataDampi
 routerDampingan.get('/getDampingan/:psnim', dampinganController.getDampingan);
 routerDampingan.get('/getDampingan/', dampinganController.getAllDampingan);
 routerDampingan.post('/createDampingan', dampinganController.createDampingan);
-routerDampingan.delete('/:deleteDampingan', dampinganController.deleteDampingan);
+routerDampingan.delete('/deleteDampingan/:reqid', dampinganController.deleteDampingan);
+routerDampingan.get('/countPendampingan/:reqid', dampinganController.getCountPendampingan);
 
 module.exports = routerDampingan;

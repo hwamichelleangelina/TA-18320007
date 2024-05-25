@@ -1,5 +1,13 @@
 const List<Map> naviItems = [
   {
+    "img": "assets/lightimages/Form Entry.png",
+    "title": "Permintaan"    
+  },
+  {
+    "img": "assets/lightimages/Dampingan.png",
+    "title": "Dampingan Saya"    
+  },
+  {
     "img": "assets/lightimages/Penjadwalan.png",
     "title": "Jadwal Pendampingan"
   },

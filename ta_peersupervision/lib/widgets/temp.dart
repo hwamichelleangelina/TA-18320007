@@ -1,4 +1,4 @@
-import 'dart:math';
+/*import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -247,3 +247,4 @@ class NameAndOriginFrequency extends StatelessWidget {
   }
 
 }
+*/
