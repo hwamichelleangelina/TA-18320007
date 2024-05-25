@@ -1,6 +1,29 @@
 const mysqlConn = require('../config/db');
 
 class laporan {
+    // Untuk Laporan
+    static getKatakunci(reqid, callback) {
+        const getKatakunciQuery = 'SELECT katakunci FROM dampingan WHERE reqid = ?;';
+        mysqlConn.query(getKatakunciQuery, [reqid], (err, result) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, result);
+            }
+        });
+    }
+
+    static getJadwal(psnim, callback) {
+        const getJadwalQuery = 'SELECT * FROM jadwal WHERE psnim = ?;';
+        mysqlConn.query(getJadwalQuery, [psnim], (err, result) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, result);
+            }
+        });
+    }
+
     static fillLaporan(laporanData, callback) {
         if (!laporanData || Object.keys(laporanData).length === 0) {
             callback('Laporan data is empty', null);

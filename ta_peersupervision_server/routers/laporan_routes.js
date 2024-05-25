@@ -9,5 +9,7 @@ routerLaporan.post('/', (req, res) => {
 });
 
 routerLaporan.post('/fillLaporan', laporanController.fillLaporan);
+routerLaporan.get('/getJadwal/:psnim', laporanController.getJadwal);
+routerLaporan.get('/getKatakunci/:reqid', laporanController.getKatakunci);
 
 module.exports = routerLaporan;

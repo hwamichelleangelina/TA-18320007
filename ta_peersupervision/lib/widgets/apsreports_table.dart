@@ -1,128 +1,27 @@
+// lib/widgets/card_jadwal.dart
+
 import 'package:flutter/material.dart';
-import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/dummy/usereport_database.dart';
-import 'package:ta_peersupervision/pages/report_list_page/apsreport_isi.dart';
+import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
 
-class APSReportsTable extends StatefulWidget {
-  const APSReportsTable({super.key});
+class APSReportTable extends StatelessWidget {
+  final JadwalList jadwal;
 
-  @override
-  State<APSReportsTable> createState() => _APSReportsTableState();
-}
-
-class _APSReportsTableState extends State<APSReportsTable> {
-  String _searchText = '';
+  const APSReportTable({super.key, required this.jadwal});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 80),
-        child:
-        TextField(
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-            labelText: 'Pencarian',
-            prefixIcon: Icon(Icons.search),
-          ),
-          onChanged: (value) {
-            setState(() {
-              _searchText = value;
-            });
-          },
+    return Card(
+      margin: const EdgeInsets.all(10),
+      child: ListTile(
+        title: Text(jadwal.initial),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("ID Dampingan: ${jadwal.reqid}", style: const TextStyle(fontWeight: FontWeight.bold),),
+            Text("Nomor Jadwal: ${jadwal.jadwalid}"),
+            Text("Tanggal Pendampingan: ${jadwal.tanggal}"),
+          ],
         ),
-    ),
-      Center(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columns: [
-                DataColumn(
-                  label: Container(
-                    alignment: Alignment.center,
-                    child: const Text('Inisial Dampingan', textAlign: TextAlign.center,),
-                  ),
-                ),
-                DataColumn(
-                  label: Container(
-                    alignment: Alignment.center,
-                    child: const Text('Jadwal Pendampingan',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Container(
-                    alignment: Alignment.center,
-                    child: const Text('Aksi',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ],
-              rows: _buildFilteredRows(),
-            ),
-          ),
-        ),
-    ),
-    ],
-    );
-  }
-
-  List<DataRow> _buildFilteredRows() {
-    List<Map<String, String>> filteredData = _searchText.isEmpty
-        ? dataFromDatabase
-        : dataFromDatabase.where((data) {
-          return data.values.any((value) =>
-              value.toLowerCase().contains(_searchText.toLowerCase()));
-        }).toList();
-
-    return List<DataRow>.generate(
-      filteredData.length,
-      (index) => DataRow(
-        cells: [
-          DataCell(Text(filteredData[index]['name'] ?? '')),
-          DataCell(Text(filteredData[index]['date'] ?? '')),
-          DataCell(
-            Row(
-              children: [
-                if (filteredData[index]['filled'] == 'Tidak')
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                    context,
-                      MaterialPageRoute(builder: (context) =>
-                      APSReportForm(initial: filteredData[index]['name']?? '',
-                        psname: filteredData[index]['ps']?? '',
-                        tanggal: filteredData[index]['date']?? '',
-                        katakunci: filteredData[index]['keyword']?? '',
-                        jadwalid: int.parse(filteredData[index]['jadwalid']!),
-                        reqid: int.parse(filteredData[index]['reqid']!),
-                      ),
-                      ),
-                    );
-                  },
-                  child: const Text('Lengkapi Laporan'),
-                ),
-                if (filteredData[index]['filled'] == 'Ya')
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 99, 255, 148),
-                    foregroundColor: CustomColor.purpleprimary, // Warna teks tombol
-                  ),
-                  onPressed: () {  }, 
-                  child: const Text('Laporan Tersimpan'),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
