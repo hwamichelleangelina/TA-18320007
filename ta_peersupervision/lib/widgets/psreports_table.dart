@@ -98,10 +98,13 @@ class _PSReportsTableState extends State<PSReportsTable> {
                     Navigator.push(
                     context,
                       MaterialPageRoute(builder: (context) =>
-                      PSReportForm(repname: filteredData[index]['name']?? '',
-                      repps: filteredData[index]['ps']?? '',
-                      repdate: filteredData[index]['date']?? '',
-                      repkeyword: filteredData[index]['keyword']?? '',),),
+                      PSReportForm(initial: filteredData[index]['name']?? '',
+                      psname: filteredData[index]['ps']?? '',
+                      tanggal: filteredData[index]['date']?? '',
+                      katakunci: filteredData[index]['keyword']?? '',
+                      reqid: int.parse(filteredData[index]['reqid']!),
+                      jadwalid: int.parse(filteredData[index]['jadwalid']!),),
+                      ),
                     );
                   },
                   child: const Text('Lengkapi Laporan'),

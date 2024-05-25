@@ -32,7 +32,7 @@ class DampinganRepository {
       }),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
 /*      final Map<String, dynamic> responseData = jsonDecode(response.body);
       final String message = responseData["message"];
       Get.snackbar('Tambahkan Permintaan Dampingan', message,

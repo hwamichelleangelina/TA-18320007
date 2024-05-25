@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:ta_peersupervision/api/logic/dampingan_logic.dart';
 import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
+import 'package:ta_peersupervision/api/repository/dampingan_provider.dart';
 import 'package:ta_peersupervision/api/repository/dampingan_repository.dart';
 import 'package:ta_peersupervision/api/repository/psusers_repository.dart';
 import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_page.dart';
@@ -33,9 +35,11 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<DampinganProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Informasi Permintaan Pendampingan'),
+        title: const Text(''),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -43,7 +47,16 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
           key: _formKey,
           child: ListView(
             children: [
-              const SizedBox(height: 10,),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
+                child: Text(
+                  textAlign: TextAlign.center,
+                  'Informasi Permintaan Pendampingan',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+              ),
+
+              const SizedBox(height: 20,),
 
               TextFormField(
                 decoration: const InputDecoration(
@@ -275,9 +288,9 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                   }
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 40),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     Dampingan dampingan = Dampingan(
@@ -292,13 +305,18 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                       psname: psname, katakunci: katakunci!,
                     );
                     
-                    dampinganRepo.importDampingan(dampingan: dampingan).then((value) {
+                    dampinganRepo.importDampingan(dampingan: dampingan).then((value) async {
                       Get.to(() => const APSFormEntry());
+                      await provider.fetchDampingan();
                     }); 
                     Get.snackbar('Tambah Permintaan Pendampingan Baru', 'Data Dampingan $initial berhasil disimpan',
                       backgroundColor: Colors.green, colorText: Colors.white);  
                   }
                 },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 19.0, horizontal: 32.0),
+                  textStyle: const TextStyle(fontSize: 15.0, fontFamily: 'Montserrat'),
+                ),
                 child: const Text('Simpan'),
               ),
             ],

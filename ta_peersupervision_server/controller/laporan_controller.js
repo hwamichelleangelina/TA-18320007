@@ -1,16 +1,18 @@
 const laporan = require('../models/laporan');
 
 exports.fillLaporan = (req, res) => {
-    const { reqid, isRecommended, gambaran, proses, hasil, kendala } = req.body;
+    const { jadwalid, reqid, isRecommended, gambaran, proses, hasil, kendala, isAgree } = req.body;
 
     // Persiapkan data untuk dimasukkan ke dalam model
     const laporanData = {
+        jadwalid,
         reqid,
         isRecommended,
         gambaran,
         proses,
         hasil,
-        kendala
+        kendala,
+        isAgree
     };
 
     laporan.fillLaporan(laporanData, (err, result) => {

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:ta_peersupervision/api/logic/dampingan_logic.dart';
 import 'package:ta_peersupervision/api/repository/dampingan_repository.dart';
 import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
+import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/pages/jadwal_page/apsjadwal_page.dart';
 
 class DampinganList extends StatefulWidget {
@@ -163,7 +164,7 @@ class _DampinganListState extends State<DampinganList> {
                       margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 8), // Spasi kanan-kiri dan antar tile
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10), // Edge curve
-                        color: const Color.fromARGB(255, 115, 89, 147), // Ganti warna sesuai kebutuhan
+                        color:  CustomColor.purpleBg2,
                       ),
                       child: 
                         ListTile(

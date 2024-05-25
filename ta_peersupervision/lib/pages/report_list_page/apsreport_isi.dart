@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/constants/size.dart';
-import 'package:ta_peersupervision/pages/report_list_page/apsreport_page.dart';
-import 'package:ta_peersupervision/widgets/apsdrawer_mobile.dart';
 import 'package:ta_peersupervision/widgets/report_fillingform.dart';
-import 'package:ta_peersupervision/widgets/bkheader_kembali.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
-import 'package:ta_peersupervision/widgets/apsheader_mobile.dart';
 
 class APSReportForm extends StatefulWidget {
 
-  final String repname;  // Menerima data nama dari halaman tabel
-  final String repps;
-  final String repdate;
-  final String repkeyword;
+  final int jadwalid;
+  final int reqid;
+  final String initial;  // Menerima data nama dari halaman tabel
+  final String psname;
+  final String tanggal;
+  final String katakunci;
 
   const APSReportForm({super.key,
-    required this.repname,
-    required this.repps,
-    required this.repdate,
-    required this.repkeyword,});
+    required this.initial,
+    required this.psname,
+    required this.tanggal,
+    required this.katakunci, required this.jadwalid, required this.reqid});
 
   @override
   State<APSReportForm> createState() => _APSReportFormState();
@@ -41,49 +38,36 @@ class _APSReportFormState extends State<APSReportForm> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
+          appBar: AppBar(
+            title: const Text(''),
+          ),
           key: scaffoldKey,
           backgroundColor: CustomColor.purpleBg,
-          endDrawer: constraints.maxWidth >= minDesktopWidth
-          ? null
-          : const APSDrawerMobile(),
 
           body: SingleChildScrollView(
             controller: scrollController,
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                if (constraints.maxWidth >= minDesktopWidth)
-                // Main Container
-                  HeaderBKKembali(onNavMenuTap: (int navIndex){
-                    // call function
-                    scrollToSection(navIndex);
-                  }, navi: const APSReportPage(),)
-
-                else
-                  APSHeaderMobile(
-                    onLogoTap: () {},
-                    onMenuTap: () {
-                      scaffoldKey.currentState?.openEndDrawer();
-                    },
-                  ),
-
-                const SizedBox(height: 30,),
+                const SizedBox(height: 20,),
 
                 // Isi Report
                 FillingForm(
-                            penname: widget.repname,
-                            penps: widget.repps,
-                            pendate: widget.repdate,
-                            penkeyword: widget.repkeyword,
-                            isYesChecked: isYesChecked,
-                            isNoChecked: isNoChecked,
-                            onCheckboxChanged: (newYesValue, newNoValue) {
-                              setState(() {
-                                isYesChecked = newYesValue;
-                                isNoChecked = newNoValue;
-                              });
-                            }, onSubmit: (gambar , proses , hasil , kendala , isRujukan , isAgree) {  },
-                      ),
+                  jadwalid: widget.jadwalid,
+                  reqid: widget.reqid,
+                  initial: widget.initial,
+                  psname: widget.psname,
+                  tanggal: widget.tanggal,
+                  katakunci: widget.katakunci,
+                  isYesChecked: isYesChecked,
+                  isNoChecked: isNoChecked,
+                  onCheckboxChanged: (newYesValue, newNoValue) {
+                    setState(() {
+                      isYesChecked = newYesValue;
+                      isNoChecked = newNoValue;
+                    });
+                  }, onSubmit: (jadwalid, reqid, gambar , proses , hasil , kendala , isRecommended , isAgree) {  },
+                ),
 
                 const SizedBox(height: 30,),
                 // Footer

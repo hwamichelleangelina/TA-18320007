@@ -6,23 +6,27 @@ class FillingForm extends StatefulWidget {
   final bool isNoChecked;   // Status checkbox "Tidak"
   final Function(bool, bool) onCheckboxChanged;  // Callback untuk perubahan checkbox
 
-  final Function(String, String, String, String, bool, bool) onSubmit;
+  final Function(int, int, String, String, String, String, bool, bool) onSubmit;
 
-  final String penname;  // Menerima data nama dari halaman tabel
-  final String penps;
-  final String pendate;
-  final String penkeyword;
+  final int jadwalid;
+  final int reqid;
+  final String initial;  // Menerima data nama dari halaman tabel
+  final String psname;
+  final String tanggal;
+  final String katakunci;
 
   const FillingForm({
     super.key,
+    required this.jadwalid,
+    required this.reqid,
     required this.isYesChecked,
     required this.isNoChecked,
     required this.onCheckboxChanged,
     required this.onSubmit,
-    required this.penname,
-    required this.penps,
-    required this.pendate,
-    required this.penkeyword,
+    required this.initial,
+    required this.psname,
+    required this.tanggal,
+    required this.katakunci,
   });
 
   @override
@@ -42,8 +46,10 @@ class _FillingFormState extends State<FillingForm> {
   String _proses = '';
   String _hasil = '';
   String _kendala = '';
-  bool _isRujukan = false;
+  bool _isRecommended = false;
   bool _isAgree = false;
+  int jadwalid = 0;
+  int reqid = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +67,12 @@ class _FillingFormState extends State<FillingForm> {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 40),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'Inisial Dampingan: ${widget.penname}',
+              'ID Dampingan: ${widget.reqid}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),
@@ -76,7 +82,7 @@ class _FillingFormState extends State<FillingForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'Pendamping Sebaya: ${widget.penps}',
+              'Inisial Dampingan: ${widget.initial}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),
@@ -86,7 +92,7 @@ class _FillingFormState extends State<FillingForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'Tanggal Pendampingan: ${widget.pendate}',
+              'Pendamping Sebaya: ${widget.psname}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),
@@ -96,12 +102,32 @@ class _FillingFormState extends State<FillingForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'Kata Kunci Masalah Dampingan: ${widget.penkeyword}',
+              'ID Jadwal: ${widget.jadwalid}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
+            child: Text(
+              'Tanggal Pendampingan: ${widget.tanggal}',
+              style: const TextStyle(fontSize: 18,),
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
+            child: Text(
+              'Kata Kunci Masalah Dampingan: ${widget.katakunci}',
+              style: const TextStyle(fontSize: 18,),
+            ),
+          ),
+
+          const SizedBox(height: 50),
 
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
@@ -292,7 +318,7 @@ class _FillingFormState extends State<FillingForm> {
                           isYesChecked = newValue!;  // Atur status checkbox "Ya"
                           if (isYesChecked) {
                             isNoChecked = false;  // Uncheck checkbox "Tidak" jika "Ya" dicentang
-                            _isRujukan = true;
+                            _isRecommended = true;
                           }
                         });
                       },
@@ -308,7 +334,7 @@ class _FillingFormState extends State<FillingForm> {
                           isNoChecked = newValue!;  // Atur status checkbox "Tidak"
                           if (isNoChecked) {
                             isYesChecked = false;  // Uncheck checkbox "Ya" jika "Tidak" dicentang
-                            _isRujukan = false;
+                            _isRecommended = false;
                           }
                         });
                       },
@@ -326,7 +352,7 @@ class _FillingFormState extends State<FillingForm> {
             child: Column(
               children: [
                 Text(
-                  'Saya, ${widget.penps}, pendamping sebaya yang mendampingi ${widget.penname} dengan sadar menyatakan bahwa pengisian laporan dan rekomendasi tindak lanjut selama kegiatan pendampingan telah diberitahukan kepada ${widget.penname} dan ${widget.penname} secara sadar menyetujui tindakan tersebut. Apabila terdapat tindak lanjut pendampingan, dampingan telah mengizinkan akses informasi pribadi dampingan oleh psikolog dan tenaga medis terkait.',
+                  'Saya, ${widget.psname}, pendamping sebaya yang mendampingi ${widget.initial} dengan sadar menyatakan bahwa pengisian laporan dan rekomendasi tindak lanjut selama kegiatan pendampingan telah diberitahukan kepada ${widget.initial} dan ${widget.initial} secara sadar menyetujui tindakan tersebut. Apabila terdapat tindak lanjut pendampingan, dampingan telah mengizinkan akses informasi pribadi dampingan oleh psikolog dan tenaga medis terkait.',
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 15),
                 ),
@@ -370,7 +396,7 @@ class _FillingFormState extends State<FillingForm> {
                     );
                   }
                 else {
-                    widget.onSubmit(_gambar, _proses, _hasil, _kendala, _isRujukan, _isAgree);
+                    widget.onSubmit(jadwalid, reqid, _gambar, _proses, _hasil, _kendala, _isRecommended, _isAgree);
                     Navigator.of(context).pop();
                     _showSnackbar(context, 'Laporan Proses Pendampingan Berhasil Disimpan');
                 }

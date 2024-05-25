@@ -98,10 +98,14 @@ class _APSReportsTableState extends State<APSReportsTable> {
                     Navigator.push(
                     context,
                       MaterialPageRoute(builder: (context) =>
-                      APSReportForm(repname: filteredData[index]['name']?? '',
-                      repps: filteredData[index]['ps']?? '',
-                      repdate: filteredData[index]['date']?? '',
-                      repkeyword: filteredData[index]['keyword']?? '',),),
+                      APSReportForm(initial: filteredData[index]['name']?? '',
+                        psname: filteredData[index]['ps']?? '',
+                        tanggal: filteredData[index]['date']?? '',
+                        katakunci: filteredData[index]['keyword']?? '',
+                        jadwalid: int.parse(filteredData[index]['jadwalid']!),
+                        reqid: int.parse(filteredData[index]['reqid']!),
+                      ),
+                      ),
                     );
                   },
                   child: const Text('Lengkapi Laporan'),
