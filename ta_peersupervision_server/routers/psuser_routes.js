@@ -19,4 +19,7 @@ routerPSUser.get('/getAllPSUsers', psUserController.getAllPSUsers);
 routerPSUser.get('/getNAUsers', psUserController.getNAPSUsers);
 routerPSUser.get('/getActivePS', psUserController.getActivePS);
 
+//frekuensi pendampingan dilakukan
+routerPSUser.get('/countPSDone', psUserController.countPSdone);
+
 module.exports = routerPSUser;

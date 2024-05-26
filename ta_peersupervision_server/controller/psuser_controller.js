@@ -108,3 +108,16 @@ exports.getActivePS = (req, res) => {
         }
     });
 }
+
+exports.countPSdone = (req, res) => {
+    psUser.countPSdone((err, result) => {
+        if (err) {
+            console.error('Error checking pendampingan frequency:', err);
+            res.status(500).send('Error pendampingan frequency');
+            return;
+          }
+        else {
+            res.status(200).json(result);
+        }
+    });
+};

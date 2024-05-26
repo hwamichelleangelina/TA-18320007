@@ -167,6 +167,20 @@ class psUser {
             }
         });
     } 
+
+    static countPSdone(callback) {
+        const getCountPSdoneQuery = 'SELECT psnim, COUNT(*) AS count FROM jadwal GROUP BY psnim;';
+        mysqlConn.query(getCountPSdoneQuery, (err, result) => {
+            if (err) {
+                console.error('Error checking pertemuan:', err);
+                res.status(500).send('Error checking pendampingan frequency');
+                return;
+              }
+            else {
+                callback(null, result);
+            }
+            });
+    }
 }
 
 module.exports = psUser;

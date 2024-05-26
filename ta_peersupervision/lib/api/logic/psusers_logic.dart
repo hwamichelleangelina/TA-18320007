@@ -51,6 +51,26 @@ class NonActivate {
   }
 }
 
+class FreqPS {
+  int? psnim;
+  int? count;
+
+  FreqPS({
+    this.psnim,
+    this.count,
+  });
+
+  factory FreqPS.fromJson(Map<String, dynamic> json) {
+    return FreqPS(
+      psnim: json['psnim'],
+      count: json['count']
+    );
+  }
+
+  String get nimAsString => psnim.toString();
+  String get countAsString => count.toString();
+}
+
 class PSUser {
   final String name;
   final int nim;

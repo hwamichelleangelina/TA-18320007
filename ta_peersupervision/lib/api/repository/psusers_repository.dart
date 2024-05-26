@@ -148,7 +148,16 @@ class PSUsersRepository {
     }
   }
 
+  Future<List<FreqPS>> fetchFreqPS() async {
+    final response = await http.get(Uri.parse('$serverUrl/countPSDone'));
 
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data.map((user) => FreqPS.fromJson(user)).toList();
+    } else {
+      throw Exception('Failed to load PS users pendampingan frequecies');
+    }
+  }
 
   Future<List<PSUser>> fetchUsers() async {
     final response = await http.get(Uri.parse('$serverUrl/getAllPSUsers'));
