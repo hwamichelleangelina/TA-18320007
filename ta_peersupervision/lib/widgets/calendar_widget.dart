@@ -6,15 +6,16 @@ import 'package:table_calendar/table_calendar.dart';
 class CalendarWidget extends StatefulWidget {
   final Function(DateTime, List<MyJadwal>) onDaySelected;
   final Map<DateTime, List<MyJadwal>> jadwal;
-  final DateTime focusedDay;
+  final DateTime initialFocusedDay;
 
   // Menambahkan inisialisasi langsung pada deklarasi field
   List<MyJadwal> events = [];
 
-  CalendarWidget({super.key, 
+  CalendarWidget({
+    super.key,
     required this.onDaySelected,
     required this.jadwal,
-    required this.focusedDay,
+    required this.initialFocusedDay, required DateTime focusedDay,
   }) {
     // Inisialisasi events di sini
     events = jadwal.values.expand((events) => events).toList();
@@ -26,6 +27,15 @@ class CalendarWidget extends StatefulWidget {
 
 class _CalendarWidgetState extends State<CalendarWidget> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
+  late DateTime _focusedDay;
+  late DateTime _selectedDay;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusedDay = widget.initialFocusedDay;
+    _selectedDay = widget.initialFocusedDay;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +43,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       margin: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TableCalendar(
         calendarFormat: _calendarFormat,
-        focusedDay: widget.focusedDay,
+        focusedDay: _focusedDay,
         firstDay: DateTime.utc(2000),
         lastDay: DateTime.utc(2100),
+        selectedDayPredicate: (day) {
+          return isSameDay(_selectedDay, day);
+        },
         headerStyle: const HeaderStyle(
           formatButtonVisible: false,
         ),
@@ -53,8 +66,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         },
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
+            _selectedDay = selectedDay;
+            _focusedDay = focusedDay; // Ini memastikan kalender tetap pada bulan yang relevan
           });
-          widget.onDaySelected(selectedDay, widget.events);
+          widget.onDaySelected(selectedDay, widget.jadwal[selectedDay] ?? []);
         },
         calendarBuilders: CalendarBuilders(
           markerBuilder: (context, date, events) {

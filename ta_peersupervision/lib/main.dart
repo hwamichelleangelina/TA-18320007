@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:ta_peersupervision/api/repository/dampingan_provider.dart';
+import 'package:ta_peersupervision/api/provider/dampingan_provider.dart';
+import 'package:ta_peersupervision/api/provider/laporan_provider.dart';
 import 'package:ta_peersupervision/pages/splashscreen.dart';
 
 void main() async {
@@ -15,11 +16,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => DampinganProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => DampinganProvider()),
+        ChangeNotifierProvider(create: (context) => LaporanProvider()),
+      ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
         ),
         title: 'Pengawasan PS ITB',
         home: const SplashScreen(),
-      )
+      ),
     );
   }
 }

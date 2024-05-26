@@ -31,12 +31,11 @@ exports.getKatakunci = (req, res) => {
 };
 
 exports.fillLaporan = (req, res) => {
-    const { jadwalid, reqid, isRecommended, gambaran, proses, hasil, kendala, isAgree } = req.body;
+    const { jadwalid, isRecommended, gambaran, proses, hasil, kendala, isAgree } = req.body;
 
     // Persiapkan data untuk dimasukkan ke dalam model
     const laporanData = {
         jadwalid,
-        reqid,
         isRecommended,
         gambaran,
         proses,
@@ -55,5 +54,19 @@ exports.fillLaporan = (req, res) => {
                 res.status(404).json({ message: 'User not found or no rows affected.' });
             }
         }
+    });
+};
+
+exports.getLaporanFilled = (req, res) => {
+    const jadwalid = req.params.jadwalid;
+
+    laporan.getLaporanFilled(jadwalid, (err, result) => {
+        if (err) {
+            console.error('Error checking laporan filled:', err);
+            res.status(500).send('Error checking laporan filled');
+            return;
+          }
+          const hasReported = result[0].count > 0;
+          res.json({ hasReported });
     });
 };

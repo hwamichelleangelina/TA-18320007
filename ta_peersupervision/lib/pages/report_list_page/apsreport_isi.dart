@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/widgets/report_fillingform.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
 
 class APSReportForm extends StatefulWidget {
 
-  final int jadwalid;
-  final int reqid;
-  final String initial;  // Menerima data nama dari halaman tabel
-  final String psname;
-  final String tanggal;
-  final String katakunci;
+  final JadwalList jadwal;
 
   const APSReportForm({super.key,
-    required this.initial,
-    required this.psname,
-    required this.tanggal,
-    required this.katakunci, required this.jadwalid, required this.reqid});
+    required this.jadwal});
 
   @override
   State<APSReportForm> createState() => _APSReportFormState();
@@ -52,8 +45,8 @@ class _APSReportFormState extends State<APSReportForm> {
                 const SizedBox(height: 20,),
 
                 // Isi Report
-                FillingForm(
-                  jadwalid: widget.jadwalid,
+                FillingForm(jadwal: widget.jadwal),
+/*                  jadwalid: widget.jadwalid,
                   reqid: widget.reqid,
                   initial: widget.initial,
                   psname: widget.psname,
@@ -67,7 +60,7 @@ class _APSReportFormState extends State<APSReportForm> {
                       isNoChecked = newNoValue;
                     });
                   }, onSubmit: (jadwalid, reqid, gambar , proses , hasil , kendala , isRecommended , isAgree) {  },
-                ),
+                ),*/
 
                 const SizedBox(height: 30,),
                 // Footer

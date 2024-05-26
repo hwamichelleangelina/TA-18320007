@@ -30,14 +30,14 @@ class laporan {
             return;
         }
     
-        const { jadwalid, reqid, isRecommended, gambaran, proses, hasil, kendala, isAgree } = laporanData;
+        const { jadwalid, isRecommended, gambaran, proses, hasil, kendala, isAgree } = laporanData;
         const createLaporanQuery = `
         INSERT INTO laporan (jadwalid, reqid, initial, psname, psnim, tanggal, isRecommended, katakunci, gambaran, proses, hasil, kendala, isAgree)
-        VALUES (?, ?, (SELECT initial FROM jadwal WHERE jadwalid = ?), (SELECT psname FROM jadwal WHERE jadwalid = ?), (SELECT psnim FROM jadwal WHERE jadwalid = ?), (SELECT tanggal FROM jadwal WHERE jadwalid = ?), ?, (SELECT katakunci FROM dampingan WHERE reqid = ?), ?, ?, ?, ?, ?);
+        VALUES (?, (SELECT reqid FROM jadwal WHERE jadwalid = ?), (SELECT initial FROM jadwal WHERE jadwalid = ?), (SELECT psname FROM jadwal WHERE jadwalid = ?), (SELECT psnim FROM jadwal WHERE jadwalid = ?), (SELECT tanggal FROM jadwal WHERE jadwalid = ?), ?, (SELECT katakunci FROM jadwal WHERE jadwalid = ?), ?, ?, ?, ?, ?);
         `;
     
         mysqlConn.query(createLaporanQuery, [
-            jadwalid, jadwalid, jadwalid, jadwalid, jadwalid, jadwalid, isRecommended, reqid, gambaran, proses, hasil, kendala, isAgree
+            jadwalid, jadwalid, jadwalid, jadwalid, jadwalid, jadwalid, isRecommended, jadwalid, gambaran, proses, hasil, kendala, isAgree
         ], (err, result) => {
             if (err) {
                 console.error('Error creating laporan pendampingan:', err);
@@ -46,6 +46,20 @@ class laporan {
                 callback(null, result);
             }
         });
+    }
+
+    static getLaporanFilled(jadwalid, callback) {
+        const getLaporanFilledQuery = 'SELECT COUNT(*) as count FROM laporan WHERE jadwalid = ?;';
+        mysqlConn.query(getLaporanFilledQuery, [jadwalid], (err, result) => {
+            if (err) {
+                console.error('Error checking laporan filled:', err);
+                res.status(500).send('Error checking laporan filled');
+                return;
+              }
+            else {
+                callback(null, result);
+            }
+            });
     }
 }
 

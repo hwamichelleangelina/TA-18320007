@@ -47,3 +47,13 @@ class Laporan {
     isAgree = json['isAgree'];
   }
 }
+
+class Katakunci {
+  String? katakunci;
+
+  Katakunci({this.katakunci});
+
+  Katakunci.fromJson(Map<String, dynamic> json) {
+    katakunci = json['katakunci'];
+  }
+}

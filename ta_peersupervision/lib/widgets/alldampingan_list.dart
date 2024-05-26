@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:ta_peersupervision/api/repository/dampingan_provider.dart';
+import 'package:ta_peersupervision/api/provider/dampingan_provider.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_edit_page.dart';
 
@@ -88,7 +88,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return ListTile(
-                        title: Text(item['initial']),
+                        title: Text(item['initial'], style: const TextStyle( color: CustomColor.purpleTersier)),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -128,9 +128,9 @@ class _AllDampinganListState extends State<AllDampinganList> {
                             const SizedBox(height: 8,),
                             Text('Nama Pendamping Sebaya: ${item['psname']}'),
                             if (snapshot.data!)
-                              const Text('Pendampingan pertama: Dijadwalkan', style: TextStyle(color: Colors.green))
+                              const Text('Pendampingan pertama: DIJADWALKAN', style: TextStyle(color: Colors.green))
                             else
-                              const Text('Pendampingan pertama: Belum dijadwalkan', style: TextStyle(color: Colors.red)),
+                              const Text('Pendampingan pertama: BELUM DIJADWALKAN', style: TextStyle(color: Colors.red)),
                           ],
                         ),
                         trailing: IconButton(

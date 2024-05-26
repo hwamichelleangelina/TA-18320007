@@ -109,7 +109,7 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
 
                 CalendarWidget(
                   onDaySelected: _showEventDialog,
-                  focusedDay: DateTime.now(), jadwal: jadwal,
+                  focusedDay: DateTime.now(), jadwal: jadwal, initialFocusedDay: DateTime.now(),
                 ),
 
                 const SizedBox(height: 30,),

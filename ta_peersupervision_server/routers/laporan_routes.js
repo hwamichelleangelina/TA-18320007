@@ -10,6 +10,6 @@ routerLaporan.post('/', (req, res) => {
 
 routerLaporan.post('/fillLaporan', laporanController.fillLaporan);
 routerLaporan.get('/getJadwal/:psnim', laporanController.getJadwal);
-routerLaporan.get('/getKatakunci/:reqid', laporanController.getKatakunci);
+routerLaporan.get('/isLaporanFilled/:jadwalid', laporanController.getLaporanFilled);
 
 module.exports = routerLaporan;

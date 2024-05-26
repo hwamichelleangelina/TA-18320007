@@ -17,7 +17,6 @@ class LaporanRepository {
       },
       body: jsonEncode({
         'jadwalid': laporan.jadwalid,
-        'reqid': laporan.reqid,
         'isRecommended': laporan.isRecommended, // Ensure the date is in the correct format
         'isAgree': laporan.isAgree,
         'gambaran': laporan.gambaran,
@@ -28,8 +27,9 @@ class LaporanRepository {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      Get.snackbar('Isi Laporan Pendampingan', 'Laporan berhasil disimpan',
-        backgroundColor: Colors.green, colorText: Colors.white); 
+      Get.snackbar('Pengisian Laporan Pendampingan', 'Laporan pendampingan dengan Nomor Jadwal: ${laporan.jadwalid} berhasil disimpan',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,); 
     } else if (response.statusCode == 500) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
       final String message = responseData["message"];

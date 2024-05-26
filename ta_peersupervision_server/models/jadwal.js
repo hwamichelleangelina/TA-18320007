@@ -32,12 +32,12 @@ class jadwal {
     
         const { reqid, tanggal, mediapendampingan } = jadwalData;
         const createJadwalQuery = `
-        INSERT INTO jadwal (reqid, tanggal, initial, psnim, psname, mediapendampingan)
-        VALUES (?, ?, (SELECT initial FROM dampingan WHERE reqid = ?), (SELECT psnim FROM dampingan WHERE reqid = ?), (SELECT psname FROM dampingan WHERE reqid = ?), ?);
+        INSERT INTO jadwal (reqid, tanggal, initial, psnim, psname, mediapendampingan, katakunci)
+        VALUES (?, ?, (SELECT initial FROM dampingan WHERE reqid = ?), (SELECT psnim FROM dampingan WHERE reqid = ?), (SELECT psname FROM dampingan WHERE reqid = ?), ?, (SELECT katakunci FROM dampingan WHERE reqid = ?));
         `;
     
         mysqlConn.query(createJadwalQuery, [
-            reqid, tanggal, reqid, reqid, reqid, mediapendampingan
+            reqid, tanggal, reqid, reqid, reqid, mediapendampingan, reqid
         ], (err, result) => {
             if (err) {
                 console.error('Error creating jadwal pendampingan:', err);

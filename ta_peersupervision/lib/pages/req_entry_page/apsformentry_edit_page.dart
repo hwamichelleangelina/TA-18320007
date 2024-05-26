@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:ta_peersupervision/api/logic/dampingan_logic.dart';
 import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
-import 'package:ta_peersupervision/api/repository/dampingan_provider.dart';
+import 'package:ta_peersupervision/api/provider/dampingan_provider.dart';
 import 'package:ta_peersupervision/api/repository/dampingan_repository.dart';
 import 'package:ta_peersupervision/api/repository/psusers_repository.dart';
 import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_page.dart';

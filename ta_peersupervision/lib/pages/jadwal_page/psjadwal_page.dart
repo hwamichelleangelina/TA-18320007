@@ -1,3 +1,5 @@
+// ignore_for_file: collection_methods_unrelated_type
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -103,7 +105,7 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
 
                 CalendarWidget(
                   onDaySelected: _showEventDialog,
-                  focusedDay: DateTime.now(), jadwal: jadwal,
+                  focusedDay: DateTime.now(), jadwal: jadwal, initialFocusedDay: DateTime.now(),
                 ),
 
                 const SizedBox(height: 30,),

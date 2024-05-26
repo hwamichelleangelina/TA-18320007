@@ -1,64 +1,18 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
+import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
 import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
 
-class ReqidStorage {
-  static int reqid = 0;
+class LaporanProvider with ChangeNotifier {
+  final String serverUrl = 'http://localhost:3000/laporan';
 
-  static void setReqid(int value) {
-    reqid = value;
+  LaporanProvider() {
+    fetchJadwalReport();
   }
 
-  static int getReqid() {
-    return reqid;
-  }
-}
-
-// lib/models/jadwal.dart
-class JadwalList {
-  int? jadwalid;
-  int? reqid;
-  String? initial;
-  int? psnim;
-  DateTime? tanggal;
-  String? psname;
-  String? mediapendampingan;
-  String? katakunci;
-
-  JadwalList({
-    required this.jadwalid,
-    required this.reqid,
-    required this.initial,
-    this.psnim,
-    required this.tanggal,
-    this.psname,
-    this.mediapendampingan,
-    this.katakunci
-  });
-
-  factory JadwalList.fromJson(Map<String, dynamic> json) {
-    return JadwalList(
-      jadwalid: json['jadwalid'],
-      reqid: json['reqid'],
-      initial: json['initial'],
-      tanggal: DateTime.parse(json['tanggal']),
-      psnim: json['psnim'],
-      psname: json['psname'],
-      mediapendampingan: json['mediapendampingan'],
-      katakunci: json['katakunci']
-    );
-  }
-
-  String get formattedTanggal {
-    final DateFormat formatter = DateFormat('d MMMM y');
-    return formatter.format(tanggal!);
-  }
-}
-
-class JadwalService {
-  static Future<List<JadwalList>> fetchJadwalReports() async {
+Future<List<JadwalList>> fetchJadwalReport() async {
     final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();
     int psnim;
 
@@ -82,6 +36,7 @@ class JadwalService {
         if (body.containsKey('laporan')) {  // Menggunakan kunci 'laporan'
           List<dynamic> data = body['laporan'];
           List<JadwalList> jadwalList = data.map((dynamic item) => JadwalList.fromJson(item)).toList();
+          notifyListeners();
           return jadwalList;
         } else {
           throw Exception('Key not found in JSON');
@@ -94,6 +49,21 @@ class JadwalService {
       }
     } else {
       throw Exception('Failed to load jadwal');
+    }
+  }
+
+  late bool _checkLaporan;
+
+  bool get checkLaporan => _checkLaporan;
+
+  Future<bool> fetchCheckLaporan(int jadwalid) async {
+    final response = await http.get(Uri.parse('http://localhost:3000/laporan/isLaporanFilled/$jadwalid/'));
+
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      return result['hasReported'];
+    } else {
+      throw Exception('Failed to check report');
     }
   }
 }

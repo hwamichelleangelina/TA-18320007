@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
@@ -18,6 +19,42 @@ class _PSReportPageState extends State<PSReportPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final scrollController = ScrollController();
   final List<GlobalKey> navbarKeys = List.generate(4, (index) => GlobalKey());
+
+  late Future<List<JadwalList>> futureJadwal;
+  List<JadwalList> _jadwalList = [];
+  List<JadwalList> _filteredJadwalList = [];
+  String _searchText = '';
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    futureJadwal = JadwalService.fetchJadwalReports();
+    futureJadwal.then((jadwalList) {
+      setState(() {
+        _jadwalList = jadwalList;
+        _filteredJadwalList = jadwalList;
+      });
+    });
+  }
+
+  void _filterJadwal(String query) {
+    setState(() {
+      _searchText = query.toLowerCase();
+      _filteredJadwalList = _searchText.isEmpty
+          ? _jadwalList
+          : _jadwalList.where((jadwal) {
+              return jadwal.jadwalid.toString().toLowerCase().contains(_searchText) ||
+                  jadwal.reqid.toString().toLowerCase().contains(_searchText) ||
+                  jadwal.initial!.toLowerCase().contains(_searchText) ||
+                  jadwal.formattedTanggal.toLowerCase().contains(_searchText);
+            }).toList();
+    });
+  }
+
+  void _navigateToForm(JadwalList jadwal) {
+//    Get.to (() => APSReportForm(jadwal: jadwal));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +90,47 @@ class _PSReportPageState extends State<PSReportPage> {
                     },
                   ),
 
-                const SizedBox(height: 30,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      labelText: 'Pencarian',
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _controller.clear();
+                          _filterJadwal('');
+                        },
+                      ),
+                    ),
+                    onChanged: (query) => _filterJadwal(query),
+                  ),
+                ),
+                const SizedBox(height: 30),
 
                 // List Laporan yang sudah dan perlu diisi
-                const PSReportsTable(),
+                FutureBuilder<List<JadwalList>>(
+                  future: futureJadwal,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _filteredJadwalList.length,
+                        itemBuilder: (context, index) {
+                          return PSReportsTable(
+                            jadwal: _filteredJadwalList[index],
+                            onTap: () => _navigateToForm(_filteredJadwalList[index]),
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return const CircularProgressIndicator();
+                  },
+                ),
 
                 const SizedBox(height: 30,),
                 // Footer

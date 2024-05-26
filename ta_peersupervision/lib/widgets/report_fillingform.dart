@@ -1,33 +1,18 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_import
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:ta_peersupervision/api/logic/jadwal_logic.dart';
+import 'package:ta_peersupervision/api/logic/laporan_logic.dart';
+import 'package:ta_peersupervision/api/provider/laporan_provider.dart';
+import 'package:ta_peersupervision/api/repository/laporan_repository.dart';
+import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
+import 'package:ta_peersupervision/pages/report_list_page/apsreport_page.dart';
 
 class FillingForm extends StatefulWidget {
-  final bool isYesChecked;  // Status checkbox "Ya"
-  final bool isNoChecked;   // Status checkbox "Tidak"
-  final Function(bool, bool) onCheckboxChanged;  // Callback untuk perubahan checkbox
+  final JadwalList jadwal;
 
-  final Function(int, int, String, String, String, String, bool, bool) onSubmit;
-
-  final int jadwalid;
-  final int reqid;
-  final String initial;  // Menerima data nama dari halaman tabel
-  final String psname;
-  final String tanggal;
-  final String katakunci;
-
-  const FillingForm({
-    super.key,
-    required this.jadwalid,
-    required this.reqid,
-    required this.isYesChecked,
-    required this.isNoChecked,
-    required this.onCheckboxChanged,
-    required this.onSubmit,
-    required this.initial,
-    required this.psname,
-    required this.tanggal,
-    required this.katakunci,
-  });
+  const FillingForm({super.key, required this.jadwal});
 
   @override
   State<FillingForm> createState() => _FillingFormState();
@@ -42,17 +27,21 @@ class _FillingFormState extends State<FillingForm> {
   bool isNoChecked = false;
   bool isAgreeChecked = false;
 
+  LaporanRepository repository = LaporanRepository();
+
   String _gambar = '';
   String _proses = '';
   String _hasil = '';
   String _kendala = '';
   bool _isRecommended = false;
   bool _isAgree = false;
-  int jadwalid = 0;
-  int reqid = 0;
+  int isAgree = 0;
+  int isRecommended = 0;
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<LaporanProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -72,7 +61,7 @@ class _FillingFormState extends State<FillingForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'ID Dampingan: ${widget.reqid}',
+              'ID Dampingan: ${widget.jadwal.reqid}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),
@@ -82,7 +71,7 @@ class _FillingFormState extends State<FillingForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'Inisial Dampingan: ${widget.initial}',
+              'Inisial Dampingan: ${widget.jadwal.initial}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),
@@ -92,7 +81,7 @@ class _FillingFormState extends State<FillingForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'Pendamping Sebaya: ${widget.psname}',
+              'Pendamping Sebaya: ${widget.jadwal.psname}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),
@@ -102,7 +91,7 @@ class _FillingFormState extends State<FillingForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'ID Jadwal: ${widget.jadwalid}',
+              'ID Jadwal: ${widget.jadwal.jadwalid}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),
@@ -112,7 +101,7 @@ class _FillingFormState extends State<FillingForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'Tanggal Pendampingan: ${widget.tanggal}',
+              'Tanggal Pendampingan: ${widget.jadwal.tanggal}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),
@@ -122,7 +111,7 @@ class _FillingFormState extends State<FillingForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'Kata Kunci Masalah Dampingan: ${widget.katakunci}',
+              'Kata Kunci Masalah Dampingan: ${widget.jadwal.katakunci}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),
@@ -352,7 +341,7 @@ class _FillingFormState extends State<FillingForm> {
             child: Column(
               children: [
                 Text(
-                  'Saya, ${widget.psname}, pendamping sebaya yang mendampingi ${widget.initial} dengan sadar menyatakan bahwa pengisian laporan dan rekomendasi tindak lanjut selama kegiatan pendampingan telah diberitahukan kepada ${widget.initial} dan ${widget.initial} secara sadar menyetujui tindakan tersebut. Apabila terdapat tindak lanjut pendampingan, dampingan telah mengizinkan akses informasi pribadi dampingan oleh psikolog dan tenaga medis terkait.',
+                  'Saya, ${widget.jadwal.psname}, pendamping sebaya yang mendampingi ${widget.jadwal.initial} dengan sadar menyatakan bahwa pengisian laporan dan rekomendasi tindak lanjut selama kegiatan pendampingan telah diberitahukan kepada ${widget.jadwal.initial} dan ${widget.jadwal.initial} secara sadar menyetujui tindakan tersebut. Apabila terdapat tindak lanjut pendampingan, dampingan telah mengizinkan akses informasi pribadi dampingan oleh psikolog dan tenaga medis terkait.',
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 15),
                 ),
@@ -368,6 +357,10 @@ class _FillingFormState extends State<FillingForm> {
                         setState(() {
                           isAgreeChecked = newValue!;  // Atur status checkbox "Ya"
                           _isAgree = true;
+
+                          if (_isAgree == true) {
+                            isAgree = 1;
+                          }
                         });
                       },
                     ),
@@ -388,17 +381,32 @@ class _FillingFormState extends State<FillingForm> {
                     prosestextFieldController.text.isEmpty ||
                     hasiltextFieldController.text.isEmpty ||
                     kendalatextFieldController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Harap isi semua kolom teks yang tersedia'),
-                        backgroundColor: Color.fromARGB(255, 248, 146, 139), // Warna merah pada Snackbar
-                      ),
-                    );
-                  }
+                      Get.snackbar('Pengisian Laporan Pendampingan', 'Harap isi semua kolom teks yang tersedia',
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,); 
+                    }
                 else {
-                    widget.onSubmit(jadwalid, reqid, _gambar, _proses, _hasil, _kendala, _isRecommended, _isAgree);
-                    Navigator.of(context).pop();
-                    _showSnackbar(context, 'Laporan Proses Pendampingan Berhasil Disimpan');
+                  if (_isRecommended == true) {
+                    isRecommended = 1;
+                  }
+                  else {
+                    isRecommended = 0;
+                  }
+
+                  Laporan laporan = Laporan(
+                    jadwalid: widget.jadwal.jadwalid,
+                    isRecommended: isRecommended,
+                    isAgree: isAgree,
+                    gambaran: _gambar,
+                    proses: _proses,
+                    kendala: _kendala,
+                    hasil: _hasil
+                  );
+
+                  repository.fillLaporan(laporan: laporan).then((value) async {
+                    Get.to(() => const APSReportPage());
+                    await provider.fetchJadwalReport();
+                  }); 
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -411,13 +419,5 @@ class _FillingFormState extends State<FillingForm> {
         ],
       ),
     );
-  }
-
-  void _showSnackbar(BuildContext context, String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      backgroundColor: const Color.fromARGB(255, 123, 217, 126), // Mengatur warna hijau
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
