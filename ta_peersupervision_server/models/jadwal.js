@@ -2,7 +2,7 @@ const mysqlConn = require('../config/db');
 
 class jadwal {
     static getJadwal(psnim, callback) {
-        const getJadwalQuery = 'SELECT * FROM jadwal WHERE psnim = ?;';
+        const getJadwalQuery = 'SELECT *, CONVERT_TZ(tanggal, \'+00:00\', \'+07:00\') AS tanggalKonversi FROM jadwal WHERE psnim = ?;';
         mysqlConn.query(getJadwalQuery, [psnim], (err, result) => {
             if (err) {
                 callback(err, null);
@@ -14,7 +14,7 @@ class jadwal {
 
     // Untuk Admin BK
     static getAllJadwal(callback) {
-        const getJadwalQuery = 'SELECT * FROM jadwal;';
+        const getJadwalQuery = 'SELECT *, CONVERT_TZ(tanggal, \'+00:00\', \'+07:00\') AS tanggalKonversi FROM jadwal;';
         mysqlConn.query(getJadwalQuery, (err, result) => {
             if (err) {
                 callback(err, null);

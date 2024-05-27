@@ -56,40 +56,49 @@ Future<Map<DateTime, List<MyJadwal>>> fetchJadwal(int psnim) async {
   final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();
 
   if (loggedInUser != null) {
-    print('PSNIM: ${loggedInUser.psnim}');
+//    print('PSNIM: ${loggedInUser.psnim}');
     psnim = loggedInUser.psnim;
   } else {
     throw Exception('No logged in user');
   }
 
   final response = await http.get(Uri.parse('$serverUrl/getJadwal/$psnim'));
-  print('statusCode: ${response.statusCode}');
+//  print('statusCode: ${response.statusCode}');
+//  print('Response body: ${response.body}'); // Tambahkan ini untuk memeriksa data JSON asli
 
   if (response.statusCode == 200) {
     Map<String, dynamic> data = jsonDecode(response.body);
 
-    Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
+    if (data.containsKey('jadwal')) {
+      List<dynamic> jadwalList = data['jadwal'];
+      Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
 
-data.forEach((key, value) {
-  DateTime? date;
-  try {
-    print('Raw date value: ${value['tanggal']} (${value['tanggal'].runtimeType})');
-    if (value['tanggal'] is String) {
-      date = DateTime.parse(value['tanggal']);
-    } else if (value['tanggal'] is int) {
-      date = DateTime.fromMillisecondsSinceEpoch(value['tanggal']);
+      for (var eventJson in jadwalList) {
+        DateTime date;
+        
+        try {
+          String dateString = eventJson['tanggalKonversi'].toString();
+          // Parsing sebagai UTC dan konversi ke waktu lokal
+          date = DateTime.parse(dateString).toLocal(); // Perbaiki di sini
+          // Extract only the date part (ignoring the time part)
+          date = DateTime(date.year, date.month, date.day);
+//          print('Parsed date: $date');
+        } catch (e) {
+          print('Error parsing date: $e');
+          continue;
+        }
+
+        if (fetchedJadwal[date] == null) {
+          fetchedJadwal[date] = [];
+        }
+        fetchedJadwal[date]!.add(MyJadwal.fromJson(eventJson));
+      }
+
+//      print('Final fetchedJadwal: $fetchedJadwal');
+      return fetchedJadwal;
+    } else {
+      throw Exception('Invalid response format');
     }
-  } catch (e) {
-    print('Error parsing date: $e');
-    return;
-  }
-
-  if (date != null) {
-    fetchedJadwal[date] = (value as List).map((event) => MyJadwal.fromJson(event)).toList();
-  }
-});
-
-    return fetchedJadwal;
   } else {
     throw Exception('Failed to load events');
   }

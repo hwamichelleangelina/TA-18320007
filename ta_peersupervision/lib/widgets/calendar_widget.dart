@@ -76,9 +76,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             if (events.isNotEmpty) {
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.blue[300],
+                  color: Color.fromARGB(255, 241, 100, 246),
                 ),
                 width: 16.0,
                 height: 16.0,

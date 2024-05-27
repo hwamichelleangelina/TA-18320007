@@ -131,8 +131,8 @@ class _EditAnggotaState extends State<EditAnggota> {
             const SizedBox(height: 40.0),
             ElevatedButton(
               onPressed: () {
-                if (psname.isEmpty || psnim.isEmpty || pspasswordhash.isEmpty) {
-                  Get.snackbar('Perbarui Data PS ITB', 'Semua kolom harus terisi!',
+                if (psname.isEmpty || psnim.isEmpty) {
+                  Get.snackbar('Perbarui Data PS ITB', 'Semua kolom identitas harus terisi!',
                     backgroundColor: Colors.red,
                     colorText: Colors.white);
                 }

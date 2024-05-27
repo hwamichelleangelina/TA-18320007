@@ -7,6 +7,7 @@ class Jadwal {
   String? psname;
   String? mediapendampingan;
   String? katakunci;
+  String? tanggalKonversi;
 
   Jadwal({
     required this.reqid,
@@ -15,17 +16,19 @@ class Jadwal {
     required this.tanggal,
     this.psname,
     this.mediapendampingan,
-    this.katakunci
+    this.katakunci,
+    this.tanggalKonversi
   });
 
   Jadwal.fromJson(Map<String, dynamic> json) {
     reqid = json['reqid'];
     initial = json['initial'];
-    tanggal = json['tanggal'];
+    tanggalKonversi = json['tanggalKonversi'];
     psnim = json['psnim'];
     psname = json['psname'];
     mediapendampingan = json['mediapendampingan'];
     katakunci = json['katakunci'];
+    tanggal = json['tanggal'];
   }
 
   Map<String, dynamic> toJson() {

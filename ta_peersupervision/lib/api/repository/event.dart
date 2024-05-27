@@ -1,25 +1,34 @@
-// event_model.dart
 class MyJadwal {
+  int jadwalid;
+  int reqid;
   DateTime tanggal;
-  String reqid;
-  String mediapendampingan;
-  String psname;
   String initial;
+  int psnim;
+  String psname;
+  String mediapendampingan;
+  String katakunci;
 
   MyJadwal({
-    required this.tanggal,
+    required this.jadwalid,
     required this.reqid,
-    required this.mediapendampingan,
+    required this.tanggal,
+    required this.initial,
+    required this.psnim,
     required this.psname,
-    required this.initial});
+    required this.mediapendampingan,
+    required this.katakunci,
+  });
 
   factory MyJadwal.fromJson(Map<String, dynamic> json) {
     return MyJadwal(
-      tanggal: DateTime.parse(json['tanggal']),
+      jadwalid: json['jadwalid'],
       reqid: json['reqid'],
-      mediapendampingan: json['mediapendampingan'],
+      tanggal: DateTime.parse(json['tanggalKonversi']),
+      initial: json['initial'],
+      psnim: json['psnim'],
       psname: json['psname'],
-      initial: json['initial']
+      mediapendampingan: json['mediapendampingan'],
+      katakunci: json['katakunci'],
     );
   }
 }

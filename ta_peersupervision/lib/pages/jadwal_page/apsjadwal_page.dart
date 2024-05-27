@@ -53,14 +53,14 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
 Future<void> _fetchEvents(int psnim) async {
   try {
     Map<DateTime, List<MyJadwal>> fetchedEvents = await repository.fetchJadwal(widget.psnim);
-    print('psnim fetchEvents: $psnim');
-    print('Fetched Events: $fetchedEvents');
+//    print('psnim fetchEvents: $psnim');
+ //   print('Fetched Events: $fetchedEvents');
 
     setState(() {
       jadwal = fetchedEvents;
     });
-    print('fetchEvents success');
-    print('$fetchedEvents');
+//    print('fetchEvents success');
+//    print('$fetchedEvents');
   } catch (e) {
     print('Failed to fetch events: $e');
     Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
@@ -127,10 +127,15 @@ Future<void> _fetchEvents(int psnim) async {
   }
 
 void _showEventDialog(DateTime date, List<MyJadwal> events) {
-  List<MyJadwal> selectedEvents = events.where((event) =>
-      event.tanggal.year == date.year &&
-      event.tanggal.month == date.month &&
-      event.tanggal.day == date.day).toList();
+  // Normalisasi tanggal untuk membandingkan hanya berdasarkan tahun, bulan, dan hari
+  DateTime selectedDate = DateTime(date.year, date.month, date.day);
+//  print('halo1');
+
+  List<MyJadwal> selectedEvents = events.where((event) {
+    DateTime eventDate = DateTime(event.tanggal.year, event.tanggal.month, event.tanggal.day);
+ //   print('tanggal terpilih: $eventDate');
+    return eventDate == selectedDate;
+  }).toList();
 
   showDialog(
     context: context,
@@ -146,7 +151,7 @@ void _showEventDialog(DateTime date, List<MyJadwal> events) {
                 decoration: const InputDecoration(labelText: 'ID Dampingan'),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.digitsOnly,
                 ]
               ),
               TextField(
@@ -171,9 +176,8 @@ void _showEventDialog(DateTime date, List<MyJadwal> events) {
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            jadwal.remove(event);
                             setState(() {
-                              jadwal.remove(event);
+                              jadwal[event.tanggal]!.remove(event);
                               Navigator.pop(context);
                             });
                           },
@@ -194,17 +198,14 @@ void _showEventDialog(DateTime date, List<MyJadwal> events) {
                     backgroundColor: Colors.red,
                     colorText: Colors.white);
               } else {
-
                 Jadwal jadwal = Jadwal(
                     reqid: int.parse(reqidController.text),
                     tanggal: formatDateSQL(date),
                     mediapendampingan: mediaController.text
                   );
 
-//                  print('SelectedDate: ${formatDateSQL(date)}');
-//                  print("Date toIso8601String: ${date.toIso8601String()}");
-//                  print('reqID: ${reqidController.text}');
                   repository.createJadwal(jadwal: jadwal).then((value) {
+                    _fetchEvents(widget.psnim);
                     Navigator.of(context).pop();
                   });
                   reqidController.clear();
@@ -224,6 +225,9 @@ void _showEventDialog(DateTime date, List<MyJadwal> events) {
     },
   );
 }
+
+
+
 
   void scrollToSection(int navIndex){
     if (navIndex == 3){
