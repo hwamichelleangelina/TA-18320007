@@ -21,5 +21,6 @@ routerPSUser.get('/getActivePS', psUserController.getActivePS);
 
 //frekuensi pendampingan dilakukan
 routerPSUser.get('/countPSDone', psUserController.countPSdone);
+routerPSUser.get('/countPSDampinganDone', psUserController.countPSDampingandone);
 
 module.exports = routerPSUser;

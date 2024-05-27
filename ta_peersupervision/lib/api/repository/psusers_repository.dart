@@ -155,7 +155,18 @@ class PSUsersRepository {
       List<dynamic> data = json.decode(response.body);
       return data.map((user) => FreqPS.fromJson(user)).toList();
     } else {
-      throw Exception('Failed to load PS users pendampingan frequecies');
+      throw Exception('Failed to load PS users pendampingan frequencies');
+    }
+  }
+
+  Future<List<FreqDampingan>> fetchCountDampingan() async {
+    final response = await http.get(Uri.parse('$serverUrl/countPSDampinganDone'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data.map((user) => FreqDampingan.fromJson(user)).toList();
+    } else {
+      throw Exception('Failed to load PS users dampingan handled');
     }
   }
 

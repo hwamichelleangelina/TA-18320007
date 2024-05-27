@@ -71,6 +71,26 @@ class FreqPS {
   String get countAsString => count.toString();
 }
 
+class FreqDampingan {
+  int? psnim;
+  int? count;
+
+  FreqDampingan({
+    this.psnim,
+    this.count,
+  });
+
+  factory FreqDampingan.fromJson(Map<String, dynamic> json) {
+    return FreqDampingan(
+      psnim: json['psnim'],
+      count: json['count']
+    );
+  }
+
+  String get nimAsString => psnim.toString();
+  String get countAsString => count.toString();
+}
+
 class PSUser {
   final String name;
   final int nim;

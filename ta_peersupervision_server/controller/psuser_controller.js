@@ -121,3 +121,16 @@ exports.countPSdone = (req, res) => {
         }
     });
 };
+
+exports.countPSDampingandone = (req, res) => {
+    psUser.countPSDampingandone((err, result) => {
+        if (err) {
+            console.error('Error checking dampingan frequency:', err);
+            res.status(500).send('Error dampingan frequency');
+            return;
+          }
+        else {
+            res.status(200).json(result);
+        }
+    });
+};

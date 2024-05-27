@@ -50,21 +50,23 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
     reqidController.text = ReqidStorage.getReqid().toString();
   }
 
-  Future<void> _fetchEvents(int psnim) async {
-    try {
-      Map<DateTime, List<MyJadwal>> fetchedEvents = await repository.fetchJadwal(widget.psnim);
-      print('psnim fetchEvents: $psnim');
+Future<void> _fetchEvents(int psnim) async {
+  try {
+    Map<DateTime, List<MyJadwal>> fetchedEvents = await repository.fetchJadwal(widget.psnim);
+    print('psnim fetchEvents: $psnim');
+    print('Fetched Events: $fetchedEvents');
 
-      setState(() {
-        jadwal = fetchedEvents;
-      });
-      print('fetchEvents success');
-      print('$fetchedEvents');
-    } catch (e) {
-//      print('Failed to fetch events: $e');
-      Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
-    }
+    setState(() {
+      jadwal = fetchedEvents;
+    });
+    print('fetchEvents success');
+    print('$fetchedEvents');
+  } catch (e) {
+    print('Failed to fetch events: $e');
+    Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
   }
+}
+
 
   @override
   void dispose() {

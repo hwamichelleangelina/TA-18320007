@@ -52,53 +52,48 @@ class JadwalRepository {
     }
   }
 
-  Future<Map<DateTime, List<MyJadwal>>> fetchJadwal(int psnim) async {
-    final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();
+Future<Map<DateTime, List<MyJadwal>>> fetchJadwal(int psnim) async {
+  final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();
 
-    if (loggedInUser != null) {
-        print('PSNIM: ${loggedInUser.psnim}');
-        psnim = loggedInUser.psnim;
-      //  print('async fetchDampingan: $psnim');
-    } else {
-      throw Exception('No logged in user');
-    }
-
-    final response = await http.get(Uri.parse('$serverUrl/getJadwal/$psnim'));
-    print('statusCode: ${response.statusCode}');
-
-    if (response.statusCode == 200) {
-  //    List<dynamic> data = json.decode(response.body);
-  //    Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
-      Map<String, dynamic> data = jsonDecode(response.body);
-
-      Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
-
-      data.forEach((key, value) {
-        // Parse date string with specified format
-        DateTime date;
-        print('value: $value');
-        print('data: $data');
-        try {
-          date = DateTime.parse(data['tanggal']);
-        } catch (e) {
-            print('Error parsing date: $e');
-            // Handle error case or use a default date
-            // For example: date = DateTime.now();
-            return;
-          }
-          fetchedJadwal[date] = (value as List).map((event) => MyJadwal.fromJson(event)).toList();
-
-//        MyJadwal jadwal = MyJadwal.fromJson(eventJson);
-//        DateTime date = DateTime(jadwal.tanggal.year, jadwal.tanggal.month, jadwal.tanggal.day);
-//        if (fetchedJadwal[date] == null) {
-//          fetchedJadwal[date] = [];
-//        }
-//        fetchedJadwal[date]!.add(jadwal);
-      });
-
-      return fetchedJadwal;
-    } else {
-      throw Exception('Failed to load events');
-    }
+  if (loggedInUser != null) {
+    print('PSNIM: ${loggedInUser.psnim}');
+    psnim = loggedInUser.psnim;
+  } else {
+    throw Exception('No logged in user');
   }
+
+  final response = await http.get(Uri.parse('$serverUrl/getJadwal/$psnim'));
+  print('statusCode: ${response.statusCode}');
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> data = jsonDecode(response.body);
+
+    Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
+
+data.forEach((key, value) {
+  DateTime? date;
+  try {
+    print('Raw date value: ${value['tanggal']} (${value['tanggal'].runtimeType})');
+    if (value['tanggal'] is String) {
+      date = DateTime.parse(value['tanggal']);
+    } else if (value['tanggal'] is int) {
+      date = DateTime.fromMillisecondsSinceEpoch(value['tanggal']);
+    }
+  } catch (e) {
+    print('Error parsing date: $e');
+    return;
+  }
+
+  if (date != null) {
+    fetchedJadwal[date] = (value as List).map((event) => MyJadwal.fromJson(event)).toList();
+  }
+});
+
+    return fetchedJadwal;
+  } else {
+    throw Exception('Failed to load events');
+  }
+}
+
+
 }
