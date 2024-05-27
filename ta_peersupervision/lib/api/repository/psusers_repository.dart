@@ -108,7 +108,7 @@ class PSUsersRepository {
         colorText: Colors.white,);
     }
     else {
-      Get.snackbar('Update PS User', "Failed to register PS User",
+      Get.snackbar('Update PS User', "Failed to update PS User",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
       Get.to(() => const BKTambahAnggota());

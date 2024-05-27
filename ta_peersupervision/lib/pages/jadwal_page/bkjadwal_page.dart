@@ -1,4 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:ta_peersupervision/api/repository/event.dart';
 import 'package:ta_peersupervision/api/repository/jadwal_repository.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
@@ -25,6 +29,34 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
 
   Map<DateTime, List<MyJadwal>> jadwal = {};
   JadwalRepository repository = JadwalRepository();
+
+  String formatDateSQL(DateTime date) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    return formatter.format(date);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchEvents();
+  }
+
+  Future<void> _fetchEvents() async {
+    try {
+      Map<DateTime, List<MyJadwal>> fetchedEvents = await repository.fetchAllJadwal();
+      setState(() {
+        jadwal = fetchedEvents;
+      });
+    } catch (e) {
+      print('Failed to fetch events: $e');
+      Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
 
   
@@ -63,10 +95,11 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
 
                 const SizedBox(height: 30,),
 
-      /*          CalendarWidget(
+                CalendarWidget(
                   onDaySelected: _showEventDialog,
-                  focusedDay: DateTime.now(), jadwal: jadwal, initialFocusedDay: DateTime.now(),
-                ),*/
+                  jadwal: jadwal,
+                  initialFocusedDay: DateTime.now(),
+                ),
 
                 const SizedBox(height: 30,),
                 // Footer
@@ -81,11 +114,6 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
   }
 
 void _showEventDialog(DateTime date, List<MyJadwal> events) {
-  List<MyJadwal> selectedEvents = events.where((event) =>
-      event.tanggal.year == date.year &&
-      event.tanggal.month == date.month &&
-      event.tanggal.day == date.day).toList();
-
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -95,40 +123,40 @@ void _showEventDialog(DateTime date, List<MyJadwal> events) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
-              const Text('Pendampingan Hari Ini:', style: TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              if (selectedEvents.isEmpty)
-                const Text('Tidak ada pendampingan di hari ini')
-              else
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: selectedEvents.map((event) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text('${event.initial}\nMedia Pendampingan: ${event.mediapendampingan}'),
-                        ),
-                      ],
-                    );
-                  }).toList(),
-                ),
-            ],
+                const SizedBox(height: 16),
+                const Text('Pendampingan Hari Ini:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
+                if (events.isEmpty)
+                  const Text('Tidak ada pendampingan di hari ini')
+                else
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: events.map((event) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text('${event.initial}\nRequest ID: ${event.reqid}\nMedia Pendampingan: ${event.mediapendampingan}\n'),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+              ],
+            ),
           ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Tutup', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      );
-    },
-  );
-}
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Tutup', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void scrollToSection(int navIndex){
     if (navIndex == 3){

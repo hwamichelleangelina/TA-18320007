@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/repository/bkusers_repository.dart';
 import 'package:ta_peersupervision/api/repository/psusers_repository.dart';
+import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
 
 void logoutDialog(BuildContext context) {
     showDialog(
@@ -11,13 +13,18 @@ void logoutDialog(BuildContext context) {
           content: const Text('Anda akan keluar dari aplikasi?'),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 // Implementasi logika keluar di sini
               PSUsersRepository repository = PSUsersRepository();
               BKUsersRepository bkrepo = BKUsersRepository();
 
-              repository.logoutPSUsers();
-              bkrepo.logoutBKUsers();
+              final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();
+
+              if (loggedInUser != null) {
+                repository.logoutPSUsers();
+              } else {
+                bkrepo.logoutBKUsers();
+              }
               },
               child: const Text('Keluar'),
             ),

@@ -159,7 +159,7 @@ class _EditAnggotaState extends State<EditAnggota> {
                   repository.updatePSUsers(psusers: psusers).then((value) {
                     Navigator.of(context).pop();
                   }); 
-                  Get.snackbar('Perbarui Data Anggota PS ITB', 'Data Pendamping Sebaya berhasil diperbarui',
+                  Get.snackbar('Perbarui Data Anggota PS ITB', 'Data Pendamping Sebaya $psname berhasil diperbarui',
                     backgroundColor: Colors.green, colorText: Colors.white);           
                 } 
               },

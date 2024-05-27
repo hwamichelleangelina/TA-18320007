@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/repository/psusers_repository.dart';
-import 'package:ta_peersupervision/dummy/usereport_database.dart';
 
 class DataTableAnggotaNonAktif extends StatefulWidget {
   final Function(String, String, String, bool, bool) onSubmit;
@@ -16,11 +15,21 @@ class DataTableAnggotaNonAktif extends StatefulWidget {
 class _DataTableAnggotaNonAktifState extends State<DataTableAnggotaNonAktif> {
   String _searchText = '';
   bool _ascending = false; // Initial sorting order
+  int _sortColumnIndex = 3; // Initial sort column index
+
+  PSUsersRepository repository = PSUsersRepository();
+  late Future<List<FreqPS>> _freqPSFuture;
+  late Future<List<FreqDampingan>> _freqDampinganFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _freqPSFuture = repository.fetchFreqPS();
+    _freqDampinganFuture = repository.fetchCountDampingan();
+  }
 
   bool psisActive = false;
   bool psisAdmin = false;
-
-  PSUsersRepository repository = PSUsersRepository();
 
   @override
   Widget build(BuildContext context) { 
@@ -68,9 +77,37 @@ class _DataTableAnggotaNonAktifState extends State<DataTableAnggotaNonAktif> {
                                    
                           }).toList();
 
-                    users.sort((a, b) => _ascending
-                        ? _calculateFrequency(a.name).compareTo(_calculateFrequency(b.name))
-                        : _calculateFrequency(b.name).compareTo(_calculateFrequency(a.name)));
+        return FutureBuilder<List<FreqPS>>(
+          future: _freqPSFuture,
+          builder: (context, freqSnapshot) {
+            if (freqSnapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else if (freqSnapshot.hasError) {
+              return Text('Error: ${freqSnapshot.error}');
+            } else if (!freqSnapshot.hasData || freqSnapshot.data!.isEmpty) {
+              return const Text('No frequency data found');
+            } else {
+              List<FreqPS> freqData = freqSnapshot.data!;
+              return FutureBuilder<List<FreqDampingan>>(
+                future: _freqDampinganFuture,
+                builder: (context, dampinganSnapshot) {
+                  if (dampinganSnapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (dampinganSnapshot.hasError) {
+                    return Text('Error: ${dampinganSnapshot.error}');
+                  } else if (!dampinganSnapshot.hasData || dampinganSnapshot.data!.isEmpty) {
+                    return const Text('No dampingan data found');
+                  } else {
+                    List<FreqDampingan> dampinganData = dampinganSnapshot.data!;
+                    users.sort((a, b) {
+                      int compare;
+                      if (_sortColumnIndex == 3) {
+                        compare = _getFrequency(freqData, a.nanim.toString()).compareTo(_getFrequency(freqData, b.nanim.toString()));
+                      } else {
+                        compare = _getDampinganCount(dampinganData, a.nanim.toString()).compareTo(_getDampinganCount(dampinganData, b.nanim.toString()));
+                      }
+                      return _ascending ? compare : -compare;
+                    });
 
                     return DataTable(
                       sortColumnIndex: 3, // Index kolom "Frekuensi Pendampingan"
@@ -109,26 +146,53 @@ class _DataTableAnggotaNonAktifState extends State<DataTableAnggotaNonAktif> {
                         DataColumn(
                           label: Container(
                             alignment: Alignment.center,
-                            child: const Text('Frekuensi Pendampingan',
+                            child: const Text('Pendampingan Terjadi',
                               textAlign: TextAlign.center,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
+                          onSort: (columnIndex, ascending) {
+                            setState(() {
+                              _sortColumnIndex = columnIndex;
+                              _ascending = ascending;
+                            });
+                          },
+                        ),
+                        DataColumn(
+                          label: Container(
+                            alignment: Alignment.center,
+                            child: const Text('Dampingan',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          onSort: (columnIndex, ascending) {
+                            setState(() {
+                              _sortColumnIndex = columnIndex;
+                              _ascending = ascending;
+                            });
+                          },
                         ),
                       ],
-                      rows: _buildFilteredRows(users),
+                      rows: _buildFilteredRows(users, freqData, dampinganData),
+                      );
+                      }
+                    },
                     );
-                  }
-                },
+                    }
+                    },
+                    );
+                    }
+                  },
+                ),
               ),
             ),
           ),
-        ),
-    ],
+        ],
     );
   }
 
-  List<DataRow> _buildFilteredRows(List<NonActiveUser> users) {
+  List<DataRow> _buildFilteredRows(List<NonActiveUser> users, List<FreqPS> freqData, List<FreqDampingan> dampinganData) {
     return List<DataRow>.generate(
       users.length,
       (index) => DataRow(
@@ -137,23 +201,28 @@ class _DataTableAnggotaNonAktifState extends State<DataTableAnggotaNonAktif> {
           DataCell(Text(users[index].name)),
           DataCell(Text(users[index].nanimAsString)),
           DataCell(Text(users[index].yearAsString)),
-          DataCell(
-            Text(_calculateFrequency(users[index].name).toString()),
-          ),
+          DataCell(Text(_getFrequency(freqData, users[index].nanim.toString()).toString())),
+          DataCell(Text(_getDampinganCount(dampinganData, users[index].nanim.toString()).toString())),
         ],
       ),
     );
   }
 
   // Fungsi untuk menghitung frekuensi kemunculan nama dalam dataFromDatabase
-  int _calculateFrequency(String name) {
-    int frequency = 0;
-    for (var data in dataFromDatabase) {
-      if (data['ps'] == name) {
-        frequency++;
-      }
-    }
-    return frequency;
+  int _getFrequency(List<FreqPS> freqData, String nim) {
+    final freq = freqData.firstWhere(
+      (f) => f.psnim.toString() == nim,
+      orElse: () => FreqPS(psnim: int.parse(nim), count: 0),
+    );
+    return freq.count!;
+  }
+
+  int _getDampinganCount(List<FreqDampingan> dampinganData, String nim) {
+    final count = dampinganData.firstWhere(
+      (f) => f.psnim.toString() == nim,
+      orElse: () => FreqDampingan(psnim: int.parse(nim), count: 0),
+    );
+    return count.count!;
   }
 
 }

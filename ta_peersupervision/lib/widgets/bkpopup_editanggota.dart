@@ -117,8 +117,8 @@ class _UpdatePSUserDialogState extends State<UpdatePSUserDialog> {
             const SizedBox(height: 30.0),
             ElevatedButton(
               onPressed: () async {
-                if (_name.isEmpty || _nim.isEmpty || (_password.isEmpty && (psisAdmin == false))) {
-                  Get.snackbar('Perbarui Data PS ITB', 'Semua kolom harus terisi!',
+                if (_name.isEmpty || _nim.isEmpty) {
+                  Get.snackbar('Perbarui Data PS ITB', 'Semua kolom identitas harus terisi!',
                       backgroundColor: Colors.red,
                       colorText: Colors.white);
                 } else {
@@ -132,6 +132,7 @@ class _UpdatePSUserDialogState extends State<UpdatePSUserDialog> {
                       psname: _name,
                       psnim: int.tryParse(_nim) ?? 0,
                       pspasswordhash: _password,
+                      psisActive: 1,
                       psisAdmin: psAdmin);
 
                   repository.updatePSUsers(psusers: psusers).then((value) {

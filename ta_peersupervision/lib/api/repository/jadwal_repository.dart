@@ -52,57 +52,57 @@ class JadwalRepository {
     }
   }
 
-Future<Map<DateTime, List<MyJadwal>>> fetchJadwal(int psnim) async {
-  final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();
+  Future<Map<DateTime, List<MyJadwal>>> fetchJadwal(int psnim) async {
+    final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();
 
-  if (loggedInUser != null) {
-//    print('PSNIM: ${loggedInUser.psnim}');
-    psnim = loggedInUser.psnim;
-  } else {
-    throw Exception('No logged in user');
-  }
-
-  final response = await http.get(Uri.parse('$serverUrl/getJadwal/$psnim'));
-//  print('statusCode: ${response.statusCode}');
-//  print('Response body: ${response.body}'); // Tambahkan ini untuk memeriksa data JSON asli
-
-  if (response.statusCode == 200) {
-    Map<String, dynamic> data = jsonDecode(response.body);
-
-    if (data.containsKey('jadwal')) {
-      List<dynamic> jadwalList = data['jadwal'];
-      Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
-
-      for (var eventJson in jadwalList) {
-        DateTime date;
-        
-        try {
-          String dateString = eventJson['tanggalKonversi'].toString();
-          // Parsing sebagai UTC dan konversi ke waktu lokal
-          date = DateTime.parse(dateString).toLocal(); // Perbaiki di sini
-          // Extract only the date part (ignoring the time part)
-          date = DateTime(date.year, date.month, date.day);
-//          print('Parsed date: $date');
-        } catch (e) {
-          print('Error parsing date: $e');
-          continue;
-        }
-
-        if (fetchedJadwal[date] == null) {
-          fetchedJadwal[date] = [];
-        }
-        fetchedJadwal[date]!.add(MyJadwal.fromJson(eventJson));
-      }
-
-//      print('Final fetchedJadwal: $fetchedJadwal');
-      return fetchedJadwal;
+    if (loggedInUser != null) {
+  //    print('PSNIM: ${loggedInUser.psnim}');
+      psnim = loggedInUser.psnim;
     } else {
-      throw Exception('Invalid response format');
+      throw Exception('No logged in user');
     }
-  } else {
-    throw Exception('Failed to load events');
+
+    final response = await http.get(Uri.parse('$serverUrl/getJadwal/$psnim'));
+  //  print('statusCode: ${response.statusCode}');
+  //  print('Response body: ${response.body}'); // Tambahkan ini untuk memeriksa data JSON asli
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+
+      if (data.containsKey('jadwal')) {
+        List<dynamic> jadwalList = data['jadwal'];
+        Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
+
+        for (var eventJson in jadwalList) {
+          DateTime date;
+          
+          try {
+            String dateString = eventJson['tanggalKonversi'].toString();
+            // Parsing sebagai UTC dan konversi ke waktu lokal
+            date = DateTime.parse(dateString).toLocal(); // Perbaiki di sini
+            // Extract only the date part (ignoring the time part)
+            date = DateTime(date.year, date.month, date.day);
+  //          print('Parsed date: $date');
+          } catch (e) {
+            print('Error parsing date: $e');
+            continue;
+          }
+
+          if (fetchedJadwal[date] == null) {
+            fetchedJadwal[date] = [];
+          }
+          fetchedJadwal[date]!.add(MyJadwal.fromJson(eventJson));
+        }
+
+  //      print('Final fetchedJadwal: $fetchedJadwal');
+        return fetchedJadwal;
+      } else {
+        throw Exception('Invalid response format');
+      }
+    } else {
+      throw Exception('Failed to load events');
+    }
   }
-}
 
   Future<void> deleteJadwal(int jadwalid) async {
     final response = await http.delete(
@@ -123,6 +123,45 @@ Future<Map<DateTime, List<MyJadwal>>> fetchJadwal(int psnim) async {
       Get.snackbar('Hapus Jadwal Pendampingan', "Failed to delete Dampingan",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
+    }
+  }
+
+
+  // untuk BK ITB
+  Future<Map<DateTime, List<MyJadwal>>> fetchAllJadwal() async {
+    final response = await http.get(Uri.parse('$serverUrl/getJadwal'));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+
+      if (data.containsKey('jadwal')) {
+        List<dynamic> jadwalList = data['jadwal'];
+        Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
+
+        for (var eventJson in jadwalList) {
+          DateTime date;
+          
+          try {
+            String dateString = eventJson['tanggalKonversi'].toString();
+            date = DateTime.parse(dateString).toLocal();
+            date = DateTime(date.year, date.month, date.day);
+          } catch (e) {
+            print('Error parsing date: $e');
+            continue;
+          }
+
+          if (fetchedJadwal[date] == null) {
+            fetchedJadwal[date] = [];
+          }
+          fetchedJadwal[date]!.add(MyJadwal.fromJson(eventJson));
+        }
+        
+        return fetchedJadwal;
+      } else {
+        throw Exception('Invalid response format');
+      }
+    } else {
+      throw Exception('Failed to load events');
     }
   }
 }

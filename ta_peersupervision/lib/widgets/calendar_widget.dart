@@ -8,7 +8,7 @@ class CalendarWidget extends StatefulWidget {
   final Map<DateTime, List<MyJadwal>> jadwal;
   final DateTime initialFocusedDay;
 
-  CalendarWidget({
+  const CalendarWidget({
     super.key,
     required this.onDaySelected,
     required this.jadwal,
