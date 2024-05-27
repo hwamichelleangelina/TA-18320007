@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, collection_methods_unrelated_type, library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +55,7 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
         jadwal = fetchedEvents;
       });
     } catch (e) {
-      print('Failed to fetch events: $e');
+   //   print('Failed to fetch events: $e');
       Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
     }
   }
@@ -109,7 +109,7 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
 
   void _showEventDialog(DateTime date, List<MyJadwal> events) {
     DateTime selectedDate = DateTime(date.year, date.month, date.day);
-    print(selectedDate);
+ //   print(selectedDate);
 
     showDialog(
       context: context,
@@ -145,7 +145,7 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: Text('${event.initial}\nRequest ID: ${event.reqid}\nMedia Pendampingan: ${event.mediapendampingan}\n'),
+                            child: Text('${event.initial}\nID Dampingan: ${event.reqid}\nMedia Pendampingan: ${event.mediapendampingan}\n'),
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete),

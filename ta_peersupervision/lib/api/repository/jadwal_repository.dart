@@ -132,34 +132,29 @@ class JadwalRepository {
     final response = await http.get(Uri.parse('$serverUrl/getJadwal'));
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
+      List<dynamic> data = jsonDecode(response.body);
 
-      if (data.containsKey('jadwal')) {
-        List<dynamic> jadwalList = data['jadwal'];
-        Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
+      Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
 
-        for (var eventJson in jadwalList) {
-          DateTime date;
-          
-          try {
-            String dateString = eventJson['tanggalKonversi'].toString();
-            date = DateTime.parse(dateString).toLocal();
-            date = DateTime(date.year, date.month, date.day);
-          } catch (e) {
-            print('Error parsing date: $e');
-            continue;
-          }
+      for (var eventJson in data) {
+        DateTime date;
 
-          if (fetchedJadwal[date] == null) {
-            fetchedJadwal[date] = [];
-          }
-          fetchedJadwal[date]!.add(MyJadwal.fromJson(eventJson));
+        try {
+          String dateString = eventJson['tanggalKonversi'].toString();
+          date = DateTime.parse(dateString).toLocal();
+          date = DateTime(date.year, date.month, date.day);
+        } catch (e) {
+          print('Error parsing date: $e');
+          continue;
         }
-        
-        return fetchedJadwal;
-      } else {
-        throw Exception('Invalid response format');
+
+        if (fetchedJadwal[date] == null) {
+          fetchedJadwal[date] = [];
+        }
+        fetchedJadwal[date]!.add(MyJadwal.fromJson(eventJson));
       }
+
+      return fetchedJadwal;
     } else {
       throw Exception('Failed to load events');
     }

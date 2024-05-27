@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +16,6 @@ class BKJadwalPage extends StatefulWidget {
   const BKJadwalPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _BKJadwalPageState createState() => _BKJadwalPageState();
 }
 
@@ -58,33 +55,29 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
     super.dispose();
   }
 
-
-  
   @override
   Widget build(BuildContext context) {
-   return LayoutBuilder(
+    return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: CustomColor.purpleBg,
           endDrawer: constraints.maxWidth >= minDesktopWidth
-          ? null
-          : const BKDrawerMobile(),
-          
+              ? null
+              : const BKDrawerMobile(),
           body: SingleChildScrollView(
             controller: scrollController,
             scrollDirection: Axis.vertical,
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (constraints.maxWidth >= minDesktopWidth)
-                // Main Container
-                  HeaderBKKembali(onNavMenuTap: (int navIndex){
-                    // call function
-                    scrollToSection(navIndex);
-                  }, navi: const BKHomePage(),)
-
+                  HeaderBKKembali(
+                    onNavMenuTap: (int navIndex) {
+                      scrollToSection(navIndex);
+                    },
+                    navi: const BKHomePage(),
+                  )
                 else
                   BKHeaderMobile(
                     onLogoTap: () {},
@@ -92,37 +85,32 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
                       scaffoldKey.currentState?.openEndDrawer();
                     },
                   ),
-
-                const SizedBox(height: 30,),
-
+                const SizedBox(height: 30),
                 CalendarWidget(
                   onDaySelected: _showEventDialog,
                   jadwal: jadwal,
                   initialFocusedDay: DateTime.now(),
                 ),
-
-                const SizedBox(height: 30,),
-                // Footer
+                const SizedBox(height: 30),
                 const Footer(),
-
               ],
             ),
           ),
         );
-      }
-   );
+      },
+    );
   }
 
-void _showEventDialog(DateTime date, List<MyJadwal> events) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Jadwal Pendampingan ${date.day}/${date.month}/${date.year}'),
-        content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+  void _showEventDialog(DateTime date, List<MyJadwal> events) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Jadwal Pendampingan ${date.day}/${date.month}/${date.year}'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 const SizedBox(height: 16),
                 const Text('Pendampingan Hari Ini:', style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
@@ -136,7 +124,7 @@ void _showEventDialog(DateTime date, List<MyJadwal> events) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: Text('${event.initial}\nRequest ID: ${event.reqid}\nMedia Pendampingan: ${event.mediapendampingan}\n'),
+                            child: Text('Nomor Jadwal: ${event.jadwalid}\n${event.initial} - ID Dampingan: ${event.reqid}\nPendamping Sebaya: ${event.psname}\nMedia Pendampingan: ${event.mediapendampingan}\n'),
                           ),
                         ],
                       );
@@ -158,18 +146,16 @@ void _showEventDialog(DateTime date, List<MyJadwal> events) {
     );
   }
 
-  void scrollToSection(int navIndex){
-    if (navIndex == 3){
-      // 
+  void scrollToSection(int navIndex) {
+    if (navIndex == 3) {
       return;
     }
 
     final key = navbarKeys[navIndex];
     Scrollable.ensureVisible(
       key.currentContext!,
-      duration: 
-        const Duration(milliseconds: 500), 
-        curve: Curves.easeInOut,
-      );
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 }

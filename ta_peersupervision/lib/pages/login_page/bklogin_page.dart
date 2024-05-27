@@ -6,7 +6,7 @@ import 'package:ta_peersupervision/api/repository/bkusers_repository.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
 import 'package:ta_peersupervision/pages/home_page/bkhome_page.dart';
-import 'package:ta_peersupervision/pages/bkregister_page.dart';
+import 'package:ta_peersupervision/pages/bk_only/bkregister_page.dart';
 import 'package:ta_peersupervision/widgets/custom_text_field.dart';
 import 'package:ta_peersupervision/widgets/drawer_login_mobile.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:ta_peersupervision/api/provider/laporan_provider.dart';
 import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
+import 'package:ta_peersupervision/pages/report_list_page/psreport_isi.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
 import 'package:ta_peersupervision/widgets/header_mobile.dart';
 import 'package:ta_peersupervision/widgets/psdrawer_mobile.dart';
@@ -53,35 +57,30 @@ class _PSReportPageState extends State<PSReportPage> {
   }
 
   void _navigateToForm(JadwalList jadwal) {
-//    Get.to (() => APSReportForm(jadwal: jadwal));
+    Get.to (() => PSReportForm(jadwal: jadwal));
   }
 
   @override
   Widget build(BuildContext context) {
-//    final screenSize = MediaQuery.of(context).size;
-//    final screenWidth = screenSize.width;
+    final provider = Provider.of<LaporanProvider>(context);
 
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: CustomColor.purpleBg,
-          endDrawer: constraints.maxWidth >= minDesktopWidth
-          ? null
-          : const PSDrawerMobile(),
-
+          endDrawer: constraints.maxWidth >= minDesktopWidth ? null : const PSDrawerMobile(),
           body: SingleChildScrollView(
             controller: scrollController,
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
                 if (constraints.maxWidth >= minDesktopWidth)
-                // Main Container
-                  HeaderPSBack(onNavMenuTap: (int navIndex){
-                    // call function
-                    scrollToSection(navIndex);
-                  },)
-
+                  HeaderPSBack(
+                    onNavMenuTap: (int navIndex) {
+                      scrollToSection(navIndex);
+                    },
+                  )
                 else
                   PSHeaderMobile(
                     onLogoTap: () {},
@@ -90,52 +89,79 @@ class _PSReportPageState extends State<PSReportPage> {
                     },
                   ),
 
+                const SizedBox(height: 46),
+                const Center(
+                  child: Text(
+                    'Proses Pendampingan',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 80),
                   child: TextField(
                     controller: _controller,
-                    decoration: InputDecoration(
-                      labelText: 'Pencarian',
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _controller.clear();
-                          _filterJadwal('');
-                        },
-                      ),
+                    decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    labelText: 'Pencarian',
+                    prefixIcon: Icon(Icons.search),
                     ),
                     onChanged: (query) => _filterJadwal(query),
                   ),
                 ),
                 const SizedBox(height: 30),
-
-                // List Laporan yang sudah dan perlu diisi
+                
                 FutureBuilder<List<JadwalList>>(
                   future: futureJadwal,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _filteredJadwalList.length,
-                        itemBuilder: (context, index) {
-                          return PSReportsTable(
-                            jadwal: _filteredJadwalList[index],
-                            onTap: () => _navigateToForm(_filteredJadwalList[index]),
-                          );
+                      final List<Future<bool>> futureChecks = _filteredJadwalList.map((item) => provider.fetchCheckLaporan(item.jadwalid!)).toList();
+                      return FutureBuilder<List<bool>>(
+                        future: Future.wait(futureChecks),
+                        builder: (context, checkSnapshot) {
+                          if (checkSnapshot.connectionState == ConnectionState.waiting) {
+                            return const CircularProgressIndicator(); // Menampilkan loading jika masih menunggu Future diselesaikan
+                          } else if (checkSnapshot.hasError) {
+                            return Text("${checkSnapshot.error}"); // Menampilkan pesan error jika terjadi kesalahan
+                          } else {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: _filteredJadwalList.length,
+                              itemBuilder: (context, index) {
+                                final bool checkLaporan = checkSnapshot.data![index]; // Mengambil nilai checkLaporan dari list hasil Future
+                                if (checkLaporan == false) {
+                                  return PSReportsTable(
+                                    checkLaporan: checkLaporan,
+                                    jadwal: _filteredJadwalList[index],
+                                    onTap: () => _navigateToForm(_filteredJadwalList[index]),
+                                  );
+                                }
+                                else {
+                                  return PSReportsTable(
+                                    checkLaporan: checkLaporan,
+                                    jadwal: _filteredJadwalList[index],
+                                    onTap: () {},
+                                  );                                  
+                                }
+                              },
+                            );
+                          }
                         },
                       );
                     } else if (snapshot.hasError) {
-                      return Text("${snapshot.error}");
+                      return Text("${snapshot.error}"); // Menampilkan pesan error jika terjadi kesalahan pada futureJadwal
                     }
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(); // Menampilkan loading jika masih menunggu data futureJadwal
                   },
                 ),
 
-                const SizedBox(height: 30,),
-                // Footer
+                const SizedBox(height: 30),
                 const Footer(),
-
               ],
             ),
           ),
@@ -144,19 +170,16 @@ class _PSReportPageState extends State<PSReportPage> {
     );
   }
 
-  void scrollToSection(int navIndex){
-    if (navIndex == 3){
-      // 
+  void scrollToSection(int navIndex) {
+    if (navIndex == 3) {
       return;
     }
 
     final key = navbarKeys[navIndex];
     Scrollable.ensureVisible(
       key.currentContext!,
-      duration: 
-        const Duration(milliseconds: 500), 
-        curve: Curves.easeInOut,
-      );
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
-
 }

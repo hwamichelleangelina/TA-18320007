@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ta_peersupervision/api/logic/bkusers_logic.dart';
 import 'package:ta_peersupervision/api/shared_preferences/bkusers_data_manager.dart';
-import 'package:ta_peersupervision/pages/bkregister_page.dart';
+import 'package:ta_peersupervision/pages/bk_only/bkregister_page.dart';
 import 'package:ta_peersupervision/pages/login_page/bklogin_page.dart';
 
 class BKUsersRepository {

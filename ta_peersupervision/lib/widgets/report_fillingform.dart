@@ -404,7 +404,7 @@ class _FillingFormState extends State<FillingForm> {
                   );
 
                   repository.fillLaporan(laporan: laporan).then((value) async {
-                    Get.to(() => const APSReportPage());
+                    Navigator.pop(context);
                     await provider.fetchJadwalReport();
                   }); 
                 }

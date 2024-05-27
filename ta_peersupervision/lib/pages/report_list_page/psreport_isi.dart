@@ -31,7 +31,7 @@ class _PSReportFormState extends State<PSReportForm> {
       builder: (context, constraints) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Laporan Proses Pendampingan'),
+            title: const Text(''),
           ),
           key: scaffoldKey,
           backgroundColor: CustomColor.purpleBg,
@@ -44,8 +44,7 @@ class _PSReportFormState extends State<PSReportForm> {
                 const SizedBox(height: 20,),
 
                 // Isi Report
-                FillingForm(
-                  jadwal: widget.jadwal,),
+                FillingForm(jadwal: widget.jadwal),
 
                 const SizedBox(height: 30,),
                 // Footer

@@ -44,17 +44,17 @@ class _APSJadwalMobileState extends State<APSJadwalMobile> {
                 },
               ),
               ListTileButton(
-                title: 'Jadwal Pendampingan',
-                imagePath: 'assets/images/Penjadwalan.png',
-                onPressed: () {
-                  Get.to(() => APSJadwalPage(psnim: psnim)); // Ganti dengan psnim yang sesuai
-                },
-              ),
-              ListTileButton(
                 title: 'Dampingan Saya',
                 imagePath: 'assets/images/Dampingan.png',
                 onPressed: () {
                   Get.to(() => const APSDampinganPage());
+                },
+              ),
+              ListTileButton(
+                title: 'Jadwal Pendampingan',
+                imagePath: 'assets/images/Penjadwalan.png',
+                onPressed: () {
+                  Get.to(() => APSJadwalPage(psnim: psnim)); // Ganti dengan psnim yang sesuai
                 },
               ),
             ],

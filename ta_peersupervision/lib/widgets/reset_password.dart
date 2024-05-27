@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ta_peersupervision/pages/ubah_password.dart';
+import 'package:ta_peersupervision/pages/ubah_password/ubah_password.dart';
 
 class ResetBKPassword extends StatelessWidget {
   const ResetBKPassword({super.key});

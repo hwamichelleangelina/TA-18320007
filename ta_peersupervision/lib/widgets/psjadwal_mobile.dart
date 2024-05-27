@@ -30,14 +30,6 @@ class JadwalPSMobile extends StatelessWidget {
 
               children: [
                 ListTileButton(
-                  title: 'Buat Jadwal Pendampingan',
-                  imagePath: 'assets/images/Penjadwalan.png', // Lokasi gambar Anda
-                  onPressed: () {
-                    // Navigasi ke halaman lain untuk Button 2
-                    Get.to(() => PSJadwalPage(psnim: psnim));
-                  },
-                ),
-                ListTileButton(
                   title: 'Dampingan Saya',
                   imagePath: 'assets/images/Dampingan.png',
                   onPressed: () {
@@ -45,6 +37,14 @@ class JadwalPSMobile extends StatelessWidget {
                       context,
                       MaterialPageRoute(builder: (context) => const PSDampinganPage()),
                     );
+                  },
+                ),
+                ListTileButton(
+                  title: 'Buat Jadwal Pendampingan',
+                  imagePath: 'assets/images/Penjadwalan.png', // Lokasi gambar Anda
+                  onPressed: () {
+                    // Navigasi ke halaman lain untuk Button 2
+                    Get.to(() => PSJadwalPage(psnim: psnim));
                   },
                 ),
               ],

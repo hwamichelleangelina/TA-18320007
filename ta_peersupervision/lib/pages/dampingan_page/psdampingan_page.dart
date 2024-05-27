@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
+import 'package:ta_peersupervision/widgets/psdampingan_list.dart';
 import 'package:ta_peersupervision/widgets/psdrawer_mobile.dart';
 import 'package:ta_peersupervision/widgets/psheader_kembalihome.dart';
 import 'package:ta_peersupervision/widgets/header_mobile.dart';
@@ -18,6 +19,14 @@ class _PSDampinganPageState extends State<PSDampinganPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final scrollController = ScrollController();
   final List<GlobalKey> navbarKeys = List.generate(4, (index) => GlobalKey());
+
+  int psnim = 0;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +64,12 @@ class _PSDampinganPageState extends State<PSDampinganPage> {
 
                 const SizedBox(height: 30,),
 
-                // List Dampingan Saya
-                // const PSDampinganList(),
+                const Text('Dampingan Saya', textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
+
+                const SizedBox(height: 30,),
+
+                PSDampinganList(psnim: psnim),
 
                 const SizedBox(height: 30,),
                 // Footer

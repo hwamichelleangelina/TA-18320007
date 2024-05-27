@@ -1,5 +1,3 @@
-// ignore_for_file: collection_methods_unrelated_type
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -47,7 +45,6 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
   void initState() {
     super.initState();
     _fetchEvents(widget.psnim);
-    // Mengambil nilai dari ReqidStorage dan mengatur nilai awal TextEditingController
     reqidController.text = ReqidStorage.getReqid().toString();
   }
 
@@ -58,6 +55,7 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
         jadwal = fetchedEvents;
       });
     } catch (e) {
+   //   print('Failed to fetch events: $e');
       Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
     }
   }
@@ -101,136 +99,132 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
                     },
                   ),
 
-                const SizedBox(height: 30,),
-
-     /*           CalendarWidget(
+                const SizedBox(height: 30),
+                CalendarWidget(
                   onDaySelected: _showEventDialog,
-                  focusedDay: DateTime.now(), jadwal: jadwal, initialFocusedDay: DateTime.now(),
+                  jadwal: jadwal,
+                  initialFocusedDay: DateTime.now(),
                 ),
-*/
-                const SizedBox(height: 30,),
-                // Footer
+                const SizedBox(height: 30),
                 const Footer(),
-
               ],
             ),
           ),
         );
-      }
-   );
+      },
+    );
   }
 
-void _showEventDialog(DateTime date, List<MyJadwal> events) {
-  List<MyJadwal> selectedEvents = events.where((event) =>
-      event.tanggal.year == date.year &&
-      event.tanggal.month == date.month &&
-      event.tanggal.day == date.day).toList();
+  void _showEventDialog(DateTime date, List<MyJadwal> events) {
+    DateTime selectedDate = DateTime(date.year, date.month, date.day);
+//    print(selectedDate);
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Tambahkan Jadwal Pendampingan ${date.day}/${date.month}/${date.year}'),
-        content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: reqidController,
-                decoration: const InputDecoration(labelText: 'ID Dampingan'),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly,
-                ]
-              ),
-              TextField(
-                controller: mediaController,
-                decoration: const InputDecoration(labelText: 'Media Pendampingan'),
-              ),
-              const SizedBox(height: 16),
-              const Text('Pendampingan Hari Ini:', style: TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              if (selectedEvents.isEmpty)
-                const Text('Tidak ada pendampingan di hari ini')
-              else
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: selectedEvents.map((event) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text('${event.initial}\nRequest ID: ${event.reqid}\nMedia Pendampingan: ${event.mediapendampingan}'),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            jadwal.remove(event);
-                            setState(() {
-                              jadwal.remove(event);
-                              Navigator.pop(context);
-                            });
-                          },
-                        ),
-                      ],
-                    );
-                  }).toList(),
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tambahkan Jadwal Pendampingan ${date.day}/${date.month}/${date.year}'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: reqidController,
+                  decoration: const InputDecoration(labelText: 'ID Dampingan'),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
                 ),
-            ],
+                TextField(
+                  controller: mediaController,
+                  decoration: const InputDecoration(labelText: 'Media Pendampingan'),
+                ),
+                const SizedBox(height: 16),
+                const Text('Pendampingan Hari Ini:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
+                if (events.isEmpty)
+                  const Text('Tidak ada pendampingan di hari ini')
+                else
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: events.map((event) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text('${event.initial}\nID Dampingan: ${event.reqid}\nMedia Pendampingan: ${event.mediapendampingan}\n'),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () async {
+                              // Menghapus event dari map terlebih dahulu
+                              setState(() {
+                                jadwal[selectedDate]?.remove(event);
+                                if (jadwal[selectedDate]?.isEmpty ?? false) {
+                                  jadwal.remove(selectedDate);
+                                }
+                              });
+                              // Menghapus event dari repository
+                              await repository.deleteJadwal(event.jadwalid);
+                              // Mengambil ulang data dari repository
+                              await _fetchEvents(widget.psnim);
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+              ],
+            ),
           ),
-        ),
-        actions: <Widget>[
-          ElevatedButton(
-            onPressed: () {
-              if (mediaController.text.isEmpty ||
-                  reqidController.text.isEmpty) {
-                Get.snackbar('Rencanakan jadwal Pendampingan', 'Kolom harus terisi!',
-                    backgroundColor: Colors.red,
-                    colorText: Colors.white);
-              } else {
-
-                Jadwal jadwal = Jadwal(
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                if (mediaController.text.isEmpty || reqidController.text.isEmpty) {
+                  Get.snackbar('Rencanakan jadwal Pendampingan', 'Kolom harus terisi!',
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white);
+                } else {
+                  Jadwal jadwal = Jadwal(
                     reqid: int.parse(reqidController.text),
                     tanggal: formatDateSQL(date),
-                    mediapendampingan: mediaController.text
+                    mediapendampingan: mediaController.text,
                   );
 
-//                  print('SelectedDate: ${formatDateSQL(date)}');
-//                  print("Date toIso8601String: ${date.toIso8601String()}");
-//                  print('reqID: ${reqidController.text}');
                   repository.createJadwal(jadwal: jadwal).then((value) {
+                    _fetchEvents(widget.psnim);
                     Navigator.of(context).pop();
                   });
                   reqidController.clear();
                   mediaController.clear();
-              }
-            },
-            child: const Text('Simpan'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Tutup', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      );
-    },
-  );
-}
+                }
+              },
+              child: const Text('Simpan'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Tutup', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-  void scrollToSection(int navIndex){
-    if (navIndex == 3){
-      // 
+  void scrollToSection(int navIndex) {
+    if (navIndex == 3) {
       return;
     }
 
     final key = navbarKeys[navIndex];
     Scrollable.ensureVisible(
       key.currentContext!,
-      duration: 
-        const Duration(milliseconds: 500), 
-        curve: Curves.easeInOut,
-      );
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 }

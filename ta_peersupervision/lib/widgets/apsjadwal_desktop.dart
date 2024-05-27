@@ -44,17 +44,17 @@ class _APSJadwalDesktopState extends State<APSJadwalDesktop> {
                 },
               ),
               ListTileButton(
-                title: 'Jadwal Pendampingan',
-                imagePath: 'assets/images/Penjadwalan.png',
-                onPressed: () {
-                  Get.to(() => APSJadwalPage(psnim: psnim));
-                },
-              ),
-              ListTileButton(
                 title: 'Dampingan Saya',
                 imagePath: 'assets/images/Dampingan.png',
                 onPressed: () {
                   Get.to(() => const APSDampinganPage());
+                },
+              ),
+              ListTileButton(
+                title: 'Jadwal Pendampingan',
+                imagePath: 'assets/images/Penjadwalan.png',
+                onPressed: () {
+                  Get.to(() => APSJadwalPage(psnim: psnim));
                 },
               ),
             ],

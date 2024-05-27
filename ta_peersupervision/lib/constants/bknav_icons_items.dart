@@ -4,8 +4,16 @@ const List<Map> naviBKItems = [
     "title": "Statistik Kegiatan"
   },
   {
+    "img": "assets/lightimages/Penjadwalan.png",
+    "title": "Jadwal Pendampingan"
+  },
+  {
     "img": "assets/lightimages/All Report.png",
     "title": "Laporan Pendampingan"
+  },
+  {
+    "img": "assets/lightimages/Ganecare.png",
+    "title": "Kegiatan Ganecare"
   },
   {
     "img": "assets/lightimages/Member.png",
