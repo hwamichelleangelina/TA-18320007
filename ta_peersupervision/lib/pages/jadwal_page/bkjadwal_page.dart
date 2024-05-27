@@ -63,10 +63,10 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
 
                 const SizedBox(height: 30,),
 
-                CalendarWidget(
+      /*          CalendarWidget(
                   onDaySelected: _showEventDialog,
                   focusedDay: DateTime.now(), jadwal: jadwal, initialFocusedDay: DateTime.now(),
-                ),
+                ),*/
 
                 const SizedBox(height: 30,),
                 // Footer

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ta_peersupervision/pages/dampingan_page/apsdampingan_page.dart';
@@ -42,7 +44,7 @@ class _APSJadwalMobileState extends State<APSJadwalMobile> {
                 },
               ),
               ListTileButton(
-                title: 'Cek Jadwal Pendampingan',
+                title: 'Jadwal Pendampingan',
                 imagePath: 'assets/images/Penjadwalan.png',
                 onPressed: () {
                   Get.to(() => APSJadwalPage(psnim: psnim)); // Ganti dengan psnim yang sesuai

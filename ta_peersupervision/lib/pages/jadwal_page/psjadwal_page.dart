@@ -103,11 +103,11 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
 
                 const SizedBox(height: 30,),
 
-                CalendarWidget(
+     /*           CalendarWidget(
                   onDaySelected: _showEventDialog,
                   focusedDay: DateTime.now(), jadwal: jadwal, initialFocusedDay: DateTime.now(),
                 ),
-
+*/
                 const SizedBox(height: 30,),
                 // Footer
                 const Footer(),

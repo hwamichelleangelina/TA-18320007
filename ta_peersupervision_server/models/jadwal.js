@@ -12,6 +12,17 @@ class jadwal {
         });
     }
 
+    static deleteJadwal(jadwalid, callback) {
+        const deleteJadwalQuery = 'delete from jadwal where jadwalid = ?;';
+        mysqlConn.query(deleteJadwalQuery, [jadwalid], (err, result) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, result);
+            }
+        });
+    }
+
     // Untuk Admin BK
     static getAllJadwal(callback) {
         const getJadwalQuery = 'SELECT *, CONVERT_TZ(tanggal, \'+00:00\', \'+07:00\') AS tanggalKonversi FROM jadwal;';

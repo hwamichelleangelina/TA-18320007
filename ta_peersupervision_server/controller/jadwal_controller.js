@@ -10,6 +10,22 @@ exports.getAllJadwal = (req, res) => {
     });
 };
 
+exports.deleteJadwal = (req, res) => {
+    const jadwalid = req.params.jadwalid;
+
+    jadwal.deleteJadwal(jadwalid, (err, result) => {
+        if (err) {
+            res.status(500).json({ message: 'Failed to delete jadwal.' });
+        } else {
+            if (result.affectedRows > 0) {
+                res.status(200).json({ message: 'Jadwal deleted successfully.' });
+            } else {
+                res.status(404).json({ message: 'Jadwal not found.' });
+            }
+        }
+    });
+};
+
 exports.getJadwal = (req, res) => {
     const psnim = req.params.psnim; // Mendapatkan reqid dari parameter URL
     jadwal.getJadwal(psnim, (err, jadwal) => {

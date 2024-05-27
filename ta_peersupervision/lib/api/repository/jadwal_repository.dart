@@ -104,5 +104,25 @@ Future<Map<DateTime, List<MyJadwal>>> fetchJadwal(int psnim) async {
   }
 }
 
+  Future<void> deleteJadwal(int jadwalid) async {
+    final response = await http.delete(
+      Uri.parse('$serverUrl/deleteJadwal/$jadwalid'),
+    );
 
+    if (response.statusCode == 200) {
+      Get.snackbar('Hapus Jadwal Pendampingan', 'Jadwal pendampingan $jadwalid berhasil dihapus',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,);
+    } else if (response.statusCode == 500) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      final String message = responseData["message"];
+      Get.snackbar('Hapus Jadwal Pendampingan', message,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,);
+    } else {
+      Get.snackbar('Hapus Jadwal Pendampingan', "Failed to delete Dampingan",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,);
+    }
+  }
 }

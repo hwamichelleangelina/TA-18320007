@@ -44,7 +44,7 @@ class _APSJadwalDesktopState extends State<APSJadwalDesktop> {
                 },
               ),
               ListTileButton(
-                title: 'Cek Jadwal Pendampingan',
+                title: 'Jadwal Pendampingan',
                 imagePath: 'assets/images/Penjadwalan.png',
                 onPressed: () {
                   Get.to(() => APSJadwalPage(psnim: psnim));

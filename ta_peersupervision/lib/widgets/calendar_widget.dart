@@ -8,18 +8,12 @@ class CalendarWidget extends StatefulWidget {
   final Map<DateTime, List<MyJadwal>> jadwal;
   final DateTime initialFocusedDay;
 
-  // Menambahkan inisialisasi langsung pada deklarasi field
-  List<MyJadwal> events = [];
-
   CalendarWidget({
     super.key,
     required this.onDaySelected,
     required this.jadwal,
-    required this.initialFocusedDay, required DateTime focusedDay,
-  }) {
-    // Inisialisasi events di sini
-    events = jadwal.values.expand((events) => events).toList();
-  }
+    required this.initialFocusedDay,
+  });
 
   @override
   _CalendarWidgetState createState() => _CalendarWidgetState();
@@ -53,11 +47,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           formatButtonVisible: false,
         ),
         eventLoader: (day) {
-          return widget.events.where((event) {
-            return event.tanggal.year == day.year &&
-                event.tanggal.month == day.month &&
-                event.tanggal.day == day.day;
-          }).toList();
+          return widget.jadwal[DateTime(day.year, day.month, day.day)] ?? [];
         },
         onFormatChanged: (format) {
           setState(() {
@@ -67,9 +57,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
             _selectedDay = selectedDay;
-            _focusedDay = focusedDay; // Ini memastikan kalender tetap pada bulan yang relevan
+            _focusedDay = focusedDay;
           });
-          widget.onDaySelected(selectedDay, widget.jadwal[selectedDay] ?? []);
+          widget.onDaySelected(
+            selectedDay,
+            widget.jadwal[DateTime(selectedDay.year, selectedDay.month, selectedDay.day)] ?? [],
+          );
         },
         calendarBuilders: CalendarBuilders(
           markerBuilder: (context, date, events) {

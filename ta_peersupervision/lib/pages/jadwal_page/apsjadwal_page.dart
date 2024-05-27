@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, collection_methods_unrelated_type
+// ignore_for_file: avoid_print, collection_methods_unrelated_type, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +21,6 @@ class APSJadwalPage extends StatefulWidget {
   const APSJadwalPage({super.key, required this.psnim});
 
   @override
-  // ignore: library_private_types_in_public_api
   _APSJadwalPageState createState() => _APSJadwalPageState();
 }
 
@@ -46,27 +45,20 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
   void initState() {
     super.initState();
     _fetchEvents(widget.psnim);
-    // Mengambil nilai dari ReqidStorage dan mengatur nilai awal TextEditingController
     reqidController.text = ReqidStorage.getReqid().toString();
   }
 
-Future<void> _fetchEvents(int psnim) async {
-  try {
-    Map<DateTime, List<MyJadwal>> fetchedEvents = await repository.fetchJadwal(widget.psnim);
-//    print('psnim fetchEvents: $psnim');
- //   print('Fetched Events: $fetchedEvents');
-
-    setState(() {
-      jadwal = fetchedEvents;
-    });
-//    print('fetchEvents success');
-//    print('$fetchedEvents');
-  } catch (e) {
-    print('Failed to fetch events: $e');
-    Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
+  Future<void> _fetchEvents(int psnim) async {
+    try {
+      Map<DateTime, List<MyJadwal>> fetchedEvents = await repository.fetchJadwal(widget.psnim);
+      setState(() {
+        jadwal = fetchedEvents;
+      });
+    } catch (e) {
+      print('Failed to fetch events: $e');
+      Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
+    }
   }
-}
-
 
   @override
   void dispose() {
@@ -76,29 +68,22 @@ Future<void> _fetchEvents(int psnim) async {
 
   @override
   Widget build(BuildContext context) {
-   return LayoutBuilder(
+    return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: CustomColor.purpleBg,
-          endDrawer: constraints.maxWidth >= minDesktopWidth
-          ? null
-          : const APSDrawerMobile(),
-          
+          endDrawer: constraints.maxWidth >= minDesktopWidth ? null : const APSDrawerMobile(),
           body: SingleChildScrollView(
             controller: scrollController,
             scrollDirection: Axis.vertical,
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (constraints.maxWidth >= minDesktopWidth)
-                // Main Container
-                  HeaderAPSBack(onNavMenuTap: (int navIndex){
-                    // call function
+                  HeaderAPSBack(onNavMenuTap: (int navIndex) {
                     scrollToSection(navIndex);
-                  },)
-
+                  })
                 else
                   APSHeaderMobile(
                     onLogoTap: () {},
@@ -106,102 +91,98 @@ Future<void> _fetchEvents(int psnim) async {
                       scaffoldKey.currentState?.openEndDrawer();
                     },
                   ),
-
-                const SizedBox(height: 30,),
-
+                const SizedBox(height: 30),
                 CalendarWidget(
                   onDaySelected: _showEventDialog,
-                  focusedDay: DateTime.now(), jadwal: jadwal, initialFocusedDay: DateTime.now(),
+                  jadwal: jadwal,
+                  initialFocusedDay: DateTime.now(),
                 ),
-
-                const SizedBox(height: 30,),
-                // Footer
+                const SizedBox(height: 30),
                 const Footer(),
-
               ],
             ),
           ),
         );
-      }
-   );
+      },
+    );
   }
 
-void _showEventDialog(DateTime date, List<MyJadwal> events) {
-  // Normalisasi tanggal untuk membandingkan hanya berdasarkan tahun, bulan, dan hari
-  DateTime selectedDate = DateTime(date.year, date.month, date.day);
-//  print('halo1');
+  void _showEventDialog(DateTime date, List<MyJadwal> events) {
+    DateTime selectedDate = DateTime(date.year, date.month, date.day);
+    print(selectedDate);
 
-  List<MyJadwal> selectedEvents = events.where((event) {
-    DateTime eventDate = DateTime(event.tanggal.year, event.tanggal.month, event.tanggal.day);
- //   print('tanggal terpilih: $eventDate');
-    return eventDate == selectedDate;
-  }).toList();
-
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Tambahkan Jadwal Pendampingan ${date.day}/${date.month}/${date.year}'),
-        content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: reqidController,
-                decoration: const InputDecoration(labelText: 'ID Dampingan'),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly,
-                ]
-              ),
-              TextField(
-                controller: mediaController,
-                decoration: const InputDecoration(labelText: 'Media Pendampingan'),
-              ),
-              const SizedBox(height: 16),
-              const Text('Pendampingan Hari Ini:', style: TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              if (selectedEvents.isEmpty)
-                const Text('Tidak ada pendampingan di hari ini')
-              else
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: selectedEvents.map((event) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text('${event.initial}\nRequest ID: ${event.reqid}\nMedia Pendampingan: ${event.mediapendampingan}'),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            setState(() {
-                              jadwal[event.tanggal]!.remove(event);
-                              Navigator.pop(context);
-                            });
-                          },
-                        ),
-                      ],
-                    );
-                  }).toList(),
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tambahkan Jadwal Pendampingan ${date.day}/${date.month}/${date.year}'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: reqidController,
+                  decoration: const InputDecoration(labelText: 'ID Dampingan'),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
                 ),
-            ],
+                TextField(
+                  controller: mediaController,
+                  decoration: const InputDecoration(labelText: 'Media Pendampingan'),
+                ),
+                const SizedBox(height: 16),
+                const Text('Pendampingan Hari Ini:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
+                if (events.isEmpty)
+                  const Text('Tidak ada pendampingan di hari ini')
+                else
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: events.map((event) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text('${event.initial}\nRequest ID: ${event.reqid}\nMedia Pendampingan: ${event.mediapendampingan}\n'),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () async {
+                              // Menghapus event dari map terlebih dahulu
+                              setState(() {
+                                jadwal[selectedDate]?.remove(event);
+                                if (jadwal[selectedDate]?.isEmpty ?? false) {
+                                  jadwal.remove(selectedDate);
+                                }
+                              });
+                              // Menghapus event dari repository
+                              await repository.deleteJadwal(event.jadwalid);
+                              // Mengambil ulang data dari repository
+                              await _fetchEvents(widget.psnim);
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+              ],
+            ),
           ),
-        ),
-        actions: <Widget>[
-          ElevatedButton(
-            onPressed: () {
-              if (mediaController.text.isEmpty ||
-                  reqidController.text.isEmpty) {
-                Get.snackbar('Rencanakan jadwal Pendampingan', 'Kolom harus terisi!',
-                    backgroundColor: Colors.red,
-                    colorText: Colors.white);
-              } else {
-                Jadwal jadwal = Jadwal(
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                if (mediaController.text.isEmpty || reqidController.text.isEmpty) {
+                  Get.snackbar('Rencanakan jadwal Pendampingan', 'Kolom harus terisi!',
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white);
+                } else {
+                  Jadwal jadwal = Jadwal(
                     reqid: int.parse(reqidController.text),
                     tanggal: formatDateSQL(date),
-                    mediapendampingan: mediaController.text
+                    mediapendampingan: mediaController.text,
                   );
 
                   repository.createJadwal(jadwal: jadwal).then((value) {
@@ -210,37 +191,32 @@ void _showEventDialog(DateTime date, List<MyJadwal> events) {
                   });
                   reqidController.clear();
                   mediaController.clear();
-              }
-            },
-            child: const Text('Simpan'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Tutup', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      );
-    },
-  );
-}
+                }
+              },
+              child: const Text('Simpan'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Tutup', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-
-
-
-  void scrollToSection(int navIndex){
-    if (navIndex == 3){
-      // 
+  void scrollToSection(int navIndex) {
+    if (navIndex == 3) {
       return;
     }
 
     final key = navbarKeys[navIndex];
     Scrollable.ensureVisible(
       key.currentContext!,
-      duration: 
-        const Duration(milliseconds: 500), 
-        curve: Curves.easeInOut,
-      );
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 }
