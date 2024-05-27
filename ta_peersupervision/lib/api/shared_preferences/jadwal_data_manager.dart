@@ -26,6 +26,7 @@ class JadwalList {
   String? psname;
   String? mediapendampingan;
   String? katakunci;
+  DateTime? tanggalKonversi;
 
   JadwalList({
     required this.jadwalid,
@@ -35,7 +36,8 @@ class JadwalList {
     required this.tanggal,
     this.psname,
     this.mediapendampingan,
-    this.katakunci
+    this.katakunci,
+    required this.tanggalKonversi
   });
 
   factory JadwalList.fromJson(Map<String, dynamic> json) {
@@ -47,13 +49,14 @@ class JadwalList {
       psnim: json['psnim'],
       psname: json['psname'],
       mediapendampingan: json['mediapendampingan'],
-      katakunci: json['katakunci']
+      katakunci: json['katakunci'],
+      tanggalKonversi: DateTime.parse(json['tanggalKonversi']),
     );
   }
 
   String get formattedTanggal {
     final DateFormat formatter = DateFormat('d MMMM y');
-    return formatter.format(tanggal!);
+    return formatter.format(tanggalKonversi!);
   }
 }
 

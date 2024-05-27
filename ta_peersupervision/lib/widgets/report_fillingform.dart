@@ -101,7 +101,7 @@ class _FillingFormState extends State<FillingForm> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
             child: Text(
-              'Tanggal Pendampingan: ${widget.jadwal.tanggal}',
+              'Tanggal Pendampingan: ${widget.jadwal.formattedTanggal}',
               style: const TextStyle(fontSize: 18,),
             ),
           ),

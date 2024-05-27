@@ -14,7 +14,7 @@ class laporan {
     }
 
     static getJadwal(psnim, callback) {
-        const getJadwalQuery = 'SELECT * FROM jadwal WHERE psnim = ?;';
+        const getJadwalQuery = 'SELECT *, CONVERT_TZ(tanggal, \'+00:00\', \'+07:00\') AS tanggalKonversi FROM jadwal WHERE psnim = ?;';
         mysqlConn.query(getJadwalQuery, [psnim], (err, result) => {
             if (err) {
                 callback(err, null);
