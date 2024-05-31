@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 //import 'package:get/get.dart';
 import 'package:ta_peersupervision/api/logic/laporan_logic.dart';
 import 'package:ta_peersupervision/api/repository/laporan_repository.dart';
@@ -14,7 +15,8 @@ class DataTableWithDownloadButton extends StatefulWidget {
 class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButton> {
   String _searchText = '';
   late Future<List<Laporan>> _futureLaporan;
-  final LaporanRepository repository = LaporanRepository();
+
+  LaporanRepository repository = LaporanRepository();
 
   @override
   void initState() {
@@ -61,10 +63,10 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
                     List<Laporan> filteredLaporan = _searchText.isEmpty
                         ? laporanList
                         : laporanList.where((laporan) {
-                      return laporan.initial!.toLowerCase().contains(_searchText.toLowerCase()) ||
-                          laporan.psname!.toLowerCase().contains(_searchText.toLowerCase()) ||
-                          laporan.tanggal.toString().toLowerCase().contains(_searchText.toLowerCase());
-                    }).toList();
+                            return laporan.initial!.toLowerCase().contains(_searchText.toLowerCase()) ||
+                                   laporan.psname!.toLowerCase().contains(_searchText.toLowerCase()) ||
+                                   laporan.tanggalKonversi.toString().toLowerCase().contains(_searchText.toLowerCase());
+                          }).toList();
 
                     return DataTable(
                       columns: const [
@@ -80,7 +82,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
                           cells: [
                             DataCell(Text(laporan.initial ?? '')),
                             DataCell(Text(laporan.psname ?? '')),
-                            DataCell(Text(laporan.tanggal.toString())),
+                            DataCell(Text(laporan.tanggalKonversi.toString())),
                             DataCell(Text(laporan.jadwalid.toString())),
                             DataCell(Text(laporan.isRecommended == 1 ? 'Ya' : 'Tidak')),
                             DataCell(
@@ -128,10 +130,10 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
             child: ListView(
               children: [
                 const SizedBox(height: 20),
-                ListTile(title: Text('Inisial Dampingan: ${laporan.initial}')),
-                ListTile(title: Text('Pendamping Sebaya: ${laporan.psname}')),
-                ListTile(title: Text('Tanggal Pendampingan: ${laporan.tanggal}')),
-                ListTile(title: Text('Kata Kunci Masalah Dampingan: ${laporan.katakunci}')),
+                ListTile(title: Text('Inisial Dampingan: ${laporan.initial ?? "Unknown"}')),
+                ListTile(title: Text('Pendamping Sebaya: ${laporan.psname ?? "Unknown"}')),
+                ListTile(title: Text('Tanggal Pendampingan: ${laporan.tanggalKonversi ?? "Unknown"}')),
+                ListTile(title: Text('Kata Kunci Masalah Dampingan: ${laporan.katakunci ?? "Unknown"}')),
                 const SizedBox(height: 30),
                 const Text(
                   "Gambaran Permasalahan Dampingan",
@@ -183,8 +185,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
             TextButton(
               onPressed: () {
                 // Implementasi logika unduhan di sini
-                Navigator.of(context).pop();
-                _showSnackbar(context, 'Laporan berhasil diunduh');
+                Get.snackbar('title', 'message');
               },
               child: const Text('Download'),
             ),
@@ -201,13 +202,5 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
         );
       },
     );
-  }
-
-  void _showSnackbar(BuildContext context, String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      backgroundColor: const Color.fromARGB(255, 123, 217, 126), // Mengatur warna hijau
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

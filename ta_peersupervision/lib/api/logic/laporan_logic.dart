@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Laporan {
   String? initial;
   String? psname;
@@ -10,6 +12,7 @@ class Laporan {
   String? hasil;
   String? kendala;
   int? isAgree;
+  DateTime? tanggalKonversi;
 
   Laporan({
     this.initial,
@@ -22,14 +25,16 @@ class Laporan {
     this.proses,
     this.hasil,
     this.kendala,
-    this.isAgree
+    this.tanggalKonversi,
+    this.isAgree,
   });
 
   factory Laporan.fromJson(Map<String, dynamic> json) {
     return Laporan(
       initial: json['initial'],
       psname: json['psname'],
-      tanggal: json['tanggalKonversi'] != null ? DateTime.parse(json['tanggalKonversi']) : DateTime.now(),
+      tanggal: DateTime.parse(json['tanggal']),
+      tanggalKonversi: DateTime.parse(json['tanggalKonversi']),
       jadwalid: json['jadwalid'],
       isRecommended: json['isRecommended'],
       katakunci: json['katakunci'],
@@ -37,7 +42,13 @@ class Laporan {
       proses: json['proses'],
       hasil: json['hasil'],
       kendala: json['kendala'],
+      isAgree: json['isAgree'],
     );
+  }
+
+  String get formattedTanggal {
+    final DateFormat formatter = DateFormat('d MMMM y');
+    return formatter.format(tanggalKonversi!);
   }
 }
 

@@ -6,20 +6,48 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ta_peersupervision/api/logic/laporan_logic.dart';
 
-class LaporanRepository {
-  String serverUrl = 'http://localhost:3000/laporan';
-
-  Future<List<Laporan>> fetchLaporan() async {
-    final response = await http.get(Uri.parse('$serverUrl/getLaporan'));
-
+class Report {
+  static Future<List<dynamic>> fetchAllLaporan() async {
+    final response = await http.get(Uri.parse('http://localhost:3000/laporan/getLaporan'));
     if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonData = jsonDecode(response.body);
-      final Laporan laporan = Laporan.fromJson(jsonData);
-      return [laporan]; // Mengembalikan dalam bentuk list
+      return json.decode(response.body);
     } else {
       throw Exception('Failed to load laporan');
     }
   }
+}
+
+class LaporanRepository {
+  String serverUrl = 'http://localhost:3000/laporan';
+
+  Future<List<Laporan>> fetchLaporan() async {
+    final response = await http.get(Uri.parse('http://localhost:3000/laporan/getLaporan'));
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      final body = json.decode(response.body);
+      print('Response Body: $body');
+      print('jsonResponse good');
+      print(body.runtimeType);
+
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load laporan');
+    }
+
+/*      if (jsonResponse != null && jsonResponse is Map<String, dynamic>) {
+        print('sini1');
+        // Jika respons berupa satu objek laporan
+        
+        print(Laporan.fromJson(jsonResponse));
+        return [Laporan.fromJson(jsonResponse)];
+      } else {
+        print('sini');
+        throw Exception('Invalid data format');
+      }
+    } else {
+      throw Exception('Failed to load laporan');*/
+    }
 
   Future<void> fillLaporan({required Laporan laporan}) async {
     final response = await http.post(
