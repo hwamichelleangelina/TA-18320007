@@ -1,5 +1,9 @@
 const List<Map> naviPSItems = [
   {
+    "img": "assets/lightimages/Dampingan.png",
+    "title": "Dampingan Saya"    
+  },
+  {
     "img": "assets/lightimages/Penjadwalan.png",
     "title": "Jadwal Pendampingan"
   },

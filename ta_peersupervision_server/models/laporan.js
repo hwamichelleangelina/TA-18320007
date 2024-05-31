@@ -13,6 +13,17 @@ class laporan {
         });
     }
 
+    static getLaporan(callback) {
+        const getLaporanQuery = 'SELECT *, CONVERT_TZ(tanggal, \'+00:00\', \'+07:00\') AS tanggalKonversi FROM laporan;';
+        mysqlConn.query(getLaporanQuery, (err, result) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, result);
+            }
+        });
+    }
+
     static getJadwal(psnim, callback) {
         const getJadwalQuery = 'SELECT *, CONVERT_TZ(tanggal, \'+00:00\', \'+07:00\') AS tanggalKonversi FROM jadwal WHERE psnim = ?;';
         mysqlConn.query(getJadwalQuery, [psnim], (err, result) => {

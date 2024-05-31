@@ -11,5 +11,6 @@ routerLaporan.post('/', (req, res) => {
 routerLaporan.post('/fillLaporan', laporanController.fillLaporan);
 routerLaporan.get('/getJadwal/:psnim', laporanController.getJadwal);
 routerLaporan.get('/isLaporanFilled/:jadwalid', laporanController.getLaporanFilled);
+routerLaporan.get('/getLaporan', laporanController.getLaporan);
 
 module.exports = routerLaporan;

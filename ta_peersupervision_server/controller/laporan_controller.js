@@ -70,3 +70,20 @@ exports.getLaporanFilled = (req, res) => {
           res.json({ hasReported });
     });
 };
+
+
+// Untuk list laporan pendampinan ditampilkan khusus kepada BK ITB
+exports.getLaporan = (req, res) => {
+
+    laporan.getLaporan((err, reportlist) => {
+        if (err) {
+            res.status(500).json({ message: 'Failed to get report list.' });
+        } else {
+            if (reportlist.length > 0) {
+                res.status(200).json({ message: 'Successfully retrieved report list.', reportlist });
+            } else {
+                res.status(404).json({ message: 'Reports not found.' });
+            }
+        }
+    });
+};

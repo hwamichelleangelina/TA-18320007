@@ -9,6 +9,18 @@ import 'package:ta_peersupervision/api/logic/laporan_logic.dart';
 class LaporanRepository {
   String serverUrl = 'http://localhost:3000/laporan';
 
+  Future<List<Laporan>> fetchLaporan() async {
+    final response = await http.get(Uri.parse('$serverUrl/getLaporan'));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      final Laporan laporan = Laporan.fromJson(jsonData);
+      return [laporan]; // Mengembalikan dalam bentuk list
+    } else {
+      throw Exception('Failed to load laporan');
+    }
+  }
+
   Future<void> fillLaporan({required Laporan laporan}) async {
     final response = await http.post(
       Uri.parse('$serverUrl/fillLaporan'),
@@ -42,52 +54,4 @@ class LaporanRepository {
         colorText: Colors.white,);
     }
   }
-
-/*  Future<Map<DateTime, List<Laporan>>> fetchLaporan(int psnim) async {
-    final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();
-
-    if (loggedInUser != null) {
-        psnim = loggedInUser.psnim;
-    } else {
-      throw Exception('No logged in user');
-    }
-
-    final response = await http.get(Uri.parse('$serverUrl/getLaporan/$psnim'));
-    print('statusCode: ${response.statusCode}');
-
-    if (response.statusCode == 200) {
-  //    List<dynamic> data = json.decode(response.body);
-  //    Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
-      Map<String, dynamic> data = jsonDecode(response.body);
-
-      Map<DateTime, List<MyJadwal>> fetchedJadwal = {};
-
-      data.forEach((key, value) {
-        // Parse date string with specified format
-        DateTime date;
-        print('value: $value');
-        print('data: $data');
-        try {
-          date = DateTime.parse(data['tanggal']);
-        } catch (e) {
-            print('Error parsing date: $e');
-            // Handle error case or use a default date
-            // For example: date = DateTime.now();
-            return;
-          }
-          fetchedJadwal[date] = (value as List).map((event) => MyJadwal.fromJson(event)).toList();
-
-//        MyJadwal jadwal = MyJadwal.fromJson(eventJson);
-//        DateTime date = DateTime(jadwal.tanggal.year, jadwal.tanggal.month, jadwal.tanggal.day);
-//        if (fetchedJadwal[date] == null) {
-//          fetchedJadwal[date] = [];
-//        }
-//        fetchedJadwal[date]!.add(jadwal);
-      });
-
-      return fetchLaporan;
-    } else {
-      throw Exception('Failed to load events');
-    }
-  }*/
 }
