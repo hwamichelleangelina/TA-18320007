@@ -87,3 +87,19 @@ exports.getLaporan = (req, res) => {
         }
     });
 };
+
+exports.get1Laporan = (req, res) => {
+    const jadwalid = req.params.jadwalid;
+
+    laporan.get1Laporan(jadwalid, (err, report) => {
+        if (err) {
+            res.status(500).json({ message: 'Failed to get report list.' });
+        } else {
+            if (report.length > 0) {
+                res.status(200).json({ message: 'Successfully retrieved report.', report });
+            } else {
+                res.status(404).json({ message: 'Reports not found.' });
+            }
+        }
+    });
+};

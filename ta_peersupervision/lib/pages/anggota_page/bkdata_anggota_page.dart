@@ -56,6 +56,10 @@ class _BKDataAnggotaState extends State<BKDataAnggota> {
 
                 const SizedBox(height: 30,),
 
+                const Text('Anggota Aktif PS', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+
+                const SizedBox(height: 10,),
+
                 // Data Anggota
                 DataTableAnggota(onSubmit: (nama, nim, password, psisActive, psisAdmin) {
                 },),

@@ -61,6 +61,10 @@ class _BKCekLaporanState extends State<BKCekLaporan> {
 
                 const SizedBox(height: 30,),
 
+                const Text('Laporan Pendampingan', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+
+                const SizedBox(height: 10,),
+
                 // Tabel bagian list laporannya
                 const DataTableWithDownloadButton(),
 

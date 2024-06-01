@@ -136,7 +136,7 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
                 const Text('Pendampingan Hari Ini:', style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 if (events.isEmpty)
-                  const Text('Tidak ada pendampingan di hari ini')
+                  const Text('Tidak ada pendampingan di hari ini', style: TextStyle(color: Color.fromARGB(255, 227, 152, 147)))
                 else
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
