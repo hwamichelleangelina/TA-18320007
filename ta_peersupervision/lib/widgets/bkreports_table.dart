@@ -262,7 +262,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
                     DataCell(Text(item['initial'] ?? 'N/A')),
                     DataCell(Text(item['psname'] ?? 'N/A')),
                     DataCell(Text(item['jadwalid'].toString())),
-                    DataCell(Text(formattedTanggal(item['tanggal']))),
+                    DataCell(Text(formattedTanggal(item['tanggalKonversi']))),
                     DataCell(Text(item['isRecommended'] == 1
                       ? 'PERLU SEGERA'
                       : 'Tidak Perlu')),
