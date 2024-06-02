@@ -20,10 +20,10 @@ class statistic {
 
     static topPSdampingan(callback) {
         const topPSdampinganQuery = `
-            SELECT psname, COUNT(*) as dampingan_count
+            SELECT psname, COUNT(*) as dampingancount
             FROM dampingan
             GROUP BY psname
-            ORDER BY dampingan_count DESC
+            ORDER BY dampingancount DESC
             LIMIT 20;
         `;
         mysqlConn.query(topPSdampinganQuery, (err, result) => {
@@ -37,10 +37,10 @@ class statistic {
 
     static topPSpendampingan(callback) {
         const topPSpendampinganQuery = `
-            SELECT psname, COUNT(*) as jadwal_count
+            SELECT psname, COUNT(*) as jadwalcount
             FROM jadwal
             GROUP BY psname
-            ORDER BY jadwal_count DESC
+            ORDER BY jadwalcount DESC
             LIMIT 20;
         `;
         mysqlConn.query(topPSpendampinganQuery, (err, result) => {
@@ -51,6 +51,42 @@ class statistic {
             }
         });
     }
+
+    static distribution(callback) {
+        const results = {};
+    
+        const sqlFakultas = 'SELECT fakultas, COUNT(*) as count FROM dampingan GROUP BY fakultas;';
+        const sqlKampus = 'SELECT kampus, COUNT(*) as count FROM dampingan GROUP BY kampus;';
+        const sqlAngkatan = 'SELECT angkatan, COUNT(*) as count FROM dampingan GROUP BY angkatan;';
+        const sqlGender = 'SELECT gender, COUNT(*) as count FROM dampingan GROUP BY gender;';
+    
+        mysqlConn.query(sqlFakultas, (err, fakultasResults) => {
+            if (err) {
+                return callback(err, null);
+            }
+            results.fakultas = fakultasResults;
+            mysqlConn.query(sqlKampus, (err, kampusResults) => {
+                if (err) {
+                    return callback(err, null);
+                }
+                results.kampus = kampusResults;
+                mysqlConn.query(sqlAngkatan, (err, angkatanResults) => {
+                    if (err) {
+                        return callback(err, null);
+                    }
+                    results.angkatan = angkatanResults;
+                    mysqlConn.query(sqlGender, (err, genderResults) => {
+                        if (err) {
+                            return callback(err, null);
+                        }
+                        results.gender = genderResults;
+                        callback(null, results);
+                    });
+                });
+            });
+        });
+    }
+    
 
     static genderdistribution(callback) {
         const distributionQuery = `

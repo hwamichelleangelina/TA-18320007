@@ -12,6 +12,7 @@ routerStats.get('/jadwalpermonth', statsController.jadwalpermonth);
 routerStats.get('/topPSdampingan', statsController.topPSdampingan);
 routerStats.get('/topPSpendampingan', statsController.topPSpendampingan);
 routerStats.get('/fakultas', statsController.fakuldistribution);
+routerStats.get('/distribution', statsController.distribution);
 routerStats.get('/gender', statsController.genderdistribution);
 routerStats.get('/angkatan', statsController.classdistribution);
 routerStats.get('/kampus', statsController.kampusdistribution);

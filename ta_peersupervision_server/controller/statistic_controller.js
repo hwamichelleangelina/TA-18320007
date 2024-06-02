@@ -39,6 +39,18 @@ exports.topPSpendampingan = (req, res) => {
     });
 };
 
+exports.distribution = (req, res) => {
+    statistic.distribution((err, results) => {
+        if (err) {
+            console.error('Error checking dampingan distribution:', err);
+            res.status(500).send('Error checking dampingan distribution.');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+};
+
+
 exports.fakuldistribution = (req, res) => {
     statistic.fakuldistribution((err, results) => {
         if (err) {

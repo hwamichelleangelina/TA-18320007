@@ -4,6 +4,7 @@ import 'package:ta_peersupervision/constants/size.dart';
 import 'package:ta_peersupervision/widgets/bkdrawer_mobile.dart';
 import 'package:ta_peersupervision/widgets/bkheader_mobile.dart';
 import 'package:ta_peersupervision/widgets/bkheader_report.dart';
+import 'package:ta_peersupervision/widgets/data_visualisation.dart';
 // import 'package:ta_peersupervision/widgets/data_visualization.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
 
@@ -61,8 +62,10 @@ class _StatistikPSState extends State<StatistikPS> {
 
                 const SizedBox(height: 30,),
 
+                const Text('Kegiatan Pendampingan Sebaya', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+
                 // Tabel bagian list laporannya
-                // NameAndOriginFrequency(),
+                const DashboardScreen(),
 
                 const SizedBox(height: 30,),
                 // Footer
