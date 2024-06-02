@@ -1,18 +1,8 @@
-import 'package:flutter/widgets.dart';
-import 'package:ta_peersupervision/pages/anggota_page/apsdata_anggota_page.dart';
-import 'package:ta_peersupervision/pages/dampingan_page/apsdampingan_page.dart';
-import 'package:ta_peersupervision/pages/jadwal_page/apsjadwal_page.dart';
-import 'package:ta_peersupervision/pages/login_page/pslogin_page.dart';
-import 'package:ta_peersupervision/pages/report_list_page/apsreport_page.dart';
-import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_page.dart';
-
-int psnim = 0;
-
-List<Widget> naviAPS = [
-  const APSFormEntry(),
-  const APSDampinganPage(),
-  APSJadwalPage(psnim: psnim),
-  const APSReportPage(),
-  const APSDataAnggota(),
-  const PSLoginPage(),
+List<String> naviAPS = [
+  '/aps-requests',
+  '/aps-dampingan',
+  '/aps-jadwal',
+  '/aps-laporan',
+  '/aps-anggota-ps',
+  '/ps-login',
 ];

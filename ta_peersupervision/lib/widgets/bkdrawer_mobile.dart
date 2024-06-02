@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/bknav_icons_items.dart';
 import 'package:ta_peersupervision/constants/bknavigator_items.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
@@ -44,10 +45,7 @@ class BKDrawerMobile extends StatelessWidget {
                 ),
                 onTap: () {
                   if (naviBKItems[i]["title"] != "Keluar") {
-                    Navigator.push(
-                  context,
-                    MaterialPageRoute(builder: (context) => naviBK[i]),
-                  );
+                  Get.toNamed(naviBK[i]);
                   }
                   else {
                     logoutDialog(context);

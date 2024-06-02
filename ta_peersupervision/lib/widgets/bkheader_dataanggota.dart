@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/bkanggotapsnav_page_items.dart';
 import 'package:ta_peersupervision/constants/bkanggotapsnavigator_items.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/pages/home_page/bkhome_page.dart';
 import 'package:ta_peersupervision/styles/style.dart';
 import 'package:ta_peersupervision/widgets/logo.dart';
 import 'package:ta_peersupervision/widgets/popup_logout.dart';
@@ -26,7 +26,7 @@ class HeaderBKAnggota extends StatelessWidget {
                     left: 20,
                   ),
 
-                  child: SiteLogo(onTap: onLogoTap, naviHome: const BKHomePage(),
+                  child: SiteLogo(onTap: onLogoTap, naviHome: '/bk-home',
                   ),
                 ),
                 const Spacer(),
@@ -38,10 +38,7 @@ class HeaderBKAnggota extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {
                         if (anggotaNavBKTitles[i] != "Keluar") {
-                          Navigator.push(
-                        context,
-                          MaterialPageRoute(builder: (context) => anggotaNaviBK[i]),
-                        );
+                          Get.toNamed(anggotaNaviBK[i]);
                         }
                         else {
                           logoutDialog(context);

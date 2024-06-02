@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:ta_peersupervision/api/provider/dampingan_provider.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_edit_page.dart';
 
 class AllDampinganList extends StatefulWidget {
   const AllDampinganList({super.key});
@@ -60,7 +59,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
             child: ElevatedButton(
               onPressed: () {
                 // Aksi untuk tombol tambah
-                Get.to(() => const DampinganFormPage());
+                Get.toNamed('/aps-dampingan-entry');
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.green, // Warna hijau pada tombol

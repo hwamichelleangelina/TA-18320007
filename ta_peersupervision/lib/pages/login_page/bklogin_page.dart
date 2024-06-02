@@ -5,8 +5,7 @@ import 'package:get/get.dart';
 import 'package:ta_peersupervision/api/repository/bkusers_repository.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
-import 'package:ta_peersupervision/pages/home_page/bkhome_page.dart';
-import 'package:ta_peersupervision/pages/bk_only/bkregister_page.dart';
+
 import 'package:ta_peersupervision/widgets/custom_text_field.dart';
 import 'package:ta_peersupervision/widgets/drawer_login_mobile.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
@@ -162,13 +161,13 @@ class _BKLoginPageState extends State<BKLoginPage> {
                                 setState(() {
                                   isLoading = false;
                                 });
-                                Get.to(() => const BKLoginPage(title: 'Login',)); 
+                                Get.toNamed('/bk-login');
                               }
                               else {
                                 setState(() {
                                   isLoading = false;
                                 });
-                                Get.to(() => const BKHomePage());
+                                Get.toNamed('/bk-home');
                               }
                             });
                         }
@@ -190,9 +189,7 @@ class _BKLoginPageState extends State<BKLoginPage> {
                       child: TextButton(
                         // Masih overflow
                         onPressed: () {
-                          Navigator.push(context, 
-                            MaterialPageRoute(builder: (context) => const BKRegisterPage(title: 'Register',))
-                          );
+                          Get.toNamed('/bk-register');
                         },
                         child: const Text(
                           "Daftar Akun Admin BK ITB",

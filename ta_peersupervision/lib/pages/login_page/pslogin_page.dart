@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:ta_peersupervision/api/repository/psusers_repository.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
-import 'package:ta_peersupervision/pages/home_page/apshome_page.dart';
-import 'package:ta_peersupervision/pages/home_page/pshome_page.dart';
 import 'package:ta_peersupervision/widgets/custom_text_field.dart';
 import 'package:ta_peersupervision/widgets/drawer_login_mobile.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
@@ -154,19 +152,19 @@ class _LoginPageState extends State<PSLoginPage> {
                                   setState(() {
                                     isLoading = false;
                                   });
-                                  Get.to(() => const PSLoginPage()); 
+                                  Get.toNamed('/ps-login');
                                 }
                                 else if (value.psisAdmin == 1) {
                                   setState(() {
                                     isLoading = false;
                                   });
-                                  Get.to(() => const APSHomePage());                                  
+                                  Get.toNamed('/aps-home');                                 
                                 }
                                 else {
                                   setState(() {
                                     isLoading = false;
                                   });
-                                  Get.to(() => const PSHomePage());
+                                  Get.toNamed('/ps-home');
                                 }
                               });
                         }

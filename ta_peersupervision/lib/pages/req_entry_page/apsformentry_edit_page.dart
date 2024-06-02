@@ -8,7 +8,6 @@ import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/provider/dampingan_provider.dart';
 import 'package:ta_peersupervision/api/repository/dampingan_repository.dart';
 import 'package:ta_peersupervision/api/repository/psusers_repository.dart';
-import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_page.dart';
 
 class DampinganFormPage extends StatefulWidget {
   const DampinganFormPage({super.key});
@@ -306,7 +305,7 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                     );
                     
                     dampinganRepo.importDampingan(dampingan: dampingan).then((value) async {
-                      Get.to(() => const APSFormEntry());
+                      Get.toNamed('/aps-requests');
                       await provider.fetchDampingan();
                     }); 
                     Get.snackbar('Tambah Permintaan Pendampingan Baru', 'Data Dampingan $initial berhasil disimpan',

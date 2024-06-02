@@ -68,6 +68,8 @@ class _BKCekLaporanState extends State<BKCekLaporan> {
                 // Tabel bagian list laporannya
                 const DataTableWithDownloadButton(),
 
+                const SizedBox(height: 20,),
+
                 // Footer
                 const Footer(),
 

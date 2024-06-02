@@ -7,7 +7,6 @@ import 'package:ta_peersupervision/api/repository/bkusers_repository.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
 
-import 'package:ta_peersupervision/pages/login_page/bklogin_page.dart';
 import 'package:ta_peersupervision/widgets/custom_text_field.dart';
 import 'package:ta_peersupervision/widgets/drawer_login_mobile.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
@@ -195,7 +194,7 @@ class _BKRegisterPageState extends State<BKRegisterPage> {
                             setState(() {
                               isLoading = false;
                             });
-                            Get.to(() => const BKLoginPage(title: 'Login'));
+                            Get.toNamed('/bk-login');
                           });            
                         }
                       },
@@ -215,9 +214,7 @@ class _BKRegisterPageState extends State<BKRegisterPage> {
                     height: 45.0,
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => const BKLoginPage(title: 'Login'))
-                        );
+                        Get.toNamed('/bk-login');
                       },
                       child: const Text(
                         "Masuk Akun Admin BK ITB",

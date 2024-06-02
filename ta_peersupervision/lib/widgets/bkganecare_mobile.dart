@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ta_peersupervision/pages/bk_only/bkganecare_page.dart';
 import 'package:ta_peersupervision/widgets/list_button.dart';
 
 class BKGanecareITBMobile extends StatelessWidget {
@@ -33,7 +32,7 @@ class BKGanecareITBMobile extends StatelessWidget {
                   title: 'Kegiatan dalam Ganecare',
                   imagePath: 'assets/images/Ganecare.png',
                   onPressed: () {
-                    Get.to(() => const BKGanecarePage());
+                    Get.toNamed('/bk-ganecare');
                   },
                 ),
               ],

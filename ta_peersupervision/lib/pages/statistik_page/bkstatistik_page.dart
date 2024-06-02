@@ -62,7 +62,7 @@ class _StatistikPSState extends State<StatistikPS> {
 
                 const SizedBox(height: 30,),
 
-                const Text('Kegiatan Pendampingan Sebaya', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                const Text('Kegiatan Pendampingan Sebaya', textAlign: TextAlign.center, style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
 
                 // Tabel bagian list laporannya
                 const DashboardScreen(),

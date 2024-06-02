@@ -8,11 +8,9 @@ class Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 300,
-          ),
-          child: const Divider(
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: Divider(
             color: CustomColor.purpleTersier,
           ),
         ),

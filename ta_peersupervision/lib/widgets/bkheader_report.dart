@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/bkbacknav_items.dart';
 import 'package:ta_peersupervision/constants/bkbacknavigator_items.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/pages/home_page/bkhome_page.dart';
 import 'package:ta_peersupervision/styles/style.dart';
 import 'package:ta_peersupervision/widgets/logo.dart';
 import 'package:ta_peersupervision/widgets/popup_logout.dart';
@@ -26,7 +26,7 @@ class HeaderBKReport extends StatelessWidget {
                     left: 20,
                   ),
 
-                  child: SiteLogo(onTap: onLogoTap, naviHome: const BKHomePage(),
+                  child: SiteLogo(onTap: onLogoTap, naviHome: '/bk-home',
                   ),
                 ),
                 const Spacer(),
@@ -38,10 +38,7 @@ class HeaderBKReport extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {
                         if (backNavBKTitles[i] != "Keluar") {
-                          Navigator.push(
-                        context,
-                          MaterialPageRoute(builder: (context) => backNaviBK[i]),
-                        );
+                          Get.toNamed(backNaviBK[i]);
                         }
                         else {
                           logoutDialog(context);

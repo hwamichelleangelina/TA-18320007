@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ta_peersupervision/api/logic/resetpass_logic.dart';
-import 'package:ta_peersupervision/widgets/psreset_password.dart';
-import 'package:ta_peersupervision/widgets/reset_password.dart';
 
 class ResetPassRepository {
   final String serverUrl = 'http://localhost:3000/users';
@@ -69,7 +67,7 @@ class ResetPassRepository {
       Get.snackbar("Reset BK User's Password", "Failed to reset BK User's Password",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
-      Get.to(() => const ResetBKPassword());
+      Get.toNamed('/bk-ubah-password');
     }
   }
 
@@ -101,7 +99,7 @@ class ResetPassRepository {
       Get.snackbar("Reset PS User's Password", "Failed to reset PS User's Password",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
-      Get.to(() => const ResetPSPassword());
+      Get.toNamed('/ps-ubah-password');
     }
   }
 }

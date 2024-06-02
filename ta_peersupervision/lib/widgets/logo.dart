@@ -1,21 +1,18 @@
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 
 class SiteLogo extends StatelessWidget {
   const SiteLogo({super.key, this.onTap, required this.naviHome,});
   final VoidCallback? onTap;
-  final Widget naviHome;
+  final String naviHome;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-          Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => naviHome,
-          )
-        );
+          Get.toNamed(naviHome);
       },
       child:
       const DropShadow(

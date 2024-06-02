@@ -6,8 +6,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ta_peersupervision/api/logic/bkusers_logic.dart';
 import 'package:ta_peersupervision/api/shared_preferences/bkusers_data_manager.dart';
-import 'package:ta_peersupervision/pages/bk_only/bkregister_page.dart';
-import 'package:ta_peersupervision/pages/login_page/bklogin_page.dart';
 
 class BKUsersRepository {
   final String serverUrl = 'http://localhost:3000/bkusers';
@@ -42,7 +40,7 @@ class BKUsersRepository {
       Get.snackbar('Register BK User', "Failed to register BK User",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
-      Get.to(() => const BKRegisterPage(title: 'BK Register'));
+      Get.toNamed('/bk-register');
     }
   }
 
@@ -74,7 +72,7 @@ class BKUsersRepository {
       return null;
     }
     else {
-      Get.to(() => const BKLoginPage(title: 'Login'));
+      Get.toNamed('/bk-login');
       Get.snackbar('Login Failed', "Error while logging in BK User",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
@@ -86,7 +84,7 @@ class BKUsersRepository {
 
   Future<BKUsers?> logoutBKUsers() async {
     await BKUsersDataManager.removeBKUSersData();
-    Get.to(() => const BKLoginPage(title: 'Back to Login',));
+    Get.toNamed('/bk-login');
     
     return null;
   }

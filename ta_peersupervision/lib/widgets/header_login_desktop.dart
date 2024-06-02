@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/login_as_items.dart';
-import 'package:ta_peersupervision/pages/login_page/bklogin_page.dart';
-import 'package:ta_peersupervision/pages/login_page/pslogin_page.dart';
 import 'package:ta_peersupervision/styles/style.dart';
 import 'package:ta_peersupervision/widgets/logo.dart';
 
@@ -24,7 +22,7 @@ class HeaderLoginDesktop extends StatelessWidget {
               left: 30,
             ),
 
-            child: SiteLogo(onTap: (){}, naviHome: const PSLoginPage(),),
+            child: SiteLogo(onTap: (){}, naviHome: '/ps-login'),
           ),
 
           const Spacer(),
@@ -36,10 +34,10 @@ class HeaderLoginDesktop extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   if (loginTitles[i] == "Masuk sebagai PS ITB"){
-                      Get.to(() => const PSLoginPage());
+                    Get.toNamed('/ps-login');
                   }
                   else {
-                    Get.to(() => const BKLoginPage(title: 'Login'));
+                    Get.toNamed('/bk-login');
                   }    
           
                 },  // Untuk ini gabisa taruh const di padding, onPressed jangan kasih const

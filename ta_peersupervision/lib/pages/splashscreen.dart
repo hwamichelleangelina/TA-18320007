@@ -9,10 +9,6 @@ import 'package:ta_peersupervision/api/shared_preferences/bkusers_data_manager.d
 import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
-import 'package:ta_peersupervision/pages/home_page/apshome_page.dart';
-import 'package:ta_peersupervision/pages/home_page/bkhome_page.dart';
-import 'package:ta_peersupervision/pages/home_page/pshome_page.dart';
-import 'package:ta_peersupervision/pages/login_page/pslogin_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -44,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Get.snackbar('Bimbingan Konseling ITB', 'You are logged in',
               backgroundColor: Colors.green,
               colorText: Colors.white,);
-          Get.to(()=> const BKHomePage());
+          Get.toNamed('/bk-home');
         }
         else if (isPSLoggedIn) {
           PSUsers? psUser = await PSUsersDataManager.loadPSUsersData();
@@ -54,18 +50,18 @@ class _SplashScreenState extends State<SplashScreen> {
             Get.snackbar('Pendamping Sebaya ITB', 'You are logged in as Kepala Divisi Kuratif',
               backgroundColor: Colors.green,
               colorText: Colors.white,);
-            Get.to(() => const APSHomePage());
+            Get.toNamed('/aps-home');
           }
           else {
             // Jika pengguna adalah member, navigasi ke PSHomePage
             Get.snackbar('Pendamping Sebaya ITB', 'You are logged in',
               backgroundColor: Colors.green,
               colorText: Colors.white,);
-            Get.to(() => const PSHomePage());
+            Get.toNamed('/ps-home');
           }
         }
         else {
-          Get.to(()=> const PSLoginPage());
+          Get.toNamed('/ps-login');
         }
       }
     );

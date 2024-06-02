@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/apsnav_icons_items.dart';
 import 'package:ta_peersupervision/constants/apsnavigator_items.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
@@ -44,10 +45,7 @@ class APSDrawerMobile extends StatelessWidget {
                 ),
                 onTap: () {
                   if (naviItems[i]["title"] != "Keluar") {
-                    Navigator.push(
-                  context,
-                    MaterialPageRoute(builder: (context) => naviAPS[i]),
-                  );
+                    Get.toNamed(naviAPS[i]);
                   }
                   else {
                     logoutDialog(context);

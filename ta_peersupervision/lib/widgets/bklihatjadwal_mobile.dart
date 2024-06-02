@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ta_peersupervision/pages/jadwal_page/bkjadwal_page.dart';
 import 'package:ta_peersupervision/widgets/list_button.dart';
 
 class BKJadwalMobile extends StatelessWidget {
@@ -34,7 +33,7 @@ class BKJadwalMobile extends StatelessWidget {
                   imagePath: 'assets/images/Penjadwalan.png', // Lokasi gambar Anda
                   onPressed: () {
                     // Navigasi ke halaman
-                    Get.to(() => const BKJadwalPage());
+                    Get.toNamed('/bk-jadwal');
                   },
                 ),
               ],

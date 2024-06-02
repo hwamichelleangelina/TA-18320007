@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/login_icons_items.dart';
-import 'package:ta_peersupervision/pages/login_page/bklogin_page.dart';
-import 'package:ta_peersupervision/pages/login_page/pslogin_page.dart';
 
 class DrawerLoginMobile extends StatelessWidget {
   const DrawerLoginMobile({super.key});
@@ -45,10 +43,10 @@ class DrawerLoginMobile extends StatelessWidget {
                 ),
                 onTap: () {
                   if (rolesItems[i]["title"] == "Masuk sebagai PS ITB"){
-                      Get.to(() => const PSLoginPage());
+                    Get.toNamed('/ps-login');
                   }
                   else {
-                    Get.to(() => const BKLoginPage(title: 'Login'));
+                    Get.toNamed('/bk-login');
                   }  
                 },
                 leading: 

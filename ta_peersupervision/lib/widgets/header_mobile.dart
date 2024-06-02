@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ta_peersupervision/pages/home_page/pshome_page.dart';
 import 'package:ta_peersupervision/styles/style.dart';
 import 'package:ta_peersupervision/widgets/logo.dart';
 
@@ -23,7 +22,7 @@ class PSHeaderMobile extends StatelessWidget {
               left: 30,
             ),
             
-            child: SiteLogo(onTap: onLogoTap, naviHome: const PSHomePage(),
+            child: SiteLogo(onTap: onLogoTap, naviHome: '/ps-home',
             ),
           ),
 

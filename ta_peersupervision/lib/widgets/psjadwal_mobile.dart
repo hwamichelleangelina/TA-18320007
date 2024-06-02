@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ta_peersupervision/pages/dampingan_page/psdampingan_page.dart';
-import 'package:ta_peersupervision/pages/jadwal_page/psjadwal_page.dart';
 import 'package:ta_peersupervision/widgets/list_button.dart';
 
 class JadwalPSMobile extends StatelessWidget {
@@ -11,7 +9,6 @@ class JadwalPSMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
-    int psnim = 0;
 
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -33,18 +30,14 @@ class JadwalPSMobile extends StatelessWidget {
                   title: 'Dampingan Saya',
                   imagePath: 'assets/images/Dampingan.png',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const PSDampinganPage()),
-                    );
+                    Get.toNamed('ps-dampingan');
                   },
                 ),
                 ListTileButton(
                   title: 'Buat Jadwal Pendampingan',
-                  imagePath: 'assets/images/Penjadwalan.png', // Lokasi gambar Anda
+                  imagePath: 'assets/images/Penjadwalan.png', // Lokasi gambar
                   onPressed: () {
-                    // Navigasi ke halaman lain untuk Button 2
-                    Get.to(() => PSJadwalPage(psnim: psnim));
+                    Get.toNamed('/ps-jadwal');
                   },
                 ),
               ],

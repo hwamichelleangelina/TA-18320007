@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/psnav_icons_items.dart';
 import 'package:ta_peersupervision/constants/psnavigator_items.dart';
@@ -9,6 +10,7 @@ class PSDrawerMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Drawer(
         backgroundColor: CustomColor.purpleBg,
         child: ListView(
@@ -44,10 +46,7 @@ class PSDrawerMobile extends StatelessWidget {
                 ),
                 onTap: () {
                   if (naviPSItems[i]["title"] != "Keluar") {
-                    Navigator.push(
-                  context,
-                    MaterialPageRoute(builder: (context) => naviPS[i]),
-                  );
+                    Get.toNamed(naviPS[i]);
                   }
                   else {
                     logoutDialog(context);

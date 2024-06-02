@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
-import 'package:ta_peersupervision/pages/anggota_page/bkdata_anggota_page.dart';
 import 'package:ta_peersupervision/widgets/bkdrawer_mobile.dart';
 import 'package:ta_peersupervision/widgets/bkheader_kembali.dart';
 import 'package:ta_peersupervision/widgets/bktambah_anggota.dart';
@@ -44,7 +43,7 @@ class _BKTambahAnggotaState extends State<BKTambahAnggota> {
                   HeaderBKKembali(onNavMenuTap: (int navIndex){
                     // call function
                     scrollToSection(navIndex);
-                  }, navi: const BKDataAnggota(),)
+                  }, navi: '/bk-anggota-ps')
 
                 else
                   BKHeaderMobile(

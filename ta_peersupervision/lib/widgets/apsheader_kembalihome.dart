@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/apsbacknav_items.dart';
 import 'package:ta_peersupervision/constants/apsbacknavigator_items.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/pages/home_page/apshome_page.dart';
 import 'package:ta_peersupervision/styles/style.dart';
 import 'package:ta_peersupervision/widgets/logo.dart';
 import 'package:ta_peersupervision/widgets/popup_logout.dart';
@@ -26,7 +26,7 @@ class HeaderAPSBack extends StatelessWidget {
                     left: 20,
                   ),
 
-                  child: SiteLogo(onTap: onLogoTap, naviHome: const APSHomePage(),
+                  child: SiteLogo(onTap: onLogoTap, naviHome: '/aps-home',
                   ),
                 ),
                 const Spacer(),
@@ -38,9 +38,7 @@ class HeaderAPSBack extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {
                         if (backNavAPSTitles[i] != "Keluar") {
-                          Navigator.push(
-                        context,
-                          MaterialPageRoute(builder: (context) => backNaviAPS[i]),
+                          Get.toNamed(backNaviAPS[i]
                         );
                         }
                         else {

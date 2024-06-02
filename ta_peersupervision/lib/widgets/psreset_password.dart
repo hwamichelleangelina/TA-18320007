@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ta_peersupervision/pages/ubah_password/psubah_password.dart';
 
 class ResetPSPassword extends StatelessWidget {
   const ResetPSPassword({super.key});
@@ -38,7 +37,7 @@ class ResetPSPassword extends StatelessWidget {
                       fontSize: 15.0,
                     ),
                   ), onPressed: () {
-                    Get.to(() => const UbahPSPassword());
+                    Get.toNamed('ps-ubah-password');
                   },
                 ),
               ],

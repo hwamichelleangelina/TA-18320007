@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ta_peersupervision/pages/anggota_page/bkdata_anggota_page.dart';
-import 'package:ta_peersupervision/pages/anggota_page/bkeditdata_anggota.dart';
-import 'package:ta_peersupervision/pages/anggota_page/bktambahdata_anggota.dart';
 import 'package:ta_peersupervision/widgets/list_button.dart';
 
 class BKAnggotaPSITBMobile extends StatelessWidget {
@@ -36,7 +33,7 @@ class BKAnggotaPSITBMobile extends StatelessWidget {
                   imagePath: 'assets/images/Add Dampingan.png', // Lokasi gambar Anda
                   onPressed: () {
                     // Navigasi ke halaman tambahkan anggota baru
-                    Get.to(() => const BKTambahAnggota());
+                    Get.toNamed('/bk-tambah-anggota');
                   },
                 ),
                 ListTileButton(
@@ -44,7 +41,7 @@ class BKAnggotaPSITBMobile extends StatelessWidget {
                   imagePath: 'assets/images/Member.png', // Lokasi gambar Anda
                   onPressed: () {
                     // Navigasi ke halaman lain untuk Button 2
-                    Get.to(() => const BKDataAnggota());
+                    Get.toNamed('/bk-anggota-ps');
                   },
                 ),
                 ListTileButton(
@@ -52,7 +49,7 @@ class BKAnggotaPSITBMobile extends StatelessWidget {
                   imagePath: 'assets/images/Edit.png', // Lokasi gambar Anda
                   onPressed: () {
                     // Navigasi ke halaman lain untuk Button 2
-                    Get.to(() => const BKEditAnggota());
+                    Get.toNamed('/bk-edit-anggota');
                   },
                 ),
               ],

@@ -2,7 +2,6 @@ import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/pages/home_page/apshome_page.dart';
 
 class APSSiteLogo extends StatelessWidget {
   const APSSiteLogo({super.key, this.onTap,});
@@ -12,7 +11,7 @@ class APSSiteLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => const APSHomePage());
+        Get.toNamed('/aps-home');
       },
       child:
       const DropShadow(

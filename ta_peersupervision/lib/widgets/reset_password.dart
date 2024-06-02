@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ta_peersupervision/pages/ubah_password/ubah_password.dart';
 
 class ResetBKPassword extends StatelessWidget {
   const ResetBKPassword({super.key});
@@ -38,7 +37,7 @@ class ResetBKPassword extends StatelessWidget {
                       fontSize: 15.0,
                     ),
                   ), onPressed: () {
-                    Get.to(() => const UbahBKPassword());
+                    Get.toNamed('bk-ubah-password');
 /*                      Navigator.push(
                       context,
                         MaterialPageRoute(builder: (context) => const UbahBKPassword()),

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -5,7 +7,6 @@ import 'package:ta_peersupervision/api/repository/event.dart';
 import 'package:ta_peersupervision/api/repository/jadwal_repository.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
-import 'package:ta_peersupervision/pages/home_page/bkhome_page.dart';
 import 'package:ta_peersupervision/widgets/bkdrawer_mobile.dart';
 import 'package:ta_peersupervision/widgets/bkheader_kembali.dart';
 import 'package:ta_peersupervision/widgets/calendar_widget.dart';
@@ -45,7 +46,7 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
         jadwal = fetchedEvents;
       });
     } catch (e) {
-      print('Failed to fetch events: $e');
+      //print('Failed to fetch events: $e');
       Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
     }
   }
@@ -76,7 +77,7 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
                     onNavMenuTap: (int navIndex) {
                       scrollToSection(navIndex);
                     },
-                    navi: const BKHomePage(),
+                    navi: '/bk-home',
                   )
                 else
                   BKHeaderMobile(

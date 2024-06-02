@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/apsnavigator_items_desktop.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/apsnav_items.dart';
-import 'package:ta_peersupervision/pages/home_page/apshome_page.dart';
 import 'package:ta_peersupervision/styles/style.dart';
 import 'package:ta_peersupervision/widgets/logo.dart';
 import 'package:ta_peersupervision/widgets/popup_logout.dart';
@@ -26,7 +26,7 @@ class HeaderDesktop extends StatelessWidget {
                     left: 20,
                   ),
 
-                  child: SiteLogo(onTap: onLogoTap, naviHome: const APSHomePage(),
+                  child: SiteLogo(onTap: onLogoTap, naviHome: '/aps-home',
                   ),
                 ),
 
@@ -40,10 +40,7 @@ class HeaderDesktop extends StatelessWidget {
                       // Masih overflow
                       onPressed: () {
                         if (navTitles[i] != "Keluar") {
-                          Navigator.push(
-                        context,
-                          MaterialPageRoute(builder: (context) => naviAPSDesktop[i]),
-                        );
+                          Get.toNamed(naviAPSDesktop[i]);
                         }
                         else {
                           logoutDialog(context);

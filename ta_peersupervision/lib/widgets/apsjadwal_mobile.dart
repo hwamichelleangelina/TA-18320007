@@ -2,9 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ta_peersupervision/pages/dampingan_page/apsdampingan_page.dart';
-import 'package:ta_peersupervision/pages/jadwal_page/apsjadwal_page.dart';
-import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_page.dart';
 import 'package:ta_peersupervision/widgets/list_button.dart';
 
 class APSJadwalMobile extends StatefulWidget {
@@ -40,21 +37,21 @@ class _APSJadwalMobileState extends State<APSJadwalMobile> {
                 title: 'Permintaan Pendampingan',
                 imagePath: 'assets/images/Form Entry.png',
                 onPressed: () {
-                  Get.to(() => const APSFormEntry());
+                  Get.toNamed('/aps-dampingan-entry');
                 },
               ),
               ListTileButton(
                 title: 'Dampingan Saya',
                 imagePath: 'assets/images/Dampingan.png',
                 onPressed: () {
-                  Get.to(() => const APSDampinganPage());
+                  Get.toNamed('/aps-dampingan');
                 },
               ),
               ListTileButton(
                 title: 'Jadwal Pendampingan',
                 imagePath: 'assets/images/Penjadwalan.png',
                 onPressed: () {
-                  Get.to(() => APSJadwalPage(psnim: psnim)); // Ganti dengan psnim yang sesuai
+                  Get.toNamed('/aps-jadwal');
                 },
               ),
             ],

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:ta_peersupervision/api/logic/stats_logic.dart';
 import 'package:ta_peersupervision/api/repository/stats_repository.dart';
+import 'package:ta_peersupervision/constants/colors.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -40,10 +41,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 5.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Divider(
+              color: CustomColor.purpleTersier,
+            ),),
+            const SizedBox(height: 5.0),
             _buildSectionTitle('Jadwal Pendampingan per Bulan'),
             _buildSessionsPerMonthChart(),
-            const SizedBox(height: 40.0),
+            const SizedBox(height: 20.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Divider(
+              color: CustomColor.purpleTersier,
+            ),),
+            const SizedBox(height: 20.0),
             LayoutBuilder(
               builder: (context, constraints) {
                 if (constraints.maxWidth > 600) {
@@ -112,13 +125,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 }
               },
             ),
-            const SizedBox(height: 40.0),
+            const SizedBox(height: 20.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Divider(
+              color: CustomColor.purpleTersier,
+            ),),
+            const SizedBox(height: 20.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Center(
                 child: _buildSectionTitle('Sebaran Fakultas, Kampus, Angkatan, dan Gender Dampingan'),
               ),
             ),
+            const SizedBox(height: 10.0),
             _buildClientDistributionCharts(),
             const SizedBox(height: 40.0),
             _buildSectionTitle('Topik Permasalahan Dampingan Terpopuler'),
@@ -138,7 +158,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Center(
         child: Text(
           title,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
       ),
@@ -168,10 +188,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     domainFn: (SessionPerMonth spm, _) => spm.month,
                     measureFn: (SessionPerMonth spm, _) => spm.count,
                     data: snapshot.data!,
+
+                    labelAccessorFn: (SessionPerMonth spm, _) => '${spm.count}',
                   ),
                 ],
+                primaryMeasureAxis: const charts.NumericAxisSpec(
+                  renderSpec: charts.GridlineRendererSpec(
+                    // Customize gridline style
+                    labelStyle: charts.TextStyleSpec(
+                      fontFamily: 'Montserrat',
+                      color: charts.MaterialPalette.white,
+                    ),
+                    lineStyle: charts.LineStyleSpec(
+                      color: charts.MaterialPalette.white, // Gridline color
+                    ),
+                  ),
+                ),
+                barRendererDecorator: charts.BarLabelDecorator<String>(
+                  labelAnchor: charts.BarLabelAnchor.end, 
+                  labelPosition: charts.BarLabelPosition.outside, 
+                  outsideLabelStyleSpec: const charts.TextStyleSpec(
+                    fontFamily: 'Montserrat',
+                    color: charts.MaterialPalette.white,
+                  ),
               ),
             ),
+          )
           );
         }
       },

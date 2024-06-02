@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/psnav_items.dart';
 import 'package:ta_peersupervision/constants/psnavigator_items.dart';
-import 'package:ta_peersupervision/pages/home_page/pshome_page.dart';
 import 'package:ta_peersupervision/styles/style.dart';
 import 'package:ta_peersupervision/widgets/logo.dart';
 import 'package:ta_peersupervision/widgets/popup_logout.dart';
@@ -25,7 +25,7 @@ class PSHeaderDesktop extends StatelessWidget {
                     left: 20,
                   ),
 
-                  child: SiteLogo(onTap: onLogoTap, naviHome: const PSHomePage(), 
+                  child: SiteLogo(onTap: onLogoTap, naviHome: '/ps-home', 
                   ),
                 ),
                 // Jadikan widget Logo juga
@@ -52,10 +52,7 @@ class PSHeaderDesktop extends StatelessWidget {
                       // Masih overflow
                       onPressed: () {
                         if (navPSTitles[i] != "Keluar") {
-                          Navigator.push(
-                        context,
-                          MaterialPageRoute(builder: (context) => naviPS[i]),
-                        );
+                          Get.toNamed(naviPS[i]);
                         }
                         else {
                           logoutDialog(context);

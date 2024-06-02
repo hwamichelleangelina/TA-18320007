@@ -8,7 +8,6 @@ import 'package:ta_peersupervision/api/logic/dampingan_logic.dart';
 import 'package:ta_peersupervision/api/repository/dampingan_repository.dart';
 import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/pages/jadwal_page/apsjadwal_page.dart';
 
 class DampinganList extends StatefulWidget {
   final int psnim;
@@ -112,7 +111,7 @@ class _DampinganListState extends State<DampinganList> {
                 // Menyimpan nilai di ReqidStorage
                 ReqidStorage.setReqid(item.reqid!);
 //                print(ReqidStorage.getReqid().toString());
-                Get.to(() => APSJadwalPage(psnim: psnim));
+                Get.toNamed('/aps-jadwal');
                 // Penyimpanan tanggal pendampingan
 /*                if (selectedDate == null) {
                   Get.snackbar('Rencanakan jadwal Pendampingan', 'Tanggal harus terisi!',

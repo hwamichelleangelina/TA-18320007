@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
-import 'package:ta_peersupervision/pages/home_page/bkhome_page.dart';
 import 'package:ta_peersupervision/styles/style.dart';
 import 'package:ta_peersupervision/widgets/logo.dart';
 
@@ -8,7 +8,7 @@ class HeaderBKKembali extends StatelessWidget {
   const HeaderBKKembali({super.key, this.onLogoTap, required this.onNavMenuTap, required this.navi});
   final VoidCallback? onLogoTap;
   final Function(int) onNavMenuTap;
-  final Widget navi;
+  final String navi;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class HeaderBKKembali extends StatelessWidget {
                     left: 20,
                   ),
 
-                  child: SiteLogo(onTap: onLogoTap, naviHome: const BKHomePage(),
+                  child: SiteLogo(onTap: onLogoTap, naviHome: '/bk-home',
                   ),
                 ),
                 const Spacer(),
@@ -35,10 +35,7 @@ class HeaderBKKembali extends StatelessWidget {
                 
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                            MaterialPageRoute(builder: (context) => navi),
-                          );
+                        Get.toNamed(navi);
                         },
                       child: const Text(
                         'Kembali',

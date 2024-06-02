@@ -6,9 +6,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
-import 'package:ta_peersupervision/pages/anggota_page/bkdata_anggota_page.dart';
-import 'package:ta_peersupervision/pages/anggota_page/bktambahdata_anggota.dart';
-import 'package:ta_peersupervision/pages/login_page/pslogin_page.dart';
 
 class PSUsersRepository {
   final String serverUrl = 'http://localhost:3000/psusers';
@@ -43,7 +40,7 @@ class PSUsersRepository {
       Get.snackbar('Register PS User', "Failed to register PS User",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
-      Get.to(() => const BKTambahAnggota());
+      Get.toNamed('/bk-tambah-anggota');
     }
   }
 
@@ -74,7 +71,7 @@ class PSUsersRepository {
       return null;
     }
     else {
-      Get.to(() => const PSLoginPage());
+      Get.toNamed('/ps-login');
       Get.snackbar('Login Failed', "Error while logging in PS User",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
@@ -111,13 +108,13 @@ class PSUsersRepository {
       Get.snackbar('Update PS User', "Failed to update PS User",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
-      Get.to(() => const BKTambahAnggota());
+      Get.toNamed('/bk-tambah-anggota');
     }
   }
 
   Future<PSUsers?> logoutPSUsers() async {
     await PSUsersDataManager.removePSUSersData();
-    Get.to(() => const PSLoginPage());
+    Get.toNamed('/ps-login');
     
     return null;
   }
@@ -144,7 +141,7 @@ class PSUsersRepository {
       Get.snackbar("Non Activate PS User", "Failed to non activate PS User",
         backgroundColor: Colors.red,
         colorText: Colors.white,);
-      Get.to(() => const BKDataAnggota());
+      Get.toNamed('/bk-anggota-ps');
     }
   }
 

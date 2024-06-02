@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:drop_shadow/drop_shadow.dart';
-import 'package:ta_peersupervision/pages/dampingan_page/apsdampingan_page.dart';
 
 class APSMainDesktop extends StatelessWidget {
   const APSMainDesktop({super.key});
@@ -51,7 +50,7 @@ class APSMainDesktop extends StatelessWidget {
                     backgroundColor: CustomColor.purpleTersier,
                   ),
                   onPressed: (){
-                    Get.to(() => const APSDampinganPage());
+                    Get.toNamed('/aps-dampingan');
                   },
                   child: const Text(
                     "Cek Dampingan Saya Hari ini",
