@@ -8,15 +8,25 @@ routerStats.post('/', (req, res) => {
     res.status(200).json('Server on Port 3000 and Statistics has been connected.');
 });
 
-routerStats.get('/jadwalpermonth', statsController.jadwalpermonth);
-routerStats.get('/topPSdampingan', statsController.topPSdampingan);
-routerStats.get('/topPSpendampingan', statsController.topPSpendampingan);
-routerStats.get('/fakultas', statsController.fakuldistribution);
-routerStats.get('/distribution', statsController.distribution);
-routerStats.get('/gender', statsController.genderdistribution);
-routerStats.get('/angkatan', statsController.classdistribution);
-routerStats.get('/kampus', statsController.kampusdistribution);
-routerStats.get('/topTopics', statsController.toptopics);
-routerStats.get('/recRatio', statsController.recommendedRatio);
+routerStats.get('/jadwalpermonth', statsController.jadwalpermonthAllTime);
+routerStats.get('/topPSdampingan', statsController.topPSdampinganAllTime);
+routerStats.get('/topPSpendampingan', statsController.topPSpendampinganAllTime);
+//routerStats.get('/fakultas', statsController.fakuldistribution);
+routerStats.get('/distribution', statsController.distributionAllTime);
+//routerStats.get('/gender', statsController.genderdistribution);
+//routerStats.get('/angkatan', statsController.classdistribution);
+//routerStats.get('/kampus', statsController.kampusdistribution);
+routerStats.get('/topTopics', statsController.toptopicsAllTime);
+routerStats.get('/recRatio', statsController.recommendedRatioAllTime);
+
+routerStats.get('/distribution/:year', statsController.distribution);
+routerStats.get('/jadwalpermonth/:year', statsController.jadwalpermonth);
+routerStats.get('/topPSdampingan/:year', statsController.topPSdampingan);
+routerStats.get('/topPSpendampingan/:year', statsController.topPSpendampingan);
+routerStats.get('/topTopics/:year', statsController.toptopics);
+routerStats.get('/recRatio/:year', statsController.recommendedRatio);
+
+routerStats.get('/potentially/:year', statsController.potentialRujuk);
+routerStats.get('/potentially', statsController.potentialRujukAllTime);
 
 module.exports = routerStats;

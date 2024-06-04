@@ -15,6 +15,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final StatsRepository repository = StatsRepository();
+  int selectedYear = DateTime.now().year;
 
   late Future<List<SessionPerMonth>> sessionsPerMonth;
   late Future<List<TopPSDampingan>> topMentorsClients;
@@ -22,16 +23,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late Future<Map<String, List<ClientDistribution>>> clientDistribution;
   late Future<List<Topic>> topTopics;
   late Future<List<Recommendation>> recommendationRatio;
+  late Future<List<PotentialRujuk>> potentialRujuk;
 
   @override
   void initState() {
     super.initState();
-    sessionsPerMonth = repository.getSessionsPerMonth();
-    topMentorsClients = repository.getTopPSDampingan();
-    topMentorsSessions = repository.getTopPSJadwal();
-    clientDistribution = repository.getClientDistribution();
-    topTopics = repository.getTopTopics();
-    recommendationRatio = repository.getRecommendationRatio();
+    fetchData(selectedYear);
+  }
+
+  void fetchData(int year) {
+    setState(() {
+      sessionsPerMonth = repository.getSessionsPerMonth(year);
+      topMentorsClients = repository.getTopPSDampingan(year);
+      topMentorsSessions = repository.getTopPSJadwal(year);
+      clientDistribution = repository.getClientDistribution(year);
+      topTopics = repository.getTopTopics(year);
+      recommendationRatio = repository.getRecommendationRatio(year);
+      potentialRujuk = repository.getPotentialRujuk(year);
+    });
   }
 
   @override
@@ -48,7 +57,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               color: CustomColor.purpleTersier,
             ),),
             const SizedBox(height: 5.0),
+            _buildYearDropdown(),
             _buildSectionTitle('Jadwal Pendampingan per Bulan'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Center(
+                child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
+              ),
+            ),
             _buildSessionsPerMonthChart(),
             const SizedBox(height: 20.0),
             const Padding(
@@ -70,7 +86,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: Center(
-                                child: _buildSectionTitle('Peringkat Pendamping dengan Dampingan Terbanyak'),
+                                child: _buildSectionTitle('Pendamping dengan Dampingan Terbanyak'),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
                               ),
                             ),
                             _buildTopMentorsClientsTable(),
@@ -84,7 +106,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: Center(
-                                child: _buildSectionTitle('Peringkat Pendamping dengan Jadwal Terbanyak'),
+                                child: _buildSectionTitle('Pendamping dengan Jadwal Terbanyak'),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
                               ),
                             ),
                             _buildTopMentorsSessionsTable(),
@@ -102,9 +130,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Center(
-                              child: _buildSectionTitle('Peringkat Pendamping dengan Dampingan Terbanyak'),
+                              child: _buildSectionTitle('Pendamping dengan Dampingan Terbanyak'),
                             ),
                           ),
+                          Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
+                              ),
+                            ),
                           _buildTopMentorsClientsTable(),
                         ],
                       ),
@@ -114,9 +148,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Center(
-                              child: _buildSectionTitle('Peringkat Pendamping dengan Jadwal Terbanyak'),
+                              child: _buildSectionTitle('Pendamping dengan Jadwal Terbanyak'),
                             ),
                           ),
+                          Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
+                              ),
+                            ),
                           _buildTopMentorsSessionsTable(),
                         ],
                       ),
@@ -138,19 +178,173 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: _buildSectionTitle('Sebaran Fakultas, Kampus, Angkatan, dan Gender Dampingan'),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Center(
+                child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
+              ),
+            ),
             const SizedBox(height: 10.0),
             _buildClientDistributionCharts(),
             const SizedBox(height: 40.0),
             _buildSectionTitle('Topik Permasalahan Dampingan Terpopuler'),
-            _buildTopTopicsTable(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Center(
+                child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
+              ),
+            ),
+            _buildTopTopicsChart(),
             const SizedBox(height: 40.0),
-            _buildSectionTitle('Perbandingan Potensi Rujukan Dampingan'),
-            _buildRecommendationRatioChart(),
+
+            LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 600) {
+                  // Wide screen layout
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: _buildSectionTitle('Perbandingan Rujukan Dampingan'),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
+                              ),
+                            ),
+                            _buildRecommendationRatioChart(),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 20.0),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: _buildSectionTitle('Dampingan dengan Potensi Rujuk Psikolog'),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
+                              ),
+                            ),
+                            _buildPotentialRujukanTable(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  // Narrow screen layout
+                  return Column(
+                    children: [
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Center(
+                              child: _buildSectionTitle('Perbandingan Rujukan Dampingan'),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Center(
+                              child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
+                            ),
+                          ),
+                          _buildRecommendationRatioChart(),
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Center(
+                              child: _buildSectionTitle('Dampingan dengan Potensi Rujuk Psikolog'),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Center(
+                              child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
+                            ),
+                          ),
+                          _buildPotentialRujukanTable(),
+                        ],
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),
     );
   }
+
+Widget _buildYearDropdown() {
+  String selected = selectedYear == 0 ? 'All Time' : selectedYear.toString();
+
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 20.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Pilih Tahun: '),
+        DropdownButton<String>(
+          value: selected,
+          items: [
+            const DropdownMenuItem<String>(
+              value: 'All Time',
+              child: Text('All Time'),
+            ),
+            ...List.generate(15, (index) {
+              int year = DateTime.now().year - index;
+              return DropdownMenuItem<String>(
+                value: '$year',
+                child: Text('$year'),
+              );
+            }),
+          ],
+          onChanged: (String? newValue) {
+            setState(() {
+              if (newValue == 'All Time') {
+                selectedYear = 0;
+                selected = 'All Time';
+                // Panggil fungsi repository untuk "All Time"
+                sessionsPerMonth = repository.getSessionsPerMonthAllTime();
+                topMentorsClients = repository.getTopPSDampinganAllTime();
+                topMentorsSessions = repository.getTopPSJadwalAllTime();
+                clientDistribution = repository.getClientDistributionAllTime();
+                topTopics = repository.getTopTopicsAllTime();
+                recommendationRatio = repository.getRecommendationRatioAllTime();
+                potentialRujuk = repository.getPotentialRujukAllTime();
+              } else {
+                selectedYear = int.parse(newValue!);
+                selected = newValue;
+                fetchData(selectedYear);
+              }
+            });
+          },
+        ),
+      ],
+    ),
+  );
+}
+
 
   Widget _buildSectionTitle(String title) {
     return Padding(
@@ -214,6 +408,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           )
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildPotentialRujukanTable() {
+    return FutureBuilder<List<PotentialRujuk>>(
+      future: potentialRujuk,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Text('Tidak ada yang berpotensi dirujuk');
+        } else {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              columns: const [
+                DataColumn(label: Text('Inisial Dampingan')),
+                DataColumn(label: Text('ID')),
+                DataColumn(label: Text('Pendampingan')),
+                DataColumn(label: Text('Permasalahan')),
+              ],
+              rows: snapshot.data!
+                  .map((potential) => DataRow(cells: [
+                        DataCell(Text(potential.initial)),
+                        DataCell(Text(potential.reqid.toString())),
+                        DataCell(Text(potential.count.toString())),
+                        DataCell(Text(potential.katakunci))
+                      ]))
+                  .toList(),
+            ),
           );
         }
       },
@@ -402,6 +631,59 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ]))
                   .toList(),
             ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildTopTopicsChart() {
+    return FutureBuilder<List<Topic>>(
+      future: topTopics,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+            return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SizedBox(
+              height: 300,
+              child: charts.BarChart(
+                [
+                  charts.Series<Topic, String>(
+                    id: 'TopTopics',
+                    colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
+                    domainFn: (Topic topic, _) => topic.katakunci,
+                    measureFn: (Topic topic, _) => topic.count,
+                    data: snapshot.data!,
+
+                    labelAccessorFn: (Topic topic, _) => '${topic.count}',
+                  ),
+                ],
+                primaryMeasureAxis: const charts.NumericAxisSpec(
+                  renderSpec: charts.GridlineRendererSpec(
+                    // Customize gridline style
+                    labelStyle: charts.TextStyleSpec(
+                      fontFamily: 'Montserrat',
+                      color: charts.MaterialPalette.white,
+                    ),
+                    lineStyle: charts.LineStyleSpec(
+                      color: charts.MaterialPalette.white, // Gridline color
+                    ),
+                  ),
+                ),
+                barRendererDecorator: charts.BarLabelDecorator<String>(
+                  labelAnchor: charts.BarLabelAnchor.end, 
+                  labelPosition: charts.BarLabelPosition.outside, 
+                  outsideLabelStyleSpec: const charts.TextStyleSpec(
+                    fontFamily: 'Montserrat',
+                    color: charts.MaterialPalette.white,
+                  ),
+              ),
+            ),
+          )
           );
         }
       },

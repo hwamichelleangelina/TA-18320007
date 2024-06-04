@@ -40,8 +40,8 @@ dependencies:
   drop_shadow: ^0.1.0
   http: ^1.2.1
   fluttertoast: ^8.2.4
-  fl_chart: ^0.67.0
-  web_socket_channel: ^2.4.5
+  fl_chart: ^0.68.0
+  web_socket_channel: ^3.0.0
   encrypt: ^5.0.3
   provider: ^6.1.2
   crypt: ^4.3.1
@@ -65,7 +65,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -82,9 +82,6 @@ flutter:
     - assets/lightimages/
 
   fonts:
-    - family: TA2Icons
-      fonts:
-        - asset: assets/fonts/TA2Icons.ttf 
     - family: Montserrat
       fonts:
         - asset: assets/fonts/Montserrat-Bold.ttf

@@ -13,6 +13,22 @@ class SessionPerMonth {
   }
 }
 
+class PotentialRujuk {
+  final String initial;
+  final int reqid;
+  final String katakunci;
+  final int count;
+
+  PotentialRujuk({required this.initial, required this.reqid, required this.katakunci, required this.count});
+
+  factory PotentialRujuk.fromJson(Map<String, dynamic> json) {
+    return PotentialRujuk(
+      initial: json['initial'],
+      count: json['count'], reqid: json['reqid'], katakunci: json['katakunci'],
+    );
+  }
+}
+
 class TopPSDampingan {
   final String psname;
   final int dampingancount;

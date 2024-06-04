@@ -1,130 +1,166 @@
-const statistic = require('../models/statistic');
+const Statistic = require('../models/statistic');
 
 exports.jadwalpermonth = (req, res) => {
-    statistic.jadwalpermonth((err, results) => {
+    const year = req.params.year;
+    Statistic.jadwalpermonth(year, (err, results) => {
         if (err) {
             console.error('Error checking pendampingan per month distribution:', err);
             res.status(500).send('Error pendampingan per month count.');
             return;
-          }
-        else {
-            res.status(200).json(results);
         }
+        res.status(200).json(results);
     });
 };
 
 exports.topPSdampingan = (req, res) => {
-    statistic.topPSdampingan((err, results) => {
+    const year = req.params.year;
+    Statistic.topPSdampingan(year, (err, results) => {
         if (err) {
             console.error('Error checking dampingan per PS distribution:', err);
             res.status(500).send('Error dampingan per PS count.');
             return;
-          }
-        else {
-            res.status(200).json(results);
         }
+        res.status(200).json(results);
     });
 };
 
 exports.topPSpendampingan = (req, res) => {
-    statistic.topPSpendampingan((err, results) => {
+    const year = req.params.year;
+    Statistic.topPSpendampingan(year, (err, results) => {
         if (err) {
             console.error('Error checking pendampingan per PS distribution:', err);
             res.status(500).send('Error pendampingan per PS count.');
             return;
-          }
-        else {
-            res.status(200).json(results);
         }
+        res.status(200).json(results);
     });
 };
 
 exports.distribution = (req, res) => {
-    statistic.distribution((err, results) => {
+    const year = req.params.year;
+    Statistic.distribution(year, (err, results) => {
         if (err) {
             console.error('Error checking dampingan distribution:', err);
             res.status(500).send('Error checking dampingan distribution.');
-        } else {
-            res.status(200).json(results);
-        }
-    });
-};
-
-
-exports.fakuldistribution = (req, res) => {
-    statistic.fakuldistribution((err, results) => {
-        if (err) {
-            console.error('Error checking fakultas dampingan distribution:', err);
-            res.status(500).send('Error fakultas dampingan distribution.');
             return;
-          }
-        else {
-            res.status(200).json(results);
         }
-    });
-};
-
-exports.genderdistribution = (req, res) => {
-    statistic.genderdistribution((err, results) => {
-        if (err) {
-            console.error('Error checking gender dampingan distribution:', err);
-            res.status(500).send('Error gender dampingan distribution.');
-            return;
-          }
-        else {
-            res.status(200).json(results);
-        }
-    });
-};
-
-exports.classdistribution = (req, res) => {
-    statistic.classdistribution((err, results) => {
-        if (err) {
-            console.error('Error checking angkatan dampingan distribution:', err);
-            res.status(500).send('Error angkatan dampingan distribution.');
-            return;
-          }
-        else {
-            res.status(200).json(results);
-        }
-    });
-};
-
-exports.kampusdistribution = (req, res) => {
-    statistic.kampusdistribution((err, results) => {
-        if (err) {
-            console.error('Error checking kampus dampingan distribution:', err);
-            res.status(500).send('Error kampus dampingan distribution.');
-            return;
-          }
-        else {
-            res.status(200).json(results);
-        }
+        res.status(200).json(results);
     });
 };
 
 exports.toptopics = (req, res) => {
-    statistic.toptopics((err, results) => {
+    const year = req.params.year;
+    Statistic.toptopics(year, (err, results) => {
         if (err) {
             console.error('Error checking top topics distribution:', err);
             res.status(500).send('Error top topics count.');
             return;
-          }
-        else {
-            res.status(200).json(results);
         }
+        res.status(200).json(results);
     });
 };
 
 exports.recommendedRatio = (req, res) => {
-    statistic.recommendedRatio((err, results) => {
+    const year = req.params.year;
+    Statistic.recommendedRatio(year, (err, results) => {
         if (err) {
             console.error('Error checking isRecommended ratio:', err);
             res.status(500).send('Error isRecommended ratio distribution.');
             return;
+        }
+        res.status(200).json(results);
+    });
+};
+
+exports.jadwalpermonthAllTime = (req, res) => {
+    Statistic.jadwalpermonthAllTime((err, results) => {
+        if (err) {
+            console.error('Error checking pendampingan per month distribution:', err);
+            res.status(500).send('Error pendampingan per month count.');
+            return;
+        }
+        res.status(200).json(results);
+    });
+};
+
+exports.topPSdampinganAllTime = (req, res) => {
+    Statistic.topPSdampinganAllTime((err, results) => {
+        if (err) {
+            console.error('Error checking dampingan per PS distribution:', err);
+            res.status(500).send('Error dampingan per PS count.');
+            return;
+        }
+        res.status(200).json(results);
+    });
+};
+
+exports.topPSpendampinganAllTime = (req, res) => {
+    Statistic.topPSpendampinganAllTime((err, results) => {
+        if (err) {
+            console.error('Error checking pendampingan per PS distribution:', err);
+            res.status(500).send('Error pendampingan per PS count.');
+            return;
+        }
+        res.status(200).json(results);
+    });
+};
+
+exports.distributionAllTime = (req, res) => {
+    Statistic.distributionAllTime((err, results) => {
+        if (err) {
+            console.error('Error checking dampingan distribution:', err);
+            res.status(500).send('Error checking dampingan distribution.');
+            return;
+        }
+        res.status(200).json(results);
+    });
+};
+
+exports.potentialRujuk = (req, res) => {
+    const year = req.params.year;
+    Statistic.potentialrujuk(year, (err, result) => {
+        if (err) {
+            console.error('Error checking potentially recommended:', err);
+            res.status(500).send('Error potentially recommended');
+            return;
           }
         else {
-            res.status(200).json(results);
+            res.status(200).json(result);
         }
+    });
+};
+
+exports.potentialRujukAllTime = (req, res) => {
+    Statistic.potentialrujukAllTime((err, result) => {
+        if (err) {
+            console.error('Error checking potentially recommended:', err);
+            res.status(500).send('Error potentially recommended');
+            return;
+          }
+        else {
+            res.status(200).json(result);
+        }
+    });
+};
+
+exports.toptopicsAllTime = (req, res) => {
+    Statistic.toptopicsAllTime((err, results) => {
+        if (err) {
+            console.error('Error checking top topics distribution:', err);
+            res.status(500).send('Error top topics count.');
+            return;
+        }
+        res.status(200).json(results);
+    });
+};
+
+exports.recommendedRatioAllTime = (req, res) => {
+    Statistic.recommendedRatioAllTime((err, results) => {
+        if (err) {
+            console.error('Error checking isRecommended ratio:', err);
+            res.status(500).send('Error isRecommended ratio distribution.');
+            return;
+        }
+        res.status(200).json(results);
     });
 };
