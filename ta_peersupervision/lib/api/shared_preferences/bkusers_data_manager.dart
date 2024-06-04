@@ -33,6 +33,16 @@ class BKUsersDataManager {
     return prefs.containsKey('bkusersJson'); 
   }
 
+  static Future<String?> getBKUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final bkusersJson = prefs.getString('bkusersJson');
+    if (bkusersJson != null) {
+      final bkusersData = jsonDecode(bkusersJson);
+      return bkusersData['bkname'];
+    }
+    return null;
+  }
+
   static Future<void> removeBKUSersData() async {
     final prefs = await SharedPreferences.getInstance(); 
 

@@ -1,72 +1,96 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import 'package:ta_peersupervision/constants/colors.dart';
 
-class APSMainMobile extends StatelessWidget {
+class APSMainMobile extends StatefulWidget {
   const APSMainMobile({super.key});
+
+  @override
+  _APSMainMobileState createState() => _APSMainMobileState();
+}
+
+class _APSMainMobileState extends State<APSMainMobile> {
+  String? _psname;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPSUserName();
+  }
+
+  Future<void> _loadPSUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final psusersJson = prefs.getString('psusersJson');
+    if (psusersJson != null) {
+      final psusersData = jsonDecode(psusersJson);
+      setState(() {
+        _psname = psusersData['psname'];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
-//    final screenHeight = screenSize.height;
 
     return Container(
-        padding: const EdgeInsets.all(16.0),
-        constraints: const BoxConstraints(minHeight: 560.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 20),
-            // avatar img
-              DropShadow(
-                blurRadius: 20.0,
-                color: Colors.black,
-                opacity: 0.5,
-                offset: const Offset(5.0,10.0),
-                child: Image.asset(
-                "assets/images/PSlogo.png",
-                width: screenWidth/3,
-                ),
-              ),
-
-            // intro text
-            const Text(
-              "Selamat Datang,\nPendamping Sebaya ITB",
-              style: TextStyle(
-                fontSize: 23.0,
-                height: 1.5,
-                fontWeight: FontWeight.bold,
-                color: CustomColor.purpleTersier,
-              ),
+      padding: const EdgeInsets.all(16.0),
+      constraints: const BoxConstraints(minHeight: 560.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 20),
+          // avatar img
+          DropShadow(
+            blurRadius: 20.0,
+            color: Colors.black,
+            opacity: 0.5,
+            offset: const Offset(5.0, 10.0),
+            child: Image.asset(
+              "assets/images/PSlogo.png",
+              width: screenWidth / 3,
             ),
-
-            const SizedBox(height: 20),
-
-            SizedBox(
-              width: 250.0,
-              height: 45.0,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColor.purpleTersier,
-                ),
-                onPressed: (){
-                    Get.toNamed('/aps-dampingan');
-                },
-                child: const Text(
-                  "Cek Dampingan Saya",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 14.0,
-                    color: CustomColor.purpleprimary,
-                  ),
+          ),
+          // intro text
+          Text(
+            "Selamat Datang,\nPendamping Sebaya ITB\n${_psname ?? ''}",
+            style: const TextStyle(
+              fontSize: 23.0,
+              height: 1.5,
+              fontWeight: FontWeight.bold,
+              color: CustomColor.purpleTersier,
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: 250.0,
+            height: 45.0,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: CustomColor.purpleTersier,
+              ),
+              onPressed: () {
+                Get.toNamed('/aps-dampingan');
+              },
+              child: const Text(
+                "Cek Dampingan Saya",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 14.0,
+                  color: CustomColor.purpleprimary,
                 ),
               ),
             ),
-            //btn
-          ],
-        ),
-      );
+          ),
+          //btn
+        ],
+      ),
+    );
   }
 }

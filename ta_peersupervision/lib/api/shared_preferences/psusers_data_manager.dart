@@ -33,6 +33,16 @@ class PSUsersDataManager {
     return prefs.containsKey('psusersJson'); 
   }
 
+  static Future<String?> getPSUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final psusersJson = prefs.getString('psusersJson');
+    if (psusersJson != null) {
+      final psusersData = jsonDecode(psusersJson);
+      return psusersData['psname'];
+    }
+    return null;
+  }
+
   static Future<void> removePSUSersData() async {
     final prefs = await SharedPreferences.getInstance(); 
 

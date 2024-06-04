@@ -24,7 +24,12 @@ class dampingan {
     }
 
     static getAllDampingan(callback) {
-        const getAllDampinganQuery = 'SELECT * FROM dampingan;';
+        const getAllDampinganQuery = `
+            SELECT dampingan.*
+            FROM dampingan
+            JOIN psusers ON dampingan.psname = psusers.psname
+            WHERE psusers.psisActive = 1;
+        `;
         mysqlConn.query(getAllDampinganQuery, (err, result) => {
             if (err) {
                 callback(err, null);

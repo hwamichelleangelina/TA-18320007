@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -65,6 +65,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
               ),
             ),
+            const SizedBox(height: 10),
             _buildSessionsPerMonthChart(),
             const SizedBox(height: 20.0),
             const Padding(
@@ -95,6 +96,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
                               ),
                             ),
+                          const SizedBox(height: 10),
                             _buildTopMentorsClientsTable(),
                           ],
                         ),
@@ -115,6 +117,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
                               ),
                             ),
+                          const SizedBox(height: 10),
                             _buildTopMentorsSessionsTable(),
                           ],
                         ),
@@ -139,6 +142,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
                               ),
                             ),
+                          const SizedBox(height: 10),
                           _buildTopMentorsClientsTable(),
                         ],
                       ),
@@ -157,6 +161,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
                               ),
                             ),
+                          const SizedBox(height: 10),
                           _buildTopMentorsSessionsTable(),
                         ],
                       ),
@@ -194,6 +199,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
               ),
             ),
+            const SizedBox(height: 10),
             _buildTopTopicsChart(),
             const SizedBox(height: 40.0),
 
@@ -219,6 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
                               ),
                             ),
+                            const SizedBox(height: 10),
                             _buildRecommendationRatioChart(),
                           ],
                         ),
@@ -239,6 +246,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
                               ),
                             ),
+                          const SizedBox(height: 10),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Center(
+                              child: Align(alignment: Alignment.center,
+                              child: Text('Inisial dampingan yang telah melakukan pendampingan lebih dari 5 kali tetapi belum/tidak ingin dirujuk kepada Psikolog.',
+                                textAlign: TextAlign.center,),
+                            ),),
+                          ),
+                          const SizedBox(height: 10),
                             _buildPotentialRujukanTable(),
                           ],
                         ),
@@ -263,6 +280,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
                             ),
                           ),
+                          const SizedBox(height: 10),
                           _buildRecommendationRatioChart(),
                         ],
                       ),
@@ -281,6 +299,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               child: Text('(${selectedYear == 0 ? 'All Time' : selectedYear})'),
                             ),
                           ),
+                          const SizedBox(height: 10),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Center(
+                              child: Align(alignment: Alignment.center,
+                              child: Text('Inisial dampingan yang telah melakukan pendampingan lebih dari 5 kali tetapi belum/tidak ingin dirujuk kepada Psikolog.',
+                                textAlign: TextAlign.center,),
+                            ),),
+                          ),
+                          const SizedBox(height: 10),
                           _buildPotentialRujukanTable(),
                         ],
                       ),
