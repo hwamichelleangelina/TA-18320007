@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_import
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_import, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -376,7 +376,7 @@ class _FillingFormState extends State<FillingForm> {
           SizedBox(
             width: double.infinity*0.6,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (gambarantextFieldController.text.isEmpty ||
                     prosestextFieldController.text.isEmpty ||
                     hasiltextFieldController.text.isEmpty ||
@@ -386,27 +386,8 @@ class _FillingFormState extends State<FillingForm> {
                         colorText: Colors.white,); 
                     }
                 else {
-                  if (_isRecommended == true) {
-                    isRecommended = 1;
-                  }
-                  else {
-                    isRecommended = 0;
-                  }
-
-                  Laporan laporan = Laporan(
-                    jadwalid: widget.jadwal.jadwalid,
-                    isRecommended: isRecommended,
-                    isAgree: isAgree,
-                    gambaran: _gambar,
-                    proses: _proses,
-                    kendala: _kendala,
-                    hasil: _hasil
-                  );
-
-                  repository.fillLaporan(laporan: laporan).then((value) async {
-                    Navigator.pop(context);
-                    await provider.fetchJadwalReport();
-                  }); 
+                  confirmationDialog(context);
+                  await provider.fetchJadwalReport();
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -418,6 +399,55 @@ class _FillingFormState extends State<FillingForm> {
           ),
         ],
       ),
+    );
+  }
+
+  void confirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Simpan Laporan Pendampingan'),
+          content: const Text('Apakah laporan sudah benar?\nLaporan proses pendampingan TIDAK dapat diubah.'),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () async {
+                if (_isRecommended == true) {
+                  isRecommended = 1;
+                }
+                else {
+                  isRecommended = 0;
+                }
+
+                Laporan laporan = Laporan(
+                  jadwalid: widget.jadwal.jadwalid,
+                  isRecommended: isRecommended,
+                  isAgree: isAgree,
+                  gambaran: _gambar,
+                  proses: _proses,
+                  kendala: _kendala,
+                  hasil: _hasil
+                );
+
+                repository.fillLaporan(laporan: laporan).then((value) async {
+                  Navigator.of(context).pop();
+                  Get.toNamed('/aps-laporan');
+                }); 
+              },
+              child: const Text('Simpan'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 146, 139)),
+              ),
+              child: const Text('Batal'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
