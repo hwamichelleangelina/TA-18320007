@@ -85,6 +85,26 @@ Future<Map<String, List<ClientDistribution>>> getClientDistribution(year) async 
     }
   }
 
+  Future<List<TopTopicsByMonth>> getTopTopicsByMonth(year) async {
+    final response = await http.get(Uri.parse('$baseUrl/topTopicsByMonth/$year'));
+    if (response.statusCode == 200) {
+      Iterable list = json.decode(response.body);
+      return list.map((json) => TopTopicsByMonth.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load top topics pendampingan');
+    }
+  }
+
+  Future<List<TopTopicsByMonth>> getTopTopicsByMonthAllTime() async {
+    final response = await http.get(Uri.parse('$baseUrl/topTopicsByMonth'));
+    if (response.statusCode == 200) {
+      Iterable list = json.decode(response.body);
+      return list.map((json) => TopTopicsByMonth.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load top topics pendampingan');
+    }
+  }
+
 Future<List<Recommendation>> getRecommendationRatio(year) async {
   final response = await http.get(Uri.parse('$baseUrl/recRatio/$year'));
   if (response.statusCode == 200) {

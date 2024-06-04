@@ -107,6 +107,45 @@ class Statistic {
             }
         });
     }
+
+    static topTopicsByMonth(year, callback) {
+        const topTopicsByMonthQuery = `
+            SELECT 
+                katakunci, 
+                MONTH(tanggal) as month, 
+                COUNT(*) as count
+            FROM jadwal
+            WHERE YEAR(tanggal) = ?
+            GROUP BY katakunci, month
+            ORDER BY month ASC, count DESC;
+        `;
+        mysqlConn.query(topTopicsByMonthQuery, [year], (err, result) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, result);
+            }
+        });
+    }
+
+    static topTopicsByMonthAllTime(year, callback) {
+        const topTopicsByMonthQuery = `
+            SELECT 
+                katakunci, 
+                MONTH(tanggal) as month, 
+                COUNT(*) as count
+            FROM jadwal
+            GROUP BY katakunci, month
+            ORDER BY month ASC, count DESC;
+        `;
+        mysqlConn.query(topTopicsByMonthQuery, [year], (err, result) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, result);
+            }
+        });
+    }
     
     static recommendedRatio(year, callback) {
         const recommendedRatioQuery = `

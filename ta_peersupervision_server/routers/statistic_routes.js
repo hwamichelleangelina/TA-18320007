@@ -29,4 +29,7 @@ routerStats.get('/recRatio/:year', statsController.recommendedRatio);
 routerStats.get('/potentially/:year', statsController.potentialRujuk);
 routerStats.get('/potentially', statsController.potentialRujukAllTime);
 
+routerStats.get('/topTopicsByMonth/:year', statsController.toptopicsByMonth);
+routerStats.get('/topTopicsByMonth', statsController.toptopicsByMonthAllTime);
+
 module.exports = routerStats;
