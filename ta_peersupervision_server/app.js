@@ -1,20 +1,18 @@
 'use strict';
 
-var bodyParser = require('body-parser');
-var express = require('express');
-// const { request } = require('../appserver/node_modules/undici-types/api');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-const cors = require('cors'); // Mengizinkan semua asal (cors())
+const app = express();
 
-var app = express();
+// Enable CORS for all origins
+app.use(cors());
 
-app.use(cors()); 
-app.get('/hello', async (req, res) => {
-    res.json({message: 'Hello!'})
-})
+// Middleware to parse JSON bodies
+app.use(bodyParser.json())
 
-app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}))
+// Middleware to parse URL-encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }));
 
 module.exports = app;

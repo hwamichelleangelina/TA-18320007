@@ -1,5 +1,5 @@
 const mysqlConn = require('../config/db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 class psUser {
     static getaPSUsers(psnim, pspasswordhash, callback) {

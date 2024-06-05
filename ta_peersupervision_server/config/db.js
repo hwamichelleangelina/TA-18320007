@@ -1,12 +1,11 @@
 const mysql = require('mysql2');
-const bcrypt = require('bcrypt');
 
 // Koneksi ke MySQL
 const mysqlConn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'supervise',
-    database: 'peersupervision'
+    host: 'bmxbqqk9rwqua9c5j7co-mysql.services.clever-cloud.com',
+    user: 'u8gsfi6oxjcwhcws',
+    password: 'OJiRLKJQbv2ZNILo7qZs',
+    database: 'bmxbqqk9rwqua9c5j7co'
 })
 
 mysqlConn.connect(function (error) {

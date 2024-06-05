@@ -1,23 +1,28 @@
 {
-  "name": "appserver",
+  "name": "ta_peersupervision_server",
   "version": "1.0.0",
-  "description": "tutorial about backend",
+  "description": "about backend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "keywords": [
+    "express",
+    "authentication",
+    "api"
+  ],
+  "author": "Your name",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.7",
     "nodemon": "^3.1.0",
     "pdfkit": "^0.15.0",
     "undici-types": "^6.15.0"
-  },
-  "keywords": []
+  }
 }

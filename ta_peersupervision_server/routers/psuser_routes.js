@@ -4,8 +4,8 @@ const routerPSUser = Router();
 
 const psUserController = require('../controller/psuser_controller');
 
-routerPSUser.post('/', (req, res) => {
-    res.status(200).json('Server on Port 3000 and Database for PS has been connected.');
+routerPSUser.get('/', (req, res) => {
+    res.status(200).json('Database for PS has been connected.');
 });
 
 routerPSUser.post('/loginPSUsers', psUserController.loginPSUsers);
