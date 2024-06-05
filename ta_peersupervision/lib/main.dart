@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: '/bk-register', page: () => const BKRegisterPage(title: 'Register User')),
           GetPage(name: '/bk-tambah-anggota', page: () => const BKTambahAnggota()),
           GetPage(name: '/bk-edit-anggota', page: () => const BKEditAnggota()),
-          GetPage(name: '/bk-ganecare', page: () => const BKGanecarePage()),
+          GetPage(name: '/bk-ganecare', page: () => BKGanecarePage()),
 
           // PS
           GetPage(name: '/ps-login', page: () => const PSLoginPage()),
