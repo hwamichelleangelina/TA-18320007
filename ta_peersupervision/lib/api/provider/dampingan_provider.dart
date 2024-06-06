@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class DampinganProvider with ChangeNotifier {
-  final String serverUrl = 'http://localhost:3000/dampingan';
+  final String serverUrl = 'https://ta-peersupervision-server.vercel.app/dampingan';
 
   List<dynamic> _dampinganList = [];
 
@@ -49,7 +49,7 @@ class DampinganProvider with ChangeNotifier {
   }
 
   Future<bool> checkPertemuan(int reqid) async {
-    final response = await http.get(Uri.parse('http://localhost:3000/dampingan/countPendampingan/$reqid/'));
+    final response = await http.get(Uri.parse('https://ta-peersupervision-server.vercel.app/dampingan/countPendampingan/$reqid/'));
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);

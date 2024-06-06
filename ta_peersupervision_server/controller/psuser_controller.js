@@ -1,20 +1,27 @@
 const psUser= require('../models/psuser');
-
 exports.loginPSUsers = (req, res) => {
     const { psnim, pspasswordhash } = req.body;
 
     psUser.getaPSUsers(psnim, pspasswordhash, (err, psusers) => {
         if (err) {
+            console.error('Error fetching user:', err);
             res.status(500).json({message: 'User failed to login.'});
         }
+        else if (psusers && psusers.inactive) {
+            console.log('User is inactive:', psusers);
+            res.status(403).json({message: 'User is inactive.'});
+        }
         else if (psusers) {
+            console.log('User successfully logged in:', psusers);
             res.status(200).json({message: 'User successfully logged in.', psusers});
         }
         else {
+            console.log('Invalid credentials provided.');
             res.status(401).json({message: 'Invalid credentials. Please try again.'});
         }
     });
 }
+
 
 // BY ADMIN BK
 

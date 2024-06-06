@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:ta_peersupervision/api/logic/stats_logic.dart';
 
 class StatsRepository {
-  final String baseUrl = 'http://localhost:3000/stats';
+  final String baseUrl = 'https://ta-peersupervision-server.vercel.app/stats';
 
   Future<List<SessionPerMonth>> getSessionsPerMonth(year) async {
     final response = await http.get(Uri.parse('$baseUrl/jadwalpermonth/$year'));

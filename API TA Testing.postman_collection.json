@@ -13,7 +13,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/bkusers/",
+					"raw": "https://ta-peersupervision-server.vercel.app/bkusers/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -33,7 +33,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/psusers/",
+					"raw": "https://ta-peersupervision-server.vercel.app/psusers/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -78,7 +78,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/bkusers/registerBKUsers",
+					"raw": "https://ta-peersupervision-server.vercel.app/bkusers/registerBKUsers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -122,7 +122,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3000/bkusers/registerBKUsers?",
+							"raw": "https://ta-peersupervision-server.vercel.app/bkusers/registerBKUsers?",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -211,7 +211,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3000/bkusers/registerBKUsers",
+							"raw": "https://ta-peersupervision-server.vercel.app/bkusers/registerBKUsers",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -294,7 +294,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3000/bkusers/registerBKUsers",
+							"raw": "https://ta-peersupervision-server.vercel.app/bkusers/registerBKUsers",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -369,7 +369,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/bkusers/loginBKUsers",
+					"raw": "https://ta-peersupervision-server.vercel.app/bkusers/loginBKUsers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -403,7 +403,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3000/bkusers/loginBKUsers",
+							"raw": "https://ta-peersupervision-server.vercel.app/bkusers/loginBKUsers",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -476,7 +476,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3000/bkusers/loginBKUsers",
+							"raw": "https://ta-peersupervision-server.vercel.app/bkusers/loginBKUsers",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -566,7 +566,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/psusers/registerPSUsers",
+					"raw": "https://ta-peersupervision-server.vercel.app/psusers/registerPSUsers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -601,7 +601,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/psusers/loginPSUsers",
+					"raw": "https://ta-peersupervision-server.vercel.app/psusers/loginPSUsers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -631,7 +631,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/psusers/deletePSUsers",
+					"raw": "https://ta-peersupervision-server.vercel.app/psusers/deletePSUsers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -681,7 +681,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/psusers/updatePSUsers",
+					"raw": "https://ta-peersupervision-server.vercel.app/psusers/updatePSUsers",
 					"protocol": "http",
 					"host": [
 						"localhost"

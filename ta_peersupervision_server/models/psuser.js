@@ -10,14 +10,17 @@ class psUser {
             }
             else if (result.length > 0) {
                 const psuser = result[0];
-                bcrypt.compare(pspasswordhash, psuser.pspasswordhash, (err, result) => {
-                    if (result) {
-                        callback(null, psuser);
-                    }
-                    else {
-                        callback(null, null);
-                    }
-                });
+                if (psuser.psisActive === 0) {
+                    callback(null, {inactive: true});
+                } else {
+                    bcrypt.compare(pspasswordhash, psuser.pspasswordhash, (err, isMatch) => {
+                        if (isMatch) {
+                            callback(null, psuser);
+                        } else {
+                            callback(null, null);
+                        }
+                    });
+                }
             }
             else {
                 callback(null, null);

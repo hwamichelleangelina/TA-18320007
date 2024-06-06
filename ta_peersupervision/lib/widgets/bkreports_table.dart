@@ -38,7 +38,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
 
   Future<void> _fetchData() async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:3000/laporan/getLaporan'));
+      final response = await http.get(Uri.parse('https://ta-peersupervision-server.vercel.app/laporan/getLaporan'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['reportlist'] is List) {
@@ -59,7 +59,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
 
   void _showDetails(int jadwalid) async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:3000/laporan/getLaporan/$jadwalid'));
+      final response = await http.get(Uri.parse('https://ta-peersupervision-server.vercel.app/laporan/getLaporan/$jadwalid'));
       if (response.statusCode == 200) {
         final detail = json.decode(response.body);
         if (detail['report'] is List && detail['report'].isNotEmpty) {
@@ -172,7 +172,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
   }
 
   Future<void> _downloadFile(int jadwalid) async {
-    final url = 'http://localhost:3000/report/download/$jadwalid';
+    final url = 'https://ta-peersupervision-server.vercel.app/report/download/$jadwalid';
 
     if (kIsWeb) {
       // Logika unduhan untuk web

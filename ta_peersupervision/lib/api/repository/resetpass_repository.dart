@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:ta_peersupervision/api/logic/resetpass_logic.dart';
 
 class ResetPassRepository {
-  final String serverUrl = 'http://localhost:3000/users';
+  final String serverUrl = 'https://ta-peersupervision-server.vercel.app/users';
 
 // VERIFIKASI
   Future<bool> verifyOldBKPassword({required String bkusername, required String oldPassword}) async {

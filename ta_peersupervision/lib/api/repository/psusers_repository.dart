@@ -8,7 +8,7 @@ import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
 
 class PSUsersRepository {
-  final String serverUrl = 'http://localhost:3000/psusers';
+  final String serverUrl = 'https://ta-peersupervision-server.vercel.app/psusers';
 
 // Dilakukan oleh BK ITB
   Future<void> registerPSUsers({required PSUsers psusers}) async {
@@ -45,37 +45,53 @@ class PSUsersRepository {
   }
 
   Future<PSUsers?> loginPSUsers({required int psnim, required String pspasswordhash}) async {
-    final response = await http.post(
-      Uri.parse('$serverUrl/loginPSUsers'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({
-        'psnim': psnim,
-        'pspasswordhash': pspasswordhash,
-      }),
-    ); 
+    try {
+      final response = await http.post(
+        Uri.parse('$serverUrl/loginPSUsers'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'psnim': psnim,
+          'pspasswordhash': pspasswordhash,
+        }),
+      );
 
-//    print(response.statusCode);
+      // Logging status code and response body
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      final psusers = PSUsers.fromJson(responseData['psusers']);
-      
-      await PSUsersDataManager.savePSUsersData(psusers);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final psusers = PSUsers.fromJson(responseData['psusers']);
 
-      return psusers;
-    }
-    else if (response.statusCode == 401) {
-//      print("debug");
-      return null;
-    }
-    else {
-      Get.toNamed('/ps-login');
-      Get.snackbar('Login Failed', "Error while logging in PS User",
+        await PSUsersDataManager.savePSUsersData(psusers);
+
+        return psusers;
+      } else if (response.statusCode == 401) {
+        print('Invalid credentials.');
+        return null;
+      } else if (response.statusCode == 403) {
+        Get.snackbar('Login Failed', 'User is inactive.',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return null;
+      } else {
+        Get.toNamed('/ps-login');
+        Get.snackbar('Login Failed', "Error while logging in PS User",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        throw Exception('Error while logging in PS User. Failed to login');
+      }
+    } catch (e) {
+      print('An error occurred: $e');
+      Get.snackbar('Login Failed', "An unexpected error occurred.",
         backgroundColor: Colors.red,
-        colorText: Colors.white,);
-      throw Exception('Error while logging in PS User. Failed to login');
+        colorText: Colors.white,
+      );
+      return null;
     }
   }
 
@@ -146,13 +162,22 @@ class PSUsersRepository {
   }
 
   Future<List<FreqPS>> fetchFreqPS() async {
-    final response = await http.get(Uri.parse('$serverUrl/countPSDone'));
+    try {
+      print('Fetching frequency of PS users...');
+      final response = await http.get(Uri.parse('$serverUrl/countPSDone'));
 
-    if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      return data.map((user) => FreqPS.fromJson(user)).toList();
-    } else {
-      throw Exception('Failed to load PS users pendampingan frequencies');
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        return data.map((user) => FreqPS.fromJson(user)).toList();
+      } else {
+        throw Exception('Failed to load PS users pendampingan frequencies');
+      }
+    } catch (e) {
+      print('An error occurred: $e');
+      throw Exception('An unexpected error occurred.');
     }
   }
 

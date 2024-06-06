@@ -8,7 +8,7 @@ import 'package:ta_peersupervision/api/logic/laporan_logic.dart';
 
 class Report {
   static Future<List<dynamic>> fetchAllLaporan() async {
-    final response = await http.get(Uri.parse('http://localhost:3000/laporan/getLaporan'));
+    final response = await http.get(Uri.parse('https://ta-peersupervision-server.vercel.app/laporan/getLaporan'));
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
@@ -18,10 +18,10 @@ class Report {
 }
 
 class LaporanRepository {
-  String serverUrl = 'http://localhost:3000/laporan';
+  String serverUrl = 'https://ta-peersupervision-server.vercel.app/laporan';
 
   Future<List<Laporan>> fetchLaporan() async {
-    final response = await http.get(Uri.parse('http://localhost:3000/laporan/getLaporan'));
+    final response = await http.get(Uri.parse('https://ta-peersupervision-server.vercel.app/laporan/getLaporan'));
     print(response.statusCode);
 
     if (response.statusCode == 200) {

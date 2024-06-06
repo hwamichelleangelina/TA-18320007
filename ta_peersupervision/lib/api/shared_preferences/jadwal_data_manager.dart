@@ -71,7 +71,7 @@ class JadwalService {
       throw Exception('No logged in user');
     }
 
-    final response = await http.get(Uri.parse('http://localhost:3000/laporan/getJadwal/$psnim'));
+    final response = await http.get(Uri.parse('https://ta-peersupervision-server.vercel.app/laporan/getJadwal/$psnim'));
 
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
