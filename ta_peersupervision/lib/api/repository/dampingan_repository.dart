@@ -11,7 +11,6 @@ import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.d
 class DampinganRepository {
   final String serverUrl = 'http://localhost:3000/dampingan';
 
-
   Future<void> importDampingan({required Dampingan dampingan}) async {
     final response = await http.post(
       Uri.parse('$serverUrl/createDampingan'),
@@ -27,6 +26,7 @@ class DampinganRepository {
         'mediakontak': dampingan.mediakontak,
         'kontak': dampingan.kontak,
         'katakunci': dampingan.katakunci,
+        'katakunci2':dampingan.katakunci2,
         'sesi': dampingan.sesi,
         'psname': dampingan.psname,
       }),

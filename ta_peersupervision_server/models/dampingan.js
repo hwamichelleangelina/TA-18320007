@@ -67,14 +67,14 @@ class dampingan {
                 return;
             }
         
-            const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psname } = dampinganData;
+            const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname } = dampinganData;
             const createDampinganQuery = `
-            INSERT INTO dampingan (initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, psname)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT psnim FROM psusers WHERE psname = ?), ?);
+            INSERT INTO dampingan (initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psnim, psname)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT psnim FROM psusers WHERE psname = ?), ?);
             `;
         
             mysqlConn.query(createDampinganQuery, [
-                initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psname, psname
+                initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname, psname
             ], (err, result) => {
                 if (err) {
                     console.error('Error creating dampingan:', err);
@@ -85,24 +85,14 @@ class dampingan {
             });
         }
     
-    
-
     static updateDataDampingan(reqid, newData, callback) {
-        const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, tanggal, psname } = newData;
-        const updateDampinganQuery = 'update dampingan set initial = ?, fakultas = ?, gender = ?, angkatan = ?, kampus = ?, mediakontak = ?, kontak = ?, katakunci = ?, sesi = ?, psnim = ?, tanggal = ?, psname = ? where reqid = ?;';
-        mysqlConn.query(updateDampinganQuery, [initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, sesi, psnim, tanggal, psname, reqid], (err, result) => {
-            if (err) {
-                callback(err, null);
-            } else {
-                callback(null, result);
-            }
-        });
-    }
-    
-    // PEMBUATAN JADWAL
-    static updateDampinganTanggal(reqid, newTanggal, callback) {
-        const updateTanggalQuery = 'UPDATE dampingan SET tanggal = ? WHERE reqid = ?;';
-        mysqlConn.query(updateTanggalQuery, [newTanggal, reqid], (err, result) => {
+        const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname } = newData;
+        const updateDampinganQuery = `
+        UPDATE dampingan
+        SET initial = ?, gender = ?, fakultas = ?, kampus = ?, angkatan = ?, mediakontak = ?, kontak = ?, katakunci = ?, katakunci2 = ?, psnim = (SELECT psnim FROM psusers WHERE psname = ?), sesi = ?, psname = ?
+        WHERE reqid = ?
+      `;
+        mysqlConn.query(updateDampinganQuery, [initial, gender, fakultas, kampus, angkatan, mediakontak, kontak, katakunci, katakunci2, psname, sesi, psname, reqid], (err, result) => {
             if (err) {
                 callback(err, null);
             } else {

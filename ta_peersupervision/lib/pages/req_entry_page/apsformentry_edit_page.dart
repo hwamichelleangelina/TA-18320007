@@ -28,6 +28,7 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
   String? sesi;
   String? psname;
   String? kontak;
+  String? katakunci2;
 
   PSUsersRepository repository = PSUsersRepository();
   DampinganRepository dampinganRepo = DampinganRepository();
@@ -81,7 +82,7 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // Spasi kanan kiri
                 ),
-                items: ['L', 'P'].map((String gender) {
+                items: ['Laki-laki', 'Perempuan'].map((String gender) {
                   return DropdownMenuItem<String>(
                     value: gender,
                     child: Text(gender),
@@ -123,7 +124,7 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // Spasi kanan kiri
                 ),
-                items: ['Ganesha', 'Cirebon', 'Jatinangor'].map((String kampus) {
+                items: ['ITB Ganesha', 'ITB Cirebon', 'ITB Jatinangor'].map((String kampus) {
                   return DropdownMenuItem<String>(
                     value: kampus,
                     child: Text(kampus),
@@ -225,7 +226,30 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                   return null;
                 },
               ),
+
               const SizedBox(height: 16),
+              DropdownButtonFormField<String?>(
+                decoration: const InputDecoration(
+                  labelText: 'Kata Kunci Tambahan',
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // Spasi kanan kiri
+                ),
+                items: [
+                  'Akademik', 'Finansial', 'Keluarga', 'Percintaan', 'Kehidupan Kampus', 'Kesehatan', 'Karir dan Masa Depan', 'Lain-lain'
+                ].map((String? katakunci2) {
+                  return DropdownMenuItem<String>(
+                    value: katakunci2,
+                    child: Text(katakunci2 ?? 'Pilih kata kunci tambahan'),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    katakunci = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 16),
+
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Sesi',
@@ -302,6 +326,7 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                       kontak: kontak!,
                       sesi: sesi!,
                       psname: psname, katakunci: katakunci!,
+                      katakunci2: katakunci2
                     );
                     
                     dampinganRepo.importDampingan(dampingan: dampingan).then((value) async {
