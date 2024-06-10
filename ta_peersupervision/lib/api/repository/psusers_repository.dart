@@ -8,7 +8,7 @@ import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
 
 class PSUsersRepository {
-  final String serverUrl = 'https://ta-peersupervision-server.vercel.app/psusers';
+  final String serverUrl = 'http://localhost:3000/psusers';
 
 // Dilakukan oleh BK ITB
   Future<void> registerPSUsers({required PSUsers psusers}) async {

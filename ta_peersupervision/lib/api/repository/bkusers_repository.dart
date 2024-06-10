@@ -8,7 +8,7 @@ import 'package:ta_peersupervision/api/logic/bkusers_logic.dart';
 import 'package:ta_peersupervision/api/shared_preferences/bkusers_data_manager.dart';
 
 class BKUsersRepository {
-  final String serverUrl = 'https://ta-peersupervision-server.vercel.app/bkusers';
+  final String serverUrl = 'http://localhost:3000/bkusers';
 
   Future<void> registerBKUsers({required BKUsers bkusers}) async {
     final response = await http.post(Uri.parse('$serverUrl/registerBKUsers'), headers:{

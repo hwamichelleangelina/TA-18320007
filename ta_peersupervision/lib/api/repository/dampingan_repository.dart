@@ -9,7 +9,7 @@ import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
 
 class DampinganRepository {
-  final String serverUrl = 'https://ta-peersupervision-server.vercel.app/dampingan';
+  final String serverUrl = 'http://localhost:3000/dampingan';
 
 
   Future<void> importDampingan({required Dampingan dampingan}) async {
@@ -29,6 +29,7 @@ class DampinganRepository {
         'katakunci': dampingan.katakunci,
         'sesi': dampingan.sesi,
         'psname': dampingan.psname,
+        'tingkat': dampingan.tingkat,
       }),
     );
 
@@ -138,7 +139,7 @@ class DampinganRepository {
   }
 }
 
-const String serverUrl = 'https://ta-peersupervision-server.vercel.app/dampingan';
+const String serverUrl = 'http://localhost:3000/dampingan';
 
 Future<List<Dampingan>> fetchDampingan(int? psnim) async {
   final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();

@@ -11,6 +11,7 @@ class Dampingan {
   String sesi;
   int? psnim;
   String? psname;
+  String? tingkat;
 
   Dampingan({
     this.reqid,
@@ -25,6 +26,7 @@ class Dampingan {
     required this.sesi,
     this.psnim,
     this.psname,
+    this.tingkat
   });
 
   factory Dampingan.fromJson(Map<String, dynamic> json) {
@@ -42,6 +44,7 @@ class Dampingan {
       sesi: json['sesi'],
       psnim: json['psnim'],
       psname: json['psname'],
+      tingkat: json['tingkat']
     );
   }
 
@@ -60,6 +63,7 @@ class Dampingan {
     data['sesi'] = sesi;
     data['psnim'] = psnim;
     data['psname'] = psname;
+    data['tingkat'] = tingkat;
 
     return data;
   }

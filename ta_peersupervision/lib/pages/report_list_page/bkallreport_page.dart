@@ -22,7 +22,7 @@ class _LaporanTableState extends State<LaporanTable> {
 
   Future<void> _fetchData() async {
     try {
-      final response = await http.get(Uri.parse('https://ta-peersupervision-server.vercel.app/laporan/getLaporan'));
+      final response = await http.get(Uri.parse('http://localhost:3000/laporan/getLaporan'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['reportlist'] is List) {
@@ -43,7 +43,7 @@ class _LaporanTableState extends State<LaporanTable> {
 
   void _showDetails(int jadwalid) async {
     try {
-      final response = await http.get(Uri.parse('https://ta-peersupervision-server.vercel.app/laporan/getLaporan/$jadwalid'));
+      final response = await http.get(Uri.parse('http://localhost:3000/laporan/getLaporan/$jadwalid'));
       if (response.statusCode == 200) {
         final detail = json.decode(response.body);
         if (detail['report'] is List && detail['report'].isNotEmpty) {

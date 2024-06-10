@@ -10,7 +10,7 @@ import 'package:ta_peersupervision/api/repository/event.dart';
 import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
 
 class JadwalRepository {
-  String serverUrl = 'https://ta-peersupervision-server.vercel.app/jadwal';
+  String serverUrl = 'http://localhost:3000/jadwal';
 
   Future<void> createJadwal({required Jadwal jadwal}) async {
     final response = await http.post(

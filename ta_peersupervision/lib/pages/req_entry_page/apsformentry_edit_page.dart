@@ -81,7 +81,7 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // Spasi kanan kiri
                 ),
-                items: ['L', 'P'].map((String gender) {
+                items: ['Laki-laki', 'Perempuan'].map((String gender) {
                   return DropdownMenuItem<String>(
                     value: gender,
                     child: Text(gender),
