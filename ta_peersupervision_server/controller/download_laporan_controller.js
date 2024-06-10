@@ -65,7 +65,9 @@ exports.downloadReport = (req, res) => {
                 doc.text(`Tanggal Pelaksanaan Pendampingan: ${formatDateWithTimezone(laporan.tanggal)}`);
                 doc.moveDown();
 
-                doc.text(`Kata Kunci Masalah Dampingan: ${laporan.katakunci}`);
+                doc.text(`Kata Kunci Masalah Dampingan:`);
+                doc.text(`${laporan.katakunci}`);
+                doc.text(`${laporan.katakunci2}`);
                 doc.moveDown();
                 doc.font('TimesNewRoman-Bold').text(`Direkomendasikan untuk rujuk ke Psikolog?`, { align: 'center', bold: true, lineGap: 1.15 * 12 - 12 });
                 doc.moveDown();

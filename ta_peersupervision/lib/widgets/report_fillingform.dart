@@ -110,10 +110,19 @@ class _FillingFormState extends State<FillingForm> {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
-            child: Text(
+            child: 
+            
+
+            widget.jadwal.katakunci2 == null
+            ? Text(
               'Kata Kunci Masalah Dampingan: ${widget.jadwal.katakunci}',
               style: const TextStyle(fontSize: 18,),
+            )
+            : Text(
+              'Kata Kunci Masalah Dampingan: ${widget.jadwal.katakunci}, ${widget.jadwal.katakunci2}',
+              style: const TextStyle(fontSize: 18,),
             ),
+            
           ),
 
           const SizedBox(height: 50),

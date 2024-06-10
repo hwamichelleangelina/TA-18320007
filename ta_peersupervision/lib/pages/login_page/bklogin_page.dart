@@ -155,7 +155,7 @@ class _BKLoginPageState extends State<BKLoginPage> {
 //                                print(value);
 //                                print(bkusernameController.text);
 //                                print(bkpasswordhashController.text); // Controller passed
-                                Get.snackbar('Login Error', 'Unable to login BK User',
+                                Get.snackbar('Login Error', 'Username atau password akun Bimbingan Konseling ITB salah',
                                   backgroundColor: Colors.red,
                                   colorText: Colors.white,);
                                 setState(() {

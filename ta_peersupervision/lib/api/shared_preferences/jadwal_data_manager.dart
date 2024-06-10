@@ -26,6 +26,7 @@ class JadwalList {
   String? psname;
   String? mediapendampingan;
   String? katakunci;
+  String? katakunci2;
   DateTime? tanggalKonversi;
 
   JadwalList({
@@ -37,6 +38,7 @@ class JadwalList {
     this.psname,
     this.mediapendampingan,
     this.katakunci,
+    this.katakunci2,
     required this.tanggalKonversi
   });
 
@@ -50,6 +52,7 @@ class JadwalList {
       psname: json['psname'],
       mediapendampingan: json['mediapendampingan'],
       katakunci: json['katakunci'],
+      katakunci2: json['katakunci2'],
       tanggalKonversi: DateTime.parse(json['tanggalKonversi']),
     );
   }

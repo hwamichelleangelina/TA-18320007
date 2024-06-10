@@ -54,12 +54,12 @@ class laporan {
     
         const { jadwalid, isRecommended, gambaran, proses, hasil, kendala, isAgree } = laporanData;
         const createLaporanQuery = `
-        INSERT INTO laporan (jadwalid, reqid, initial, psname, psnim, tanggal, isRecommended, katakunci, gambaran, proses, hasil, kendala, isAgree)
-        VALUES (?, (SELECT reqid FROM jadwal WHERE jadwalid = ?), (SELECT initial FROM jadwal WHERE jadwalid = ?), (SELECT psname FROM jadwal WHERE jadwalid = ?), (SELECT psnim FROM jadwal WHERE jadwalid = ?), (SELECT tanggal FROM jadwal WHERE jadwalid = ?), ?, (SELECT katakunci FROM jadwal WHERE jadwalid = ?), ?, ?, ?, ?, ?);
+        INSERT INTO laporan (jadwalid, reqid, initial, psname, psnim, tanggal, isRecommended, katakunci, katakunci2, gambaran, proses, hasil, kendala, isAgree)
+        VALUES (?, (SELECT reqid FROM jadwal WHERE jadwalid = ?), (SELECT initial FROM jadwal WHERE jadwalid = ?), (SELECT psname FROM jadwal WHERE jadwalid = ?), (SELECT psnim FROM jadwal WHERE jadwalid = ?), (SELECT tanggal FROM jadwal WHERE jadwalid = ?), ?, (SELECT katakunci FROM jadwal WHERE jadwalid = ?), (SELECT katakunci2 FROM jadwal WHERE jadwalid = ?), ?, ?, ?, ?, ?);
         `;
     
         mysqlConn.query(createLaporanQuery, [
-            jadwalid, jadwalid, jadwalid, jadwalid, jadwalid, jadwalid, isRecommended, jadwalid, gambaran, proses, hasil, kendala, isAgree
+            jadwalid, jadwalid, jadwalid, jadwalid, jadwalid, jadwalid, isRecommended, jadwalid, jadwalid, gambaran, proses, hasil, kendala, isAgree
         ], (err, result) => {
             if (err) {
                 console.error('Error creating laporan pendampingan:', err);

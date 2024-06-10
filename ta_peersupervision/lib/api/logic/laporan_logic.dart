@@ -7,6 +7,7 @@ class Laporan {
   int? jadwalid;
   int? isRecommended;
   String? katakunci;
+  String? katakunci2;
   String? gambaran;
   String? proses;
   String? hasil;
@@ -21,6 +22,7 @@ class Laporan {
     this.jadwalid,
     this.isRecommended,
     this.katakunci,
+    this.katakunci2,
     this.gambaran,
     this.proses,
     this.hasil,
@@ -38,6 +40,7 @@ class Laporan {
       jadwalid: json['jadwalid'],
       isRecommended: json['isRecommended'],
       katakunci: json['katakunci'],
+      katakunci2: json['katakunci2'],
       gambaran: json['gambaran'],
       proses: json['proses'],
       hasil: json['hasil'],
@@ -55,10 +58,12 @@ class Laporan {
 
 class Katakunci {
   String? katakunci;
+  String? katakunci2;
 
-  Katakunci({this.katakunci});
+  Katakunci({this.katakunci, this.katakunci2});
 
   Katakunci.fromJson(Map<String, dynamic> json) {
     katakunci = json['katakunci'];
+    katakunci2 = json['katakunci2'];
   }
 }

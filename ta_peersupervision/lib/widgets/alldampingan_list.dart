@@ -71,94 +71,98 @@ class _AllDampinganListState extends State<AllDampinganList> {
           ),
 
           const SizedBox(height: 16),
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: filteredList.length,
-            itemBuilder: (context, index) {
-              final item = filteredList[index];
-              return Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: CustomColor.purpleBg2,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: FutureBuilder<bool>(
-                  future: provider.checkPertemuan(item['reqid']),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return ListTile(
-                        title: Text(item['initial'], style: const TextStyle( color: CustomColor.purpleTersier)),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('ID Dampingan: ${item['reqid']}'),
-                            Text('Gender: ${item['gender']}'),
-                            Text('Fakultas: ${item['fakultas']}'),
-                            Text('Kampus: ${item['kampus']}'),
-                            Text('Angkatan: ${item['angkatan']}'),
-                            Text('Media Kontak: ${item['mediakontak']}'),
-                            Text('Kontak: ${item['kontak']}'),
-                            Text('Sesi Pendampingan: ${item['sesi']}'),
-                            const SizedBox(height: 8,),
-                            Text('Nama Pendamping Sebaya: ${item['psname']}'),
-                          ],
-                        ),
-                        trailing: const CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return ListTile(
-                        title: Text(item['initial']),
-                        subtitle: const Text('Error loading data'),
-                      );
-                    } else {
-                      return ListTile(
-                        title: Text(item['initial']),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('ID Dampingan: ${item['reqid']}'),
-                            Text('Gender: ${item['gender']}'),
-                            Text('Fakultas: ${item['fakultas']}'),
-                            Text('Kampus: ${item['kampus']}'),
-                            Text('Angkatan: ${item['angkatan']}'),
-                            Text('Media Kontak: ${item['mediakontak']}'),
-                            Text('Kontak: ${item['kontak']}'),
-                            Text('Sesi Pendampingan: ${item['sesi']}'),
-                            const SizedBox(height: 8,),
-                            Text('Nama Pendamping Sebaya: ${item['psname']}'),
-                            if (snapshot.data!)
-                              const Text('Pendampingan pertama: DIJADWALKAN', style: TextStyle(color: Colors.green))
-                            else
-                              const Text('Pendampingan pertama: BELUM DIJADWALKAN', style: TextStyle(color: Colors.red)),
-                          ],
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                _showUpdateDialog(context, item, provider);
-                              },
-                            ),
-                            const SizedBox(width: 5),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () async {
-                                final confirmDelete = await _showDeleteConfirmationDialog(context);
-                                if (confirmDelete) {
-                                  await provider.deleteDampingan(item['reqid']);
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  },
-                ),
+          Consumer<DampinganProvider>(
+            builder: (context, provider, child) {
+            return ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: filteredList.length,
+              itemBuilder: (context, index) {
+                final item = filteredList[index];
+                return Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: CustomColor.purpleBg2,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: FutureBuilder<bool>(
+                    future: provider.checkPertemuan(item['reqid']),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return ListTile(
+                          title: Text(item['initial'], style: const TextStyle( color: CustomColor.purpleTersier)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('ID Dampingan: ${item['reqid']}'),
+                              Text('Gender: ${item['gender']}'),
+                              Text('Fakultas: ${item['fakultas']}'),
+                              Text('Kampus: ${item['kampus']}'),
+                              Text('Angkatan: ${item['angkatan']}'),
+                              Text('Media Kontak: ${item['mediakontak']}'),
+                              Text('Kontak: ${item['kontak']}'),
+                              Text('Sesi Pendampingan: ${item['sesi']}'),
+                              const SizedBox(height: 8,),
+                              Text('Nama Pendamping Sebaya: ${item['psname']}'),
+                            ],
+                          ),
+                          trailing: const CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return ListTile(
+                          title: Text(item['initial']),
+                          subtitle: const Text('Error loading data'),
+                        );
+                      } else {
+                        return ListTile(
+                          title: Text(item['initial']),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('ID Dampingan: ${item['reqid']}'),
+                              Text('Gender: ${item['gender']}'),
+                              Text('Fakultas: ${item['fakultas']}'),
+                              Text('Kampus: ${item['kampus']}'),
+                              Text('Angkatan: ${item['angkatan']}'),
+                              Text('Media Kontak: ${item['mediakontak']}'),
+                              Text('Kontak: ${item['kontak']}'),
+                              Text('Sesi Pendampingan: ${item['sesi']}'),
+                              const SizedBox(height: 8,),
+                              Text('Nama Pendamping Sebaya: ${item['psname']}'),
+                              if (snapshot.data!)
+                                const Text('Pendampingan pertama: DIJADWALKAN', style: TextStyle(color: Colors.green))
+                              else
+                                const Text('Pendampingan pertama: BELUM DIJADWALKAN', style: TextStyle(color: Colors.red)),
+                            ],
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () {
+                                  _showUpdateDialog(context, item, provider);
+                                },
+                              ),
+                              const SizedBox(width: 5),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () async {
+                                  final confirmDelete = await _showDeleteConfirmationDialog(context);
+                                  if (confirmDelete) {
+                                    await provider.deleteDampingan(item['reqid']);
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                );
+              }
               );
             },
           ),
@@ -495,6 +499,9 @@ class _AllDampinganListState extends State<AllDampinganList> {
                   await provider.updateDampingan(item['reqid'], newData);
 
                   Navigator.of(context).pop();
+                  setState(() {
+                    provider.fetchDampingan();
+                  });
                   Get.snackbar('Ubah Data Dampingan', 'Data Dampingan $initial berhasil diperbarui',
                     backgroundColor: Colors.green, colorText: Colors.white);  
                 }

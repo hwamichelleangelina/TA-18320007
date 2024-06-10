@@ -76,6 +76,7 @@ class DampinganProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         // Handle success response
         print('Data updated successfully');
+        notifyListeners();
       } else {
         // Handle error response
         print('Failed to update data');

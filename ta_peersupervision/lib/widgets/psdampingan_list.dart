@@ -59,7 +59,11 @@ class _PSDampinganListState extends State<PSDampinganList> {
                 Text('Kampus: ${item.kampus ?? 'N/A'}'),
                 Text('Media Kontak: ${item.mediakontak}'),
                 Text('Kontak: ${item.kontak}'),
-                Text('Kata Kunci Masalah: ${item.katakunci} ${item.katakunci2 ?? ''}'),
+
+                item.katakunci2 == null
+                ? Text('Kata Kunci Masalah: ${item.katakunci}')
+                : Text('Kata Kunci Masalah: ${item.katakunci}, ${item.katakunci2}'),
+
                 Text('Sesi Pendampingan: ${item.sesi}'),
                 const SizedBox(height: 16.0),
                 Text('Nama Pendamping Sebaya: ${item.psname}'),
@@ -118,7 +122,7 @@ class _PSDampinganListState extends State<PSDampinganList> {
                 child: 
                   ListTile(
                     title: Text('ID Dampingan: ${item.reqid.toString()} - ${item.initial}'),
-                    subtitle: /*const Text(''),*/ Text('Kontak Dampingan: ${item.kontak}\nKata Kunci Masalah: ${item.katakunci}'),
+                    subtitle: /*const Text(''),*/ Text('Kontak Dampingan: ${item.kontak}'),
                     onTap: () {
                       _showDetailsDialog(item);
                     },
