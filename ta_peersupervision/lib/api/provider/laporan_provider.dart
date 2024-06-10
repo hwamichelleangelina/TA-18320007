@@ -12,6 +12,8 @@ class LaporanProvider with ChangeNotifier {
     fetchJadwalReport();
   }
 
+  // fetch jadwal
+
 Future<List<JadwalList>> fetchJadwalReport() async {
     final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();
     int psnim;
