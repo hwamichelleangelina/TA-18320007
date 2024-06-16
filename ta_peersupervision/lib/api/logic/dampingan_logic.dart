@@ -5,11 +5,11 @@ class Dampingan {
   int? angkatan;
   String? gender;
   String? kampus;
-  String mediakontak;
-  String kontak;
+  String? mediakontak;
+  String? kontak;
   String? katakunci;
   String? katakunci2;
-  String sesi;
+  String? sesi;
   int? psnim;
   String? psname;
   String? tingkat;
@@ -21,11 +21,11 @@ class Dampingan {
     this.angkatan,
     this.gender,
     this.kampus,
-    required this.mediakontak,
-    required this.kontak,
+    this.mediakontak,
+    this.kontak,
     this.katakunci,
     this.katakunci2,
-    required this.sesi,
+    this.sesi,
     this.psnim,
     this.psname,
     this.tingkat,

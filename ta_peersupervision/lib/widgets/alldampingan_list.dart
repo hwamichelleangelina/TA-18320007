@@ -149,7 +149,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
                               IconButton(
                                 icon: const Icon(Icons.delete),
                                 onPressed: () async {
-                                  final confirmDelete = await _showDeleteConfirmationDialog(context);
+                                  final confirmDelete = await _showDeleteConfirmationDialog(context, item['reqid']);
                                   if (confirmDelete) {
                                     await provider.deleteDampingan(item['reqid']);
                                   }
@@ -171,22 +171,22 @@ class _AllDampinganListState extends State<AllDampinganList> {
     );
   }
 
-  Future<bool> _showDeleteConfirmationDialog(BuildContext context) async {
+  Future<bool> _showDeleteConfirmationDialog(BuildContext context, int reqid) async {
     return await showDialog<bool>(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Konfirmasi Hapus'),
-          content: const Text('Apakah Anda yakin ingin menghapus dampingan ini?'),
+          content: Text('Apakah Anda yakin ingin menghapus dampingan dengan ID $reqid?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
               child: const Text('Batal'),
             ),
-            ElevatedButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 146, 139)),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
               ),
               child: const Text('Hapus'),
             ),
