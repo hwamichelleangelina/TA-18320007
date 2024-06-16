@@ -28,6 +28,7 @@ class _BKRegisterPageState extends State<BKRegisterPage> {
   final TextEditingController bkpasswordhashController = TextEditingController();
   final TextEditingController bknameController = TextEditingController();
   final TextEditingController bknpmController = TextEditingController();
+  final TextEditingController invCodeController = TextEditingController();
 
   BKUsersRepository repository = BKUsersRepository();
   bool isLoading = false;
@@ -163,6 +164,19 @@ class _BKRegisterPageState extends State<BKRegisterPage> {
                     ),
                   ),
 
+                  // invitation Code
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(30, 20, 30, 5),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 400,),
+                        child: CustomTextField(
+                                controller: invCodeController,
+                                hintText: "Kode undangan sebagai Admin BK ITB",
+                                obscureText: true,
+                              ),
+                    ),
+                  ),
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -174,7 +188,7 @@ class _BKRegisterPageState extends State<BKRegisterPage> {
                     child: ElevatedButton(
                       onPressed: (){
                         if (bknameController.text.isEmpty || bknpmController.text.isEmpty || 
-                            bkusernameController.text.isEmpty || bkpasswordhashController.text.isEmpty) {
+                            bkusernameController.text.isEmpty || bkpasswordhashController.text.isEmpty || invCodeController.text.isEmpty) {
                           Get.snackbar('Registrasi BK ITB', 'Semua kolom harus terisi!',
                             backgroundColor: Colors.red,
                             colorText: Colors.white,);
@@ -187,7 +201,8 @@ class _BKRegisterPageState extends State<BKRegisterPage> {
                             bkname: bknameController.text,
                             bknpm: int.tryParse(bknpmController.text) ?? 0,
                             bkusername: bkusernameController.text,
-                            bkpasswordhash: bkpasswordhashController.text
+                            bkpasswordhash: bkpasswordhashController.text,
+                            inviteCode : invCodeController.text
                           );
 
                           repository.registerBKUsers(bkusers: bkusers).then((value) {
@@ -209,27 +224,7 @@ class _BKRegisterPageState extends State<BKRegisterPage> {
 
                   const SizedBox(height: 30,),
 
-                  SizedBox(
-                    width: 200,
-                    height: 45.0,
-                    child: TextButton(
-                      onPressed: () {
-                        Get.toNamed('/bk-login');
-                      },
-                      child: const Text(
-                        "Masuk Akun Admin BK ITB",
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800,
-                          color: CustomColor.whitePrimary,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ),
-
                   Container(height: 100,),
-
 
                   // Footer
                   const Footer(),

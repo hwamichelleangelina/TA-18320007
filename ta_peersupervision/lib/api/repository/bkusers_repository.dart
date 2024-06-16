@@ -19,6 +19,7 @@ class BKUsersRepository {
         'bknpm' : bkusers.bknpm,
         'bkusername' : bkusers.bkusername,
         'bkpasswordhash' : bkusers.bkpasswordhash,
+        'inviteCode' : bkusers.inviteCode
       }),
     );
 
@@ -35,6 +36,15 @@ class BKUsersRepository {
       Get.snackbar('Register BK User', message,
         backgroundColor: Colors.red,
         colorText: Colors.white,);
+      Get.toNamed('/bk-register');
+    }
+    else if (response.statusCode == 400) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      final String message = responseData["message"];
+      Get.snackbar('Register BK User', message,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,);
+      Get.toNamed('/bk-register');
     }
     else {
       Get.snackbar('Register BK User', "Failed to register BK User",

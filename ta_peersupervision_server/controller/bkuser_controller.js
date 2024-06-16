@@ -17,14 +17,21 @@ exports.loginBKUsers = (req, res) => {
 }
 
 exports.registerBKUsers = (req, res) => {
-    const { bkname, bknpm, bkusername, bkpasswordhash } = req.body;
+    const validInviteCodes = ['KODEKHUSUSUNTUKBK183', 'REGISTRASIBKITB18320'];
+    
+    const { bkname, bknpm, bkusername, bkpasswordhash, inviteCode } = req.body;
 
-    bkUser.createaBKUsers({bkname, bknpm, bkusername, bkpasswordhash}, (err, bkusers) => {
-        if (err) {
-            res.status(500).json({message: 'Error while registering user.'});
-        }
-        else {
-            res.status(200).json({message: 'User successfully registered, please continue login.', bkusers});
-        }
-    });
+    if (!validInviteCodes.includes(inviteCode)) {
+        return res.status(400).json({message: 'Kode undangan salah.'});
+      }
+    else {
+        bkUser.createaBKUsers({bkname, bknpm, bkusername, bkpasswordhash}, (err, bkusers) => {
+            if (err) {
+                res.status(500).json({message: 'Terjadi kesalahan eror pada saat registrasi user.'});
+            }
+            else {
+                res.status(200).json({message: 'User baru berhasil registrasi, silakan lanjut masuk ke akun Anda.', bkusers});
+            }
+        });
+    }
 }

@@ -4,9 +4,10 @@ class BKUsers {
   int? bknpm;
   late String bkusername;
   String? bkpasswordhash;
+  String? inviteCode;
 
   BKUsers({
-    this.bkid, this.bkname, this.bknpm, required this.bkusername, this.bkpasswordhash
+    this.bkid, this.bkname, this.bknpm, required this.bkusername, this.bkpasswordhash, this.inviteCode
   });
 
   BKUsers.fromJson(Map<String, dynamic> json) {
@@ -24,6 +25,7 @@ class BKUsers {
     data['bknpm'] = bknpm;
     data['bkusername'] = bkusername;
     data['bkpasswordhash'] = bkpasswordhash;
+    data['inviteCode'] = inviteCode;
 
     return data;
   }

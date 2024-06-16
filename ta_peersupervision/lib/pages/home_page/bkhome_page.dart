@@ -3,7 +3,6 @@ import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/size.dart';
 import 'package:ta_peersupervision/widgets/bkanggotaps_desktop.dart';
 import 'package:ta_peersupervision/widgets/bkdrawer_mobile.dart';
-import 'package:ta_peersupervision/widgets/bkganecare_desktop.dart';
 import 'package:ta_peersupervision/widgets/bkheader_desktop.dart';
 import 'package:ta_peersupervision/widgets/bklihatjadwal_desktop.dart';
 import 'package:ta_peersupervision/widgets/bkmain_desktop.dart';
@@ -128,42 +127,6 @@ class _BKHomePageState extends State<BKHomePage> {
                       const BKAnggotaPSITB(),
 
                       ])),
-
-                Container(
-                  width: screenWidth,
-                  padding: const EdgeInsets.fromLTRB(25, 30, 25, 40),
-                  color: CustomColor.purpleBg2,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Main Page
-                      // title
-                      if (constraints.maxWidth >= minDesktopWidth)
-                      const Text(
-                        "Kegiatan Pendampingan Ganecare ITB",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: CustomColor.whitePrimary,
-                        ),
-                      )
-                      else 
-                      const Text(
-                        "Kegiatan Ganecare ITB",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: CustomColor.whitePrimary,
-                        ),
-                      ),
-
-                      const SizedBox(height: 30,),
-
-                      // Main Page
-                      const BKGanecareITB()
-                    ],
-                  ),
-                ),
 
                 Container(
                   width: screenWidth,

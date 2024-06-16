@@ -1,0 +1,5 @@
+validInviteCodes = [
+	'KODEKHUSUSUNTUKBK183'
+,
+	'REGISTRASIBKITB18320'
+];
