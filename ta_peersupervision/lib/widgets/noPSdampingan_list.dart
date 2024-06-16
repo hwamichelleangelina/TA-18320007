@@ -8,21 +8,28 @@ import 'package:ta_peersupervision/api/provider/dampingan_provider.dart';
 import 'package:ta_peersupervision/api/repository/psusers_repository.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 
-class AllDampinganList extends StatefulWidget {
-  const AllDampinganList({super.key});
+class NoPSDampinganList extends StatefulWidget {
+  const NoPSDampinganList({super.key});
 
   @override
-  _AllDampinganListState createState() => _AllDampinganListState();
+  _NoPSDampinganListState createState() => _NoPSDampinganListState();
 }
 
-class _AllDampinganListState extends State<AllDampinganList> {
+class _NoPSDampinganListState extends State<NoPSDampinganList> {
   String searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<DampinganProvider>(context, listen: false);
+    provider.fetchNoPSDampingan();
+  }
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DampinganProvider>(context);
 
-    final filteredList = provider.dampinganList.where((item) {
+    final filteredList = provider.noPSdampinganList.where((item) {
       return item['initial'].toLowerCase().contains(searchQuery.toLowerCase());
     }).toList();
 
@@ -32,17 +39,6 @@ class _AllDampinganListState extends State<AllDampinganList> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
-          const Center(
-            child: Text(
-              'Permintaan Pendampingan',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
           TextField(
             decoration: const InputDecoration(
               labelText: 'Pencarian',
@@ -54,138 +50,103 @@ class _AllDampinganListState extends State<AllDampinganList> {
               });
             },
           ),
-
           const SizedBox(height: 20),
-
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Aksi untuk tombol
-                    Get.toNamed('/aps-new-entry');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.yellow, // Warna hijau pada tombol
-                  ),
-                  child: const Text('Dampingan tanpa PS', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                ),
-                const SizedBox(height: 10.0),
-                ElevatedButton(
-                  onPressed: () {
-                    // Aksi untuk tombol tambah
-                    Get.toNamed('/aps-dampingan-entry');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.green, // Warna hijau pada tombol
-                  ),
-                  child: const Text('Tambah Dampingan Baru', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                ),
-              ]
-            ),
-          ),
-
           const SizedBox(height: 16),
           Consumer<DampinganProvider>(
             builder: (context, provider, child) {
-            return ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: filteredList.length,
-              itemBuilder: (context, index) {
-                final item = filteredList[index];
-                return Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: CustomColor.purpleBg2,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: FutureBuilder<bool>(
-                    future: provider.checkPertemuan(item['reqid']),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return ListTile(
-                          title: Text(item['initial'], style: const TextStyle( color: CustomColor.purpleTersier)),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('ID Dampingan: ${item['reqid'] ?? 'N/A'}'),
-                              Text('Gender: ${item['gender'] ?? 'N/A'}'),
-                              Text('Fakultas: ${item['fakultas'] ?? 'N/A'}'),
-                              Text('Kampus: ${item['kampus'] ?? 'N/A'}'),
-                              Text('Angkatan: ${item['angkatan'] ?? 'N/A'}'),
-                              Text('Tingkat: ${item['tingkat'] ?? 'N/A'}'),
-                              Text('Media Kontak: ${item['mediakontak'] ?? 'N/A'}'),
-                              Text('Kontak: ${item['kontak'] ?? 'N/A'}'),
-                              Text('Sesi Pendampingan: ${item['sesi'] ?? 'N/A'}'),
-                              const SizedBox(height: 8,),
-                              Text('Nama Pendamping Sebaya: ${item['psname'] ?? 'N/A'}'),
-                            ],
-                          ),
-                          trailing: const CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return ListTile(
-                          title: Text(item['initial']),
-                          subtitle: const Text('Error loading data'),
-                        );
-                      } else {
-                        return ListTile(
-                          title: Text(item['initial']),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('ID Dampingan: ${item['reqid'] ?? 'N/A'}'),
-                              Text('Gender: ${item['gender'] ?? 'N/A'}'),
-                              Text('Fakultas: ${item['fakultas'] ?? 'N/A'}'),
-                              Text('Kampus: ${item['kampus'] ?? 'N/A'}'),
-                              Text('Angkatan: ${item['angkatan'] ?? 'N/A'}'),
-                              Text('Tingkat: ${item['tingkat'] ?? 'N/A'}'),
-                              Text('Media Kontak: ${item['mediakontak'] ?? 'N/A'}'),
-                              Text('Kontak: ${item['kontak'] ?? 'N/A'}'),
-                              Text('Sesi Pendampingan: ${item['sesi'] ?? 'N/A'}'),
-                              const SizedBox(height: 8,),
-                              if (item['psname'] != null)
-                                Text('Nama Pendamping Sebaya: ${item['psname']}')
-                              else
-                                const Text('BELUM ADA Pendamping Sebaya bertugas', style: TextStyle(color: Colors.red))
-                            ,                              
-                              if (snapshot.data!)
-                                const Text('Pendampingan pertama: DIJADWALKAN', style: TextStyle(color: Colors.green))
-                              else
-                                const Text('Pendampingan pertama: BELUM DIJADWALKAN', style: TextStyle(color: Colors.red)),
-                            ],
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () {
-                                  _showUpdateDialog(context, item, provider);
-                                },
-                              ),
-                              const SizedBox(width: 5),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () async {
-                                  final confirmDelete = await _showDeleteConfirmationDialog(context, item['reqid']);
-                                  if (confirmDelete) {
-                                    await provider.deleteDampingan(item['reqid']);
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                );
-              }
+              if (provider.noPSdampinganList.isEmpty) {
+              return const Center(child: Text('Belum ada entri baru'));
+            } else {
+              return ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: filteredList.length,
+                itemBuilder: (context, index) {
+                  final item = filteredList[index];
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: CustomColor.purpleBg2,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: FutureBuilder<bool>(
+                      future: provider.checkPertemuan(item['reqid']),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return ListTile(
+                            title: Text(item['initial'], style: const TextStyle( color: CustomColor.purpleTersier)),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('ID Dampingan: ${item['reqid'] ?? 'N/A'}'),
+                                Text('Gender: ${item['gender'] ?? 'N/A'}'),
+                                Text('Fakultas: ${item['fakultas'] ?? 'N/A'}'),
+                                Text('Kampus: ${item['kampus'] ?? 'N/A'}'),
+                                Text('Angkatan: ${item['angkatan'] ?? 'N/A'}'),
+                                Text('Tingkat: ${item['tingkat'] ?? 'N/A'}'),
+                                Text('Media Kontak: ${item['mediakontak'] ?? 'N/A'}'),
+                                Text('Kontak: ${item['kontak'] ?? 'N/A'}'),
+                                Text('Sesi Pendampingan: ${item['sesi'] ?? 'N/A'}'),
+                                const SizedBox(height: 8,),
+                                Text('Nama Pendamping Sebaya: ${item['psname'] ?? 'N/A'}'),
+                              ],
+                            ),
+                            trailing: const CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return ListTile(
+                            title: Text(item['initial']),
+                            subtitle: const Text('Error loading data'),
+                          );
+                        } else {
+                          return ListTile(
+                            title: Text(item['initial']),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('ID Dampingan: ${item['reqid'] ?? 'N/A'}'),
+                                Text('Gender: ${item['gender'] ?? 'N/A'}'),
+                                Text('Fakultas: ${item['fakultas'] ?? 'N/A'}'),
+                                Text('Kampus: ${item['kampus'] ?? 'N/A'}'),
+                                Text('Angkatan: ${item['angkatan'] ?? 'N/A'}'),
+                                Text('Tingkat: ${item['tingkat'] ?? 'N/A'}'),
+                                Text('Media Kontak: ${item['mediakontak'] ?? 'N/A'}'),
+                                Text('Kontak: ${item['kontak'] ?? 'N/A'}'),
+                                Text('Sesi Pendampingan: ${item['sesi'] ?? 'N/A'}'),
+                                const SizedBox(height: 10,),
+                                const Text('BELUM ADA Pendamping Sebaya bertugas', style: TextStyle(color: Colors.red)),                    
+                              ],
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    _showUpdateDialog(context, item, provider);
+                                  },
+                                ),
+                                const SizedBox(width: 5),
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () async {
+                                    final confirmDelete = await _showDeleteConfirmationDialog(context, item['reqid']);
+                                    if (confirmDelete) {
+                                      await provider.deleteDampingan(item['reqid']);
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  );
+                },
               );
+            }
             },
           ),
         ],
@@ -540,7 +501,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
 
                   await provider.updateDampingan(item['reqid'], newData);
 
-                  Navigator.of(context).pop();
+                  Get.toNamed('/aps-requests');
                   setState(() {
                     provider.fetchDampingan();
                   });

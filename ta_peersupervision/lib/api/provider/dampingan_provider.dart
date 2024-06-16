@@ -12,9 +12,11 @@ class DampinganProvider with ChangeNotifier {
   final String serverUrl = 'http://localhost:3000/dampingan';
 
   List<dynamic> _dampinganList = [];
+  List<dynamic> _noPSdampinganList = [];
   final PSUsersRepository _psUsersRepository = PSUsersRepository();
 
   List<dynamic> get dampinganList => _dampinganList;
+  List<dynamic> get noPSdampinganList => _noPSdampinganList;
 
   DampinganProvider() {
     fetchDampingan();
@@ -27,6 +29,19 @@ class DampinganProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       _dampinganList = json.decode(response.body);
+      notifyListeners();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<void> fetchNoPSDampingan() async {
+    final response = await http.get(
+      Uri.parse('$serverUrl/getNoPSDampingan'),
+    );
+
+    if (response.statusCode == 200) {
+      _noPSdampinganList = json.decode(response.body);
       notifyListeners();
     } else {
       throw Exception('Failed to load data');

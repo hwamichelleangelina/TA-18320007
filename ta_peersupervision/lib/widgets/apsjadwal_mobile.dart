@@ -37,7 +37,7 @@ class _APSJadwalMobileState extends State<APSJadwalMobile> {
                 title: 'Permintaan Pendampingan',
                 imagePath: 'assets/images/Form Entry.png',
                 onPressed: () {
-                  Get.toNamed('/aps-dampingan-entry');
+                  Get.toNamed('/aps-requests');
                 },
               ),
               ListTileButton(

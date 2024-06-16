@@ -56,6 +56,7 @@ class _DampinganListState extends State<DampinganList> {
                 Text('Gender: ${item.gender ?? 'N/A'}'),
                 Text('Fakultas: ${item.fakultas ?? 'N/A'}'),
                 Text('Angkatan: ${item.angkatan ?? 'N/A'}'),
+                Text('Tingkat: ${item.tingkat ?? 'N/A'}'),
                 Text('Kampus: ${item.kampus ?? 'N/A'}'),
                 Text('Media Kontak: ${item.mediakontak}'),
                 Text('Kontak: ${item.kontak}'),

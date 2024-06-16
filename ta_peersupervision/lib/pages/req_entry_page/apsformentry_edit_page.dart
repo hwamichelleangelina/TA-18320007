@@ -29,6 +29,7 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
   String? psname;
   String? kontak;
   String? katakunci2;
+  String? tingkat;
 
   PSUsersRepository repository = PSUsersRepository();
   DampinganRepository dampinganRepo = DampinganRepository();
@@ -145,13 +146,34 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
-                  if (int.tryParse(value!) == null) {
-                    return 'Angkatan harus berupa angka';
+                  if (value != null) {
+                    if (int.tryParse(value) == null) {
+                      return 'Angkatan harus berupa angka';
+                    }
                   }
                   return null;
                 },
                 onSaved: (value) {
                   angkatan = int.tryParse(value!);
+                },
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  labelText: 'Tingkat',
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // Spasi kanan kiri
+                ),
+                items: ['Sarjana', 'Pascasarjana'].map((String tingkat) {
+                  return DropdownMenuItem<String>(
+                    value: tingkat,
+                    child: Text(tingkat),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    tingkat = value;
+                  });
                 },
               ),
               const SizedBox(height: 16),
@@ -326,7 +348,7 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                       kontak: kontak!,
                       sesi: sesi!,
                       psname: psname, katakunci: katakunci!,
-                      katakunci2: katakunci2
+                      katakunci2: katakunci2, tingkat: tingkat!
                     );
                     
                     dampinganRepo.importDampingan(dampingan: dampingan).then((value) async {

@@ -23,6 +23,21 @@ class dampingan {
         });
     }
 
+    static getNoPSDampingan(callback) {
+        const getNoPSDampinganQuery = `
+            SELECT *
+            FROM dampingan
+            WHERE psname IS NULL;
+        `;
+        mysqlConn.query(getNoPSDampinganQuery, (err, result) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, result);
+            }
+        });
+    }  
+
     static getAllDampingan(callback) {
         const getAllDampinganQuery = `
             SELECT dampingan.*

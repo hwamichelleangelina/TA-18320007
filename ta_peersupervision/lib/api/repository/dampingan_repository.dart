@@ -29,6 +29,7 @@ class DampinganRepository {
         'katakunci2':dampingan.katakunci2,
         'sesi': dampingan.sesi,
         'psname': dampingan.psname,
+        'tingkat': dampingan.tingkat,
       }),
     );
 

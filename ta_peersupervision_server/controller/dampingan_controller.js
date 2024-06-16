@@ -25,6 +25,15 @@ exports.getAllDampingan = (req, res) => {
     });
 };
 
+exports.getNoPSDampingan = (req, res) => {
+    dampingan.getNoPSDampingan((err, results) => {
+        if (err) {
+            res.status(500).json({ error: 'Database error' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+};
 
 exports.updateDataDampingan = (req, res) => {
     const reqid = req.params.reqid; // Mendapatkan reqid dari parameter URL

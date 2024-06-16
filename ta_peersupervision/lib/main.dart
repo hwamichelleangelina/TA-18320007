@@ -28,6 +28,7 @@ import 'package:ta_peersupervision/pages/report_list_page/bkreport_page.dart';
 import 'package:ta_peersupervision/pages/report_list_page/psreport_page.dart';
 import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_edit_page.dart';
 import 'package:ta_peersupervision/pages/req_entry_page/apsformentry_page.dart';
+import 'package:ta_peersupervision/pages/req_entry_page/apsnewformentry_page.dart';
 import 'package:ta_peersupervision/pages/splashscreen.dart';
 import 'package:ta_peersupervision/pages/statistik_page/bkstatistik_page.dart';
 import 'package:ta_peersupervision/pages/ubah_password/psubah_password.dart';
@@ -101,6 +102,7 @@ class MyApp extends StatelessWidget {
                 GetPage(name: '/aps-laporan', page: () => const APSReportPage()),
                 GetPage(name: '/aps-anggota-ps', page: () => const APSDataAnggota()),
                 GetPage(name: '/aps-dampingan-entry', page: () => const DampinganFormPage()),
+                GetPage(name: '/aps-new-entry', page: () => const APSNewFormEntry()),
               ],
               navigatorObservers: [GetObserver()],
               routingCallback: (routing) {
@@ -158,6 +160,7 @@ class MyApp extends StatelessWidget {
       '/aps-anggota-ps',
       '/aps-dampingan-entry',
       '/ps-ubah-password',
+      '/aps-new-entry',
     ];
 
     // Common login page routes
