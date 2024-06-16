@@ -1,10 +1,25 @@
+'use strict';
 const express = require('express');
-const fs = require('fs');
-const { authorize, listData } = require('./config/sheets');
-const cron = require('node-cron');
+
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 const PORT = 3000;
+
+// Enable CORS for all origins
+app.use(cors());
+
+
+// Middleware untuk parsing application/json
+app.use(bodyParser.json());
+
+// Middleware untuk parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const fs = require('fs');
+const { authorize, listData } = require('./config/sheets');
+const cron = require('node-cron');
 
 var routerBKUser = require('./routers/bkuser_routes');
 var routerPSUser = require('./routers/psuser_routes');
@@ -60,7 +75,6 @@ app.get('/', async (req, res) => {
         });
     });
 });*/
-
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
