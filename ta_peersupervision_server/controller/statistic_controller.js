@@ -60,6 +60,30 @@ exports.toptopics = (req, res) => {
     });
 };
 
+exports.toptopicpairs = (req, res) => {
+    const year = req.params.year;
+    Statistic.toptopicpairs(year, (err, results) => {
+        if (err) {
+            console.error('Error checking top topic pairs distribution:', err);
+            res.status(500).send('Error top topic pairs count.');
+            return;
+        }
+        res.status(200).json(results);
+    });
+};
+
+exports.toptopicpairsAllTime = (req, res) => {
+    const year = req.params.year;
+    Statistic.toptopicpairsAllTime(year, (err, results) => {
+        if (err) {
+            console.error('Error checking top topic pairs distribution:', err);
+            res.status(500).send('Error top topic pairs count.');
+            return;
+        }
+        res.status(200).json(results);
+    });
+};
+
 exports.toptopicsByMonth = (req, res) => {
     const year = req.params.year;
     Statistic.topTopicsByMonth(year, (err, results) => {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ta_peersupervision/api/logic/dampingan_logic.dart';
 import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
+import 'package:ta_peersupervision/api/repository/dampingan_repository.dart';
 import 'package:ta_peersupervision/api/repository/psusers_repository.dart';
 
 class DataTableAnggotaNonAktif extends StatefulWidget {
@@ -146,7 +148,7 @@ class _DataTableAnggotaNonAktifState extends State<DataTableAnggotaNonAktif> {
                         DataColumn(
                           label: Container(
                             alignment: Alignment.center,
-                            child: const Text('Pendampingan Terjadi',
+                            child: const Text('Pendampingan',
                               textAlign: TextAlign.center,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -172,6 +174,15 @@ class _DataTableAnggotaNonAktifState extends State<DataTableAnggotaNonAktif> {
                               _ascending = ascending;
                             });
                           },
+                        ),
+                        DataColumn(
+                          label: Container(
+                            alignment: Alignment.center,
+                            child: const Text('Keterangan',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ),
                       ],
                       rows: _buildFilteredRows(users, freqData, dampinganData),
@@ -203,10 +214,76 @@ class _DataTableAnggotaNonAktifState extends State<DataTableAnggotaNonAktif> {
           DataCell(Text(users[index].yearAsString)),
           DataCell(Text(_getFrequency(freqData, users[index].nanim.toString()).toString())),
           DataCell(Text(_getDampinganCount(dampinganData, users[index].nanim.toString()).toString())),
+          DataCell(
+            ElevatedButton(
+              onPressed: () {
+                _showDetailsDialog(context, users[index].name, users[index].nanimAsString);
+              },
+              child: const Text('Detail'),
+            ),
+          ),
         ],
       ),
     );
   }
+
+  void _showDetailsDialog(BuildContext context, String name, String nim) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Dampingan Ditangani oleh $name'),
+          content: SizedBox(
+          width: double.maxFinite, // Atur lebar dialog menjadi maksimum
+          height: double.maxFinite,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: 
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FutureBuilder<List<Dampingan>>(
+                    future: fetchDampingan(int.parse(nim)),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Text('No data available');
+                      } else {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            final item = snapshot.data![index];
+                            return ListTile(
+                              title: Text('ID Dampingan: ${item.reqid}'),
+                              subtitle: Text('Inisial Dampingan: ${item.initial}'),
+                              onTap: () {
+                              },
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),),
+             actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Tutup'),
+              ),
+            ],         
+          );
+        },
+      );
+    }
 
   // Fungsi untuk menghitung frekuensi kemunculan nama dalam dataFromDatabase
   int _getFrequency(List<FreqPS> freqData, String nim) {

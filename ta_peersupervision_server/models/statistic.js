@@ -108,6 +108,40 @@ class Statistic {
         });
     }
 
+    static toptopicpairs(year, callback) {
+        const toptopicpairsQuery = `
+            SELECT katakunci, katakunci2, COUNT(*) as count
+            FROM dampingan
+            WHERE katakunci IS NOT NULL AND katakunci2 IS NOT NULL AND YEAR(dampinganadded) = ?
+            GROUP BY katakunci, katakunci2
+            ORDER BY count DESC
+        `;
+        mysqlConn.query(toptopicpairsQuery, [year], (err, result) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, result);
+            }
+        });
+    }
+
+    static toptopicpairsAllTime(year, callback) {
+        const toptopicpairsQuery = `
+            SELECT katakunci, katakunci2, COUNT(*) as count
+            FROM dampingan
+            WHERE katakunci IS NOT NULL AND katakunci2 IS NOT NULL
+            GROUP BY katakunci, katakunci2
+            ORDER BY count DESC
+        `;
+        mysqlConn.query(toptopicpairsQuery, [year], (err, result) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, result);
+            }
+        });
+    }
+
     static topTopicsByMonth(year, callback) {
         const topTopicsByMonthQuery = `
             SELECT 
@@ -228,7 +262,7 @@ class Statistic {
             FROM dampingan
             GROUP BY psname
             ORDER BY dampingancount DESC
-            LIMIT 20;
+            LIMIT 70;
         `;
         mysqlConn.query(topPSdampinganQuery, (err, result) => {
             if (err) {
@@ -245,7 +279,7 @@ class Statistic {
             FROM jadwal
             GROUP BY psname
             ORDER BY jadwalcount DESC
-            LIMIT 20;
+            LIMIT 70;
         `;
         mysqlConn.query(topPSpendampinganQuery, (err, result) => {
             if (err) {
@@ -297,7 +331,7 @@ class Statistic {
             FROM dampingan
             GROUP BY katakunci
             ORDER BY count DESC
-            LIMIT 10;
+            LIMIT 15;
         `;
         mysqlConn.query(toptopicsQuery, (err, result) => {
             if (err) {

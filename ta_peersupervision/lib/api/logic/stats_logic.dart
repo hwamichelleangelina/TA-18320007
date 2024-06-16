@@ -102,6 +102,22 @@ class Topic {
   }
 }
 
+class TopicPairs {
+  final String katakunci;
+  final String? katakunci2;
+  final int count;
+
+  TopicPairs({required this.katakunci, this.katakunci2, required this.count});
+
+  factory TopicPairs.fromJson(Map<String, dynamic> json) {
+    return TopicPairs(
+      katakunci: json['katakunci'],
+      katakunci2: json['katakunci2'],
+      count: json['count'],
+    );
+  }
+}
+
 class Recommendation {
   final int isRecommended;
   final int count;

@@ -51,68 +51,6 @@ class DampinganRepository {
     }
   }
 
-  Future<List<Dampingan>> fetchDampingan(int? psnim) async {
-    final PSUsers? loggedInUser = await PSUsersDataManager.loadPSUsersData();
-
-    if (loggedInUser != null) {
-        // print(loggedInUser.psnim);
-        psnim = loggedInUser.psnim;
-      //  print('async fetchDampingan: $psnim');
-    } else {
-      throw Exception('No logged in user');
-    }
-
-    final response = await http.get(Uri.parse('$serverUrl/getDampingan/$psnim'));
-
-  //  print('$serverUrl/getDampingan/$psnim');
-  //  print(response.statusCode);
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> jsonResponse = json.decode(response.body);
-      List<dynamic> requests = jsonResponse['dampingan'];
-      return requests.map((data) => Dampingan.fromJson(data)).toList();
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
-
-/*
-  Future<void> updateDampinganTanggal({required JadwalPendampingan jadwalPendampingan}) async {
-    final response = await http.put(
-      Uri.parse('$serverUrl/updateDampinganTanggal'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'reqid': jadwalPendampingan.reqid,
-        'tanggal': jadwalPendampingan.tanggal, // Ensure the date is in the correct format
-      }),
-    );
-
-    if (response.statusCode == 200) {
-//      print('Selected Date Dampingan Repo: ${DateFormat('yyyy-MM-dd').format(jadwalPendampingan.tanggal!)}');
-//      print(DateFormat('yyyy-MM-dd').format(jadwalPendampingan.tanggal!).runtimeType);
-      print(jadwalPendampingan.tanggal.runtimeType);
-      print(jadwalPendampingan.tanggal);
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      final String message = responseData["message"];
-      Get.snackbar('Jadwalkan Pendampingan', message,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,);
-    } else if (response.statusCode == 500) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      final String message = responseData["message"];
-      Get.snackbar('Jadwalkan Pendampingan', message,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,);
-    } else {
-      Get.snackbar('Jadwalkan Pendampingan', "Failed to schedule pendampingan",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,);
-    }
-  }
-*/
-
   Future<void> deleteDampingan({required int reqid}) async {
     final response = await http.delete(
       Uri.parse('$serverUrl/deleteDampingan'),
@@ -148,19 +86,45 @@ Future<List<Dampingan>> fetchDampingan(int? psnim) async {
       psnim = loggedInUser.psnim;
       //print('async fetchDampingan: $psnim');
   } else {
-    throw Exception('No logged in user');
+    psnim = psnim;
   }
 
   final response = await http.get(Uri.parse('$serverUrl/getDampingan/$psnim'));
 
   //print('$serverUrl/getDampingan/$psnim');
   //print(response.statusCode);
+  if (psnim == 0) {
+    throw Exception('Tidak ada dampingan yang ditangani');
+  }
 
-  if (response.statusCode == 200) {
+  else if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = json.decode(response.body);
     List<dynamic> requests = jsonResponse['dampingan'];
     return requests.map((data) => Dampingan.fromJson(data)).toList();
-  } else {
+  } 
+  else if (response.statusCode == 404) {
+    throw Exception('Tidak ada dampingan yang ditangani');
+  }
+  else {
+    throw Exception('Failed to load data');
+  }
+}
+
+Future<List<Dampingan>> fetchDampinganList(int? psnim) async {
+  final response = await http.get(Uri.parse('$serverUrl/getDampingan/$psnim'));
+  if (psnim == 0) {
+    throw Exception('Tidak ada dampingan yang ditangani');
+  }
+
+  else if (response.statusCode == 200) {
+    Map<String, dynamic> jsonResponse = json.decode(response.body);
+    List<dynamic> requests = jsonResponse['dampingan'];
+    return requests.map((data) => Dampingan.fromJson(data)).toList();
+  } 
+  else if (response.statusCode == 404) {
+    throw Exception('Tidak ada dampingan yang ditangani');
+  }
+  else {
     throw Exception('Failed to load data');
   }
 }
