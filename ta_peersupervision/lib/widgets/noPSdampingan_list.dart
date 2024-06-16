@@ -115,7 +115,7 @@ class _NoPSDampinganListState extends State<NoPSDampinganList> {
                                 Text('Kontak: ${item['kontak'] ?? 'N/A'}'),
                                 Text('Sesi Pendampingan: ${item['sesi'] ?? 'N/A'}'),
                                 const SizedBox(height: 10,),
-                                const Text('BELUM ADA Pendamping Sebaya bertugas', style: TextStyle(color: Colors.red)),                    
+                                const Text('BELUM ADA Pendamping Sebaya ditugaskan', style: TextStyle(color: Colors.red)),                    
                               ],
                             ),
                             trailing: Row(

@@ -47,7 +47,7 @@ app.get('/', async (req, res) => {
     res.json({ message: 'This is Peer ITB Supervision API for BK ITB.' });
 });
 
-/*app.get('/fetch-data', async (req, res) => {
+app.get('/fetch-data', async (req, res) => {
     fs.readFile('credentials.json', (err, content) => {
         if (err) return res.status(500).json({ error: 'Error loading client secret file:' + err });
         authorize(JSON.parse(content), (auth) => {
@@ -56,25 +56,25 @@ app.get('/', async (req, res) => {
             });
         });
     });
-});*/
+});
 
 // Load client secrets and authorize on server start
-/*fs.readFile('credentials.json', (err, content) => {
+fs.readFile('credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     authorize(JSON.parse(content), (auth) => {
         listData(auth); // Panggil listData setelah otorisasi
     });
-});*/
+});
 
 // Jadwalkan tugas untuk mengambil data setiap jam
-/*cron.schedule('0 * * * *', () => {
+cron.schedule('0 * * * *', () => {
     fs.readFile('credentials.json', (err, content) => {
         if (err) return console.log('Error loading client secret file:', err);
         authorize(JSON.parse(content), (auth) => {
             listData(auth);
         });
     });
-});*/
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

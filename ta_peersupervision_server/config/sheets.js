@@ -60,7 +60,9 @@ function listData(auth, callback) {
             });
 
             if (filteredRows.length) {
-                const query = 'INSERT INTO dampingan (initial, gender, fakultas, angkatan, tingkat, kampus, mediakontak, kontak, sesi) VALUES ?';
+                const queryCheck = 'SELECT * FROM dampingan WHERE initial = ? AND kontak = ? AND sesi = ?';
+                const queryInsert = 'INSERT INTO dampingan (initial, gender, fakultas, angkatan, tingkat, kampus, mediakontak, kontak, sesi) VALUES ?';
+                
                 const values = filteredRows.map(row => [
                     row[header.indexOf('Kalau boleh tau nama kamu siapa nih?? (mau Anonim juga boleh kok)')],
                     row[header.indexOf('Jenis kelamin')],
@@ -73,9 +75,27 @@ function listData(auth, callback) {
                     (row[indexOfflineKonseling1] === 'Ya, perlu sesi offline' || row[indexOfflineKonseling2] === 'Ya, perlu sesi offline') ? 'Offline' : 'Online',
                 ]);
 
-                mysqlConn.query(query, [values], (error) => {
-                    if (error) throw error;
-                    console.log('Data inserted into MySQL');
+                const filteredValues = [];
+
+                values.forEach((value, index) => {
+                    const [initial, , , , , , , kontak, sesi] = value;
+
+                    mysqlConn.query(queryCheck, [initial, kontak, sesi], (error, results) => {
+                        if (error) throw error;
+
+                        if (results.length === 0) {
+                            // If no duplicate found, add to filteredValues
+                            filteredValues.push(value);
+
+                            // If this is the last row, insert the filtered values
+                            if (index === values.length - 1 && filteredValues.length > 0) {
+                                mysqlConn.query(queryInsert, [filteredValues], (error) => {
+                                    if (error) throw error;
+                                    console.log('Data inserted into MySQL');
+                                });
+                            }
+                        }
+                    });
                 });
 
                 if (callback) {
