@@ -168,6 +168,7 @@ class MyApp extends StatelessWidget {
       '/ps-login',
       '/bk-login',
       '/aps-login',
+      '/bk-register'
     ];
 
     // Redirect logic

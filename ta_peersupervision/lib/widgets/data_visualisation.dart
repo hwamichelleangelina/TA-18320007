@@ -722,7 +722,10 @@ Widget _buildYearDropdown() {
             [
               charts.Series<ClientDistribution, String>(
                 id: title,
-                colorFn: (_, idx) => charts.MaterialPalette.getOrderedPalettes(data.length)[idx!.toInt()].shadeDefault,
+                colorFn: (_, idx) {
+                  final palettes = charts.MaterialPalette.getOrderedPalettes(data.length);
+                  return palettes[idx! % palettes.length].shadeDefault;
+                },
                 domainFn: (ClientDistribution dist, _) => dist.category,
                 measureFn: (ClientDistribution dist, _) => dist.count,
                 data: data,
@@ -751,6 +754,7 @@ Widget _buildYearDropdown() {
       ],
     );
   }
+
 
   Widget _buildTopTopicsTable() {
     return FutureBuilder<List<Topic>>(

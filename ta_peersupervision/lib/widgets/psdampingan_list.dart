@@ -76,19 +76,19 @@ class _PSDampinganListState extends State<PSDampinganList> {
           ),
           actions: <Widget>[
             TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 146, 139)),
-              ),
-              child: const Text('Tutup'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
               child: const Text('Jadwalkan Pendampingan'),
               onPressed: () async {
                 ReqidStorage.setReqid(item.reqid!);
                 Get.toNamed('/ps-jadwal');
+              },
+            ),
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              ),
+              child: const Text('Tutup'),
+              onPressed: () {
+                Navigator.of(context).pop();
               },
             ),
           ],

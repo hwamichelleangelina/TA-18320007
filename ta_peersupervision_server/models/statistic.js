@@ -23,7 +23,7 @@ class Statistic {
         const topPSdampinganQuery = `
             SELECT psname, COUNT(*) as dampingancount
             FROM dampingan
-            WHERE YEAR(dampinganadded) = ?
+            WHERE YEAR(dampinganadded) = ? AND psname IS NOT NULL
             GROUP BY psname
             ORDER BY dampingancount DESC
             LIMIT 20;
@@ -58,10 +58,10 @@ class Statistic {
     static distribution(year, callback) {
         const results = {};
     
-        const sqlFakultas = 'SELECT fakultas, COUNT(*) as count FROM dampingan WHERE YEAR(dampinganadded) = ? GROUP BY fakultas;';
-        const sqlKampus = 'SELECT kampus, COUNT(*) as count FROM dampingan WHERE YEAR(dampinganadded) = ? GROUP BY kampus;';
-        const sqlAngkatan = 'SELECT angkatan, COUNT(*) as count FROM dampingan WHERE YEAR(dampinganadded) = ? GROUP BY angkatan;';
-        const sqlGender = 'SELECT gender, COUNT(*) as count FROM dampingan WHERE YEAR(dampinganadded) = ? GROUP BY gender;';
+        const sqlFakultas = 'SELECT IFNULL(fakultas, "Prefer not to say") as fakultas, COUNT(*) as count FROM dampingan WHERE YEAR(dampinganadded) = ? GROUP BY fakultas;';
+        const sqlKampus = 'SELECT IFNULL(kampus, "Prefer not to say") as kampus, COUNT(*) as count FROM dampingan WHERE YEAR(dampinganadded) = ? GROUP BY kampus;';
+        const sqlAngkatan = 'SELECT IFNULL(angkatan, "Prefer not to say") as angkatan, COUNT(*) as count FROM dampingan WHERE YEAR(dampinganadded) = ? GROUP BY angkatan;';
+        const sqlGender = 'SELECT IFNULL(gender, "Prefer not to say") as gender, COUNT(*) as count FROM dampingan WHERE YEAR(dampinganadded) = ? GROUP BY gender;';
     
         mysqlConn.query(sqlFakultas, [year], (err, fakultasResults) => {
             if (err) {
@@ -94,7 +94,7 @@ class Statistic {
         const toptopicsQuery = `
             SELECT katakunci, COUNT(*) as count
             FROM dampingan
-            WHERE YEAR(dampinganadded) = ?
+            WHERE YEAR(dampinganadded) = ? AND katakunci IS NOT NULL
             GROUP BY katakunci
             ORDER BY count DESC
             LIMIT 10;
@@ -260,6 +260,7 @@ class Statistic {
         const topPSdampinganQuery = `
             SELECT psname, COUNT(*) as dampingancount
             FROM dampingan
+            WHERE psname IS NOT NULL
             GROUP BY psname
             ORDER BY dampingancount DESC
             LIMIT 70;
@@ -293,10 +294,10 @@ class Statistic {
     static distributionAllTime(callback) {
         const results = {};
     
-        const sqlFakultas = 'SELECT fakultas, COUNT(*) as count FROM dampingan GROUP BY fakultas;';
-        const sqlKampus = 'SELECT kampus, COUNT(*) as count FROM dampingan GROUP BY kampus;';
-        const sqlAngkatan = 'SELECT angkatan, COUNT(*) as count FROM dampingan GROUP BY angkatan;';
-        const sqlGender = 'SELECT gender, COUNT(*) as count FROM dampingan GROUP BY gender;';
+        const sqlFakultas = 'SELECT IFNULL(fakultas, "Prefer not to say") as fakultas, COUNT(*) as count FROM dampingan GROUP BY fakultas;';
+        const sqlKampus = 'SELECT IFNULL(kampus, "Prefer not to say") as kampus, COUNT(*) as count FROM dampingan GROUP BY kampus;';
+        const sqlAngkatan = 'SELECT IFNULL(angkatan, "Prefer not to say") as angkatan, COUNT(*) as count FROM dampingan GROUP BY angkatan;';
+        const sqlGender = 'SELECT IFNULL(gender, "Prefer not to say") as gender, COUNT(*) as count FROM dampingan GROUP BY gender;';
     
         mysqlConn.query(sqlFakultas, (err, fakultasResults) => {
             if (err) {
@@ -329,6 +330,7 @@ class Statistic {
         const toptopicsQuery = `
             SELECT katakunci, COUNT(*) as count
             FROM dampingan
+            WHERE katakunci IS NOT NULL
             GROUP BY katakunci
             ORDER BY count DESC
             LIMIT 15;

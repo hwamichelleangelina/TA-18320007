@@ -8,6 +8,7 @@ import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/provider/dampingan_provider.dart';
 import 'package:ta_peersupervision/api/repository/dampingan_repository.dart';
 import 'package:ta_peersupervision/api/repository/psusers_repository.dart';
+import 'package:ta_peersupervision/widgets/footer.dart';
 
 class DampinganFormPage extends StatefulWidget {
   const DampinganFormPage({super.key});
@@ -365,6 +366,10 @@ class _DampinganFormPageState extends State<DampinganFormPage> {
                 ),
                 child: const Text('Simpan'),
               ),
+
+              const SizedBox(height: 30,),
+              // Footer
+              const Footer(),
             ],
           ),
         ),

@@ -62,51 +62,6 @@ class _TambahAnggotaState extends State<TambahAnggota> {
                 },
               ),
             ),
-            const SizedBox(height: 20.0),
-            const Text(
-              'Set Password Sementara',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10.0),
-            SizedBox(
-              width: 400.0,
-              child: TextField(
-                obscureText: true,
-                onChanged: (value) {
-                  setState(() {
-                    pspasswordhash = value;
-                  });
-                },
-              ),
-            ),
-            const SizedBox(height: 20.0),
-            const Text(
-              'Status Anggota',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text('Aktif'),
-                Checkbox(
-                  value: psisActive,
-                  onChanged: (value) {
-                    setState(() {
-                      psisActive = value!;
-                    });
-                  },
-                ),
-                const Text('Tidak Aktif'),
-                Checkbox(
-                  value: !psisActive,
-                  onChanged: (value) {
-                    setState(() {
-                      psisActive = !value!;
-                    });
-                  },
-                ),
-              ]
-            ),
 
             const SizedBox(height: 20.0),
             const Text(
@@ -130,15 +85,15 @@ class _TambahAnggotaState extends State<TambahAnggota> {
             const SizedBox(height: 40.0),
             ElevatedButton(
               onPressed: () {
-                if (psname.isEmpty || psnim.isEmpty || pspasswordhash.isEmpty) {
-                  Get.snackbar('Daftarkan PS ITB', 'Semua kolom harus terisi!');
+                if (psname.isEmpty || psnim.isEmpty) {
+                  Get.snackbar('Daftarkan PS ITB', 'Semua kolom harus terisi!',
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,);
                 }
                 else {
+                  pspasswordhash = 'password';
                   widget.onSubmit(psname, psnim, pspasswordhash, psisActive, psisAdmin);
-                  int psActive = 0;
-                  if (psisActive == true) {
-                    psActive = 1;
-                  }
+                  int psActive = 1;
 
                   int psAdmin = 0;
                   if (psisAdmin == true) {

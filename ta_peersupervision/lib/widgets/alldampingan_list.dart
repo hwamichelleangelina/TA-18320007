@@ -516,7 +516,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: const Text('Batal'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -548,7 +548,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
                     backgroundColor: Colors.green, colorText: Colors.white);  
                 }
               },
-              child: const Text('Update'),
+              child: const Text('Perbarui'),
             ),
           ],
         );

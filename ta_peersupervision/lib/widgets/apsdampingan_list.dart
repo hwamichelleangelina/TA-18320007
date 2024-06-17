@@ -134,7 +134,7 @@ class _DampinganListState extends State<DampinganList> {
             ),
             TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 146, 139)),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
               ),
               child: const Text('Tutup'),
               onPressed: () {

@@ -477,7 +477,7 @@ class _NoPSDampinganListState extends State<NoPSDampinganList> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: const Text('Batal'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -509,7 +509,7 @@ class _NoPSDampinganListState extends State<NoPSDampinganList> {
                     backgroundColor: Colors.green, colorText: Colors.white);  
                 }
               },
-              child: const Text('Update'),
+              child: const Text('Simpan'),
             ),
           ],
         );
