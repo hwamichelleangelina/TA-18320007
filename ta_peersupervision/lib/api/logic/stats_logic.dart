@@ -15,14 +15,14 @@ class SessionPerMonth {
 
 class TopTopicsByMonth {
   final String katakunci;
-  final String month;
+  final int month;
   final int count;
 
   TopTopicsByMonth({required this.katakunci, required this.month, required this.count});
 
   factory TopTopicsByMonth.fromJson(Map<String, dynamic> json) {
     return TopTopicsByMonth(
-      month: json['month'].toString(), // Ensure month is a String
+      month: json['month'], // Ensure month is a String
       count: json['count'], katakunci: json['katakunci'],
     );
   }

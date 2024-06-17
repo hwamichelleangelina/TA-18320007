@@ -93,7 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),),
                   ),
                   const SizedBox(height: 10),
-                  _buildTopTopicsByMonthChart(), ])
+                  _buildTopTopicsByMonthChart(topTopicsByMonth), ])
             else
               const SizedBox(height: 5),
 
@@ -852,120 +852,134 @@ Widget _buildYearDropdown() {
     );
   }
 
-Widget _buildTopTopicsByMonthChart() {
-  return FutureBuilder<List<TopTopicsByMonth>>(
-    future: topTopicsByMonth,
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const CircularProgressIndicator();
-      } else if (snapshot.hasError) {
-        return Text('Error: ${snapshot.error}');
-      } else {
-        // Prepare data for stacked bar chart
-        final data = snapshot.data!;
-        final Map<String, Map<String, int>> monthlyData = {};
+  Widget _buildTopTopicsByMonthChart(Future<List<TopTopicsByMonth>> topTopicsByMonth) {
+    return FutureBuilder<List<TopTopicsByMonth>>(
+      future: topTopicsByMonth,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No data available'));
+        } else {
+          // Prepare data for stacked bar chart
+          final data = snapshot.data!;
+          final Map<int, Map<String, int>> monthlyData = {};
 
-        for (var topic in data) {
-          if (!monthlyData.containsKey(topic.month)) {
-            monthlyData[topic.month] = {};
+          for (var topic in data) {
+            if (!monthlyData.containsKey(topic.month)) {
+              monthlyData[topic.month] = {};
+            }
+            if (!monthlyData[topic.month]!.containsKey(topic.katakunci)) {
+              monthlyData[topic.month]![topic.katakunci] = 0;
+            }
+            monthlyData[topic.month]![topic.katakunci] =
+                monthlyData[topic.month]![topic.katakunci]! + topic.count;
           }
-          if (!monthlyData[topic.month]!.containsKey(topic.katakunci)) {
-            monthlyData[topic.month]![topic.katakunci] = 0;
+
+          final List<charts.Series<TopTopicsByMonth, String>> seriesList = [];
+
+          final uniqueKeywords = data.map((e) => e.katakunci).toSet().toList();
+          final colors = charts.MaterialPalette.getOrderedPalettes(uniqueKeywords.length);
+
+          for (int i = 0; i < uniqueKeywords.length; i++) {
+            final keyword = uniqueKeywords[i];
+            final color = colors[i].shadeDefault;
+
+            seriesList.add(charts.Series<TopTopicsByMonth, String>(
+              id: keyword,
+              colorFn: (_, __) => color,
+              domainFn: (TopTopicsByMonth topic, _) => _formatMonth(topic.month),
+              measureFn: (TopTopicsByMonth topic, _) => topic.count,
+              data: monthlyData.entries
+                  .map((entry) => TopTopicsByMonth(
+                        katakunci: keyword,
+                        month: entry.key,
+                        count: entry.value[keyword] ?? 0,
+                      ))
+                  .toList(),
+              labelAccessorFn: (TopTopicsByMonth topic, _) =>
+                  topic.count > 0 ? '${topic.count}' : '',
+            ));
           }
-          monthlyData[topic.month]![topic.katakunci] =
-              monthlyData[topic.month]![topic.katakunci]! + topic.count;
-        }
 
-        final List<charts.Series<TopTopicsByMonth, String>> seriesList = [];
-
-        final uniqueKeywords = data.map((e) => e.katakunci).toSet().toList();
-        final colors = charts.MaterialPalette.getOrderedPalettes(uniqueKeywords.length);
-
-        for (int i = 0; i < uniqueKeywords.length; i++) {
-          final keyword = uniqueKeywords[i];
-          final color = colors[i].shadeDefault;
-
-          seriesList.add(charts.Series<TopTopicsByMonth, String>(
-            id: keyword,
-            colorFn: (_, __) => color,
-            domainFn: (TopTopicsByMonth topic, _) => topic.month,
-            measureFn: (TopTopicsByMonth topic, _) => topic.count,
-            data: monthlyData.entries
-                .map((entry) => TopTopicsByMonth(
-                      katakunci: keyword,
-                      month: entry.key,
-                      count: entry.value[keyword] ?? 0,
-                    ))
-                .toList(),
-            labelAccessorFn: (TopTopicsByMonth topic, _) =>
-                topic.count > 0 ? '${topic.count}' : '',
-          ));
-        }
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SizedBox(
-            height: 470, // Increase the height to make space for the legend
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                int desiredMaxColumns = 2;
-                return charts.BarChart(
-                  seriesList,
-                  barGroupingType: charts.BarGroupingType.stacked,
-                  animate: true,
-                  primaryMeasureAxis: const charts.NumericAxisSpec(
-                    renderSpec: charts.GridlineRendererSpec(
-                      // Customize gridline style
-                      labelStyle: charts.TextStyleSpec(
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SizedBox(
+              height: 470, // Increase the height to make space for the legend
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  int desiredMaxColumns = 2;
+                  return charts.BarChart(
+                    seriesList,
+                    barGroupingType: charts.BarGroupingType.stacked,
+                    animate: true,
+                    primaryMeasureAxis: const charts.NumericAxisSpec(
+                      renderSpec: charts.GridlineRendererSpec(
+                        // Customize gridline style
+                        labelStyle: charts.TextStyleSpec(
+                          fontFamily: 'Montserrat',
+                          color: charts.MaterialPalette.white,
+                        ),
+                        lineStyle: charts.LineStyleSpec(
+                          color: charts.MaterialPalette.white, // Gridline color
+                        ),
+                      ),
+                    ),
+                    domainAxis: const charts.OrdinalAxisSpec(
+                      renderSpec: charts.SmallTickRendererSpec(
+                        labelStyle: charts.TextStyleSpec(
+                          fontFamily: 'Montserrat',
+                          color: charts.MaterialPalette.white,
+                        ),
+                        lineStyle: charts.LineStyleSpec(
+                          color: charts.MaterialPalette.white,
+                        ),
+                      ),
+                    ),
+                    barRendererDecorator: charts.BarLabelDecorator<String>(
+                      labelAnchor: charts.BarLabelAnchor.end,
+                      labelPosition: charts.BarLabelPosition.outside,
+                      outsideLabelStyleSpec: const charts.TextStyleSpec(
                         fontFamily: 'Montserrat',
                         color: charts.MaterialPalette.white,
                       ),
-                      lineStyle: charts.LineStyleSpec(
-                        color: charts.MaterialPalette.white, // Gridline color
-                      ),
                     ),
-                  ),
-                  domainAxis: const charts.OrdinalAxisSpec(
-                    renderSpec: charts.SmallTickRendererSpec(
-                      labelStyle: charts.TextStyleSpec(
-                        fontFamily: 'Montserrat',
-                        color: charts.MaterialPalette.white,
+                    behaviors: [
+                      charts.SeriesLegend(
+                        position: charts.BehaviorPosition.bottom,
+                        horizontalFirst: true,
+                        showMeasures: false, // Do not show measures
+                        legendDefaultMeasure: charts.LegendDefaultMeasure.none,
+                        entryTextStyle: const charts.TextStyleSpec(
+                          color: charts.MaterialPalette.white, // Legend font color
+                          fontSize: 10,
+                        ),
+                        desiredMaxColumns: desiredMaxColumns, // Set desired max columns
                       ),
-                      lineStyle: charts.LineStyleSpec(
-                        color: charts.MaterialPalette.white,
-                      ),
-                    ),
-                  ),
-                  barRendererDecorator: charts.BarLabelDecorator<String>(
-                    labelAnchor: charts.BarLabelAnchor.end,
-                    labelPosition: charts.BarLabelPosition.outside,
-                    outsideLabelStyleSpec: const charts.TextStyleSpec(
-                      fontFamily: 'Montserrat',
-                      color: charts.MaterialPalette.white,
-                    ),
-                  ),
-                  behaviors: [
-                    charts.SeriesLegend(
-                      position: charts.BehaviorPosition.bottom,
-                      horizontalFirst: true,
-                      showMeasures: false, // Do not show measures
-                      legendDefaultMeasure: charts.LegendDefaultMeasure.none,
-                      entryTextStyle: const charts.TextStyleSpec(
-                        color: charts.MaterialPalette.white, // Legend font color
-                        fontSize: 10,
-                      ),
-                      desiredMaxColumns: desiredMaxColumns, // Set desired max columns
-                    ),
-                  ],
-                );
-              }
+                    ],
+                  );
+                }
+              ),
             ),
-          ),
-        );
-      }
-    },
-  );
-}
+          );
+        }
+      },
+    );
+  }
+
+  String _formatMonth(int month) {
+    int year = selectedYear;
+    List<String> months = [
+      '$year-01', '$year-02', '$year-03', '$year-04', '$year-05', '$year-06',
+      '$year-07', '$year-08', '$year-09', '$year-10', '$year-11', '$year-12'
+    ];
+    if (month >= 1 && month <= 12) {
+      return months[month - 1];
+    }
+    return month.toString(); // Fallback to the number if out of range
+  }
 
   Widget _buildRecommendationRatioChart() {
     return FutureBuilder<List<Recommendation>>(
