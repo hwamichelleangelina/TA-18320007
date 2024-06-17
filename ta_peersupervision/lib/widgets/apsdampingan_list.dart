@@ -101,15 +101,6 @@ class _DampinganListState extends State<DampinganList> {
           ),
           actions: <Widget>[
             TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 146, 139)),
-              ),
-              child: const Text('Tutup'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
               child: const Text('Jadwalkan Pendampingan'),
               onPressed: () async {
 //                print(item.reqid);
@@ -139,6 +130,15 @@ class _DampinganListState extends State<DampinganList> {
 //                  selectedDate = null;
 //                  print('SelectedDate erase: $selectedDate');
                   }*/
+              },
+            ),
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 146, 139)),
+              ),
+              child: const Text('Tutup'),
+              onPressed: () {
+                Navigator.of(context).pop();
               },
             ),
           ],
