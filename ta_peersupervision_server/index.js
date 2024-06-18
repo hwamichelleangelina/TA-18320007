@@ -29,6 +29,7 @@ const routerJadwal = require('./routers/jadwal_routes');
 const routerLaporan = require('./routers/laporan_routes');
 const routerDownloadReport = require('./routers/download_report_routes');
 const routerStats = require('./routers/statistic_routes');
+const routerRujukan = require('./routers/rujukan_routes');
 
 app.use('/bkusers', routerBKUser);
 app.use('/psusers', routerPSUser);
@@ -38,6 +39,7 @@ app.use('/jadwal', routerJadwal);
 app.use('/laporan', routerLaporan);
 app.use('/report', routerDownloadReport);
 app.use('/stats', routerStats);
+app.use('/rujukan', routerRujukan);
 
 app.get('/hello', async (req, res) => {
     res.json({ message: 'Hello!' });

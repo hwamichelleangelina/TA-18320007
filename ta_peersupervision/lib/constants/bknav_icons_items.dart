@@ -12,10 +12,6 @@ const List<Map> naviBKItems = [
     "title": "Laporan Pendampingan"
   },
   {
-    "img": "assets/lightimages/Ganecare.png",
-    "title": "Kegiatan Ganecare"
-  },
-  {
     "img": "assets/lightimages/Member.png",
     "title": "Anggota PS"
   },

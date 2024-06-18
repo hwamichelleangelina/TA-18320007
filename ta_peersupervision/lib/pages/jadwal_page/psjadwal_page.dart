@@ -56,7 +56,7 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
       });
     } catch (e) {
    //   print('Failed to fetch events: $e');
-      Get.snackbar('Jadwal Pendampingan', 'Gagal mengambil data event');
+      Get.snackbar('Jadwal Pendampingan', 'Belum ada Jadwal');
     }
   }
 

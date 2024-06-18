@@ -23,7 +23,7 @@ exports.downloadReport = (req, res) => {
                 const timesNewRomanBoldItalicPath = path.join(__dirname, 'fonts', 'times new roman bold italic.ttf');
                 doc.registerFont('TimesNewRoman-BoldItalic', timesNewRomanBoldItalicPath);
 
-                const filename = `Laporan_${laporan.jadwalid}.pdf`;
+                const filename = `Laporan_${laporan.jadwalid}_${laporan.initial}.pdf`;
 
                 // Mengatur header untuk pengiriman file PDF
                 res.setHeader('Content-disposition', 'attachment; filename=' + filename);

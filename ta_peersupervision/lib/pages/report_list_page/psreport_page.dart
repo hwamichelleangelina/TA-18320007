@@ -1,5 +1,9 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ta_peersupervision/api/provider/laporan_provider.dart';
 import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
@@ -11,6 +15,7 @@ import 'package:ta_peersupervision/widgets/header_mobile.dart';
 import 'package:ta_peersupervision/widgets/psdrawer_mobile.dart';
 import 'package:ta_peersupervision/widgets/psheader_kembalihome.dart';
 import 'package:ta_peersupervision/widgets/psreports_table.dart';
+import 'package:http/http.dart' as http;
 
 class PSReportPage extends StatefulWidget {
   const PSReportPage({super.key});
@@ -145,7 +150,7 @@ class _PSReportPageState extends State<PSReportPage> {
                                   return PSReportsTable(
                                     checkLaporan: checkLaporan,
                                     jadwal: _filteredJadwalList[index],
-                                    onTap: () {},
+                                    onTap: () => _showDetails(_filteredJadwalList[index]),
                                   );                                  
                                 }
                               },
@@ -168,6 +173,111 @@ class _PSReportPageState extends State<PSReportPage> {
         );
       },
     );
+  }
+
+  String formattedTanggal(String tanggalString) {
+    final DateTime dateTime = DateTime.parse(tanggalString);
+    return DateFormat('d MMMM y').format(dateTime);
+  }
+
+  void _showDetails(JadwalList jadwal) async {
+    int? jadwalId = jadwal.jadwalid;
+
+    try {
+      final response = await http.get(Uri.parse('http://localhost:3000/laporan/getLaporan/$jadwalId'));
+      if (response.statusCode == 200) {
+        final detail = json.decode(response.body);
+        if (detail['report'] is List && detail['report'].isNotEmpty) {
+          final report = detail['report'][0];
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Laporan Proses Pendampingan', textAlign: TextAlign.center,),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Inisial Dampingan: ${report['initial'] ?? 'N/A'}'),
+                      const SizedBox(height: 5),
+                      Text('ID Dampingan: ${report['reqid'] ?? 'N/A'}'),
+                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
+                      Text('Pendamping Sebaya: ${report['psname'] ?? 'N/A'}'),
+                      const SizedBox(height: 5),
+                      Text('NIM Pendamping Sebaya: ${report['psnim'] ?? 'N/A'}'),
+                      const SizedBox(height: 5),
+                      const SizedBox(height: 10),
+                      Text('Jadwal ID: ${report['jadwalid'] ?? 'N/A'}'),
+                      const SizedBox(height: 5),
+                      Text('Tanggal Pendampingan: ${formattedTanggal(report['tanggalKonversi'])}'),
+                      const SizedBox(height: 5),
+                      const SizedBox(height: 10),
+                      Text('Direkomendasikan untuk Rujuk ke Psikolog: ${report['isRecommended'] == 1 ? 'PERLU SEGERA' : 'Tidak Perlu'}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      const SizedBox(height: 5),
+                      Text('Kata Kunci Permasalahan: ${report['katakunci'] ?? 'N/A'}'),
+                      const SizedBox(height: 5),
+                      const SizedBox(height: 35),
+                      const Center(
+                        child: Text(
+                          'Gambaran Permasalahan Dampingan',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text('${report['gambaran'] ?? 'N/A'}'),
+                      const SizedBox(height: 35),
+                      const Center(
+                        child: Text(
+                          'Proses Pendampingan yang Dilakukan',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text('${report['proses'] ?? 'N/A'}'),
+                      const SizedBox(height: 35),
+                      const Center(
+                        child: Text(
+                          'Hasil Akhir dari Proses Pendampingan',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text('${report['hasil'] ?? 'N/A'}'),
+                      const SizedBox(height: 35),
+                      const Center(
+                        child: Text(
+                          'Kendala selama Proses Pendampingan',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text('${report['kendala'] ?? 'N/A'}'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Tutup'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          print('Unexpected detail format: ${detail['report']}');
+        }
+      } else {
+        print('Failed to load details');
+      }
+    } catch (e) {
+      print('Error fetching details: $e');
+    }
   }
 
   void scrollToSection(int navIndex) {

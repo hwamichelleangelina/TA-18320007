@@ -76,38 +76,92 @@ class dampingan {
 
         */
     
-        static createDampingan(dampinganData, callback) {
-            if (!dampinganData || Object.keys(dampinganData).length === 0) {
-                callback('Dampingan data is empty', null);
-                return;
-            }
-        
-            const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname } = dampinganData;
-            const createDampinganQuery = `
-            INSERT INTO dampingan (initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psnim, psname)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT psnim FROM psusers WHERE psname = ?), ?);
-            `;
-        
-            mysqlConn.query(createDampinganQuery, [
-                initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname, psname
-            ], (err, result) => {
-                if (err) {
-                    console.error('Error creating dampingan:', err);
-                    callback(err, null);
-                } else {
-                    callback(null, result);
-                }
-            });
+    static createDampingan(dampinganData, callback) {
+        if (!dampinganData || Object.keys(dampinganData).length === 0) {
+            callback('Dampingan data is empty', null);
+            return;
         }
     
+        const { initial, fakultas, gender, angkatan, tingkat, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname } = dampinganData;
+        const createDampinganQuery = `
+        INSERT INTO dampingan (initial, fakultas, gender, angkatan, tingkat, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psnim, psname)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT psnim FROM psusers WHERE psname = ?), ?);
+        `;
+    
+        const getLastReqIdQuery = `
+        SELECT reqid FROM dampingan ORDER BY reqid DESC LIMIT 1;
+        `;
+    
+        const createRujukanQuery = `
+        INSERT INTO rujukan (reqid, initial, isRujukanNeed)
+        VALUES (?, ?, 0);
+        `;
+    
+        // Mulai transaksi
+        mysqlConn.beginTransaction((err) => {
+            if (err) {
+                console.error('Error starting transaction:', err);
+                callback(err, null);
+                return;
+            }
+    
+            // Jalankan query untuk membuat data dampingan
+            mysqlConn.query(createDampinganQuery, [
+                initial, fakultas, gender, angkatan, tingkat, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname, psname
+            ], (err, result) => {
+                if (err) {
+                    return mysqlConn.rollback(() => {
+                        console.error('Error creating dampingan:', err);
+                        callback(err, null);
+                    });
+                }
+    
+                // Ambil reqid dari baris paling bawah (baru)
+                mysqlConn.query(getLastReqIdQuery, (err, results) => {
+                    if (err) {
+                        return mysqlConn.rollback(() => {
+                            console.error('Error getting last reqid:', err);
+                            callback(err, null);
+                        });
+                    }
+    
+                    const reqid = results[0].reqid;
+    
+                    // Buat data baru dalam tabel rujukan
+                    mysqlConn.query(createRujukanQuery, [reqid, initial], (err, result) => {
+                        if (err) {
+                            return mysqlConn.rollback(() => {
+                                console.error('Error creating rujukan:', err);
+                                callback(err, null);
+                            });
+                        }
+    
+                        // Commit transaksi jika semua query berhasil
+                        mysqlConn.commit((err) => {
+                            if (err) {
+                                return mysqlConn.rollback(() => {
+                                    console.error('Error committing transaction:', err);
+                                    callback(err, null);
+                                });
+                            }
+    
+                            callback(null, result);
+                        });
+                    });
+                });
+            });
+        });
+    }
+        
+    
     static updateDataDampingan(reqid, newData, callback) {
-        const { initial, fakultas, gender, angkatan, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname } = newData;
+        const { initial, fakultas, gender, angkatan, tingkat, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname } = newData;
         const updateDampinganQuery = `
         UPDATE dampingan
-        SET initial = ?, gender = ?, fakultas = ?, kampus = ?, angkatan = ?, mediakontak = ?, kontak = ?, katakunci = ?, katakunci2 = ?, psnim = (SELECT psnim FROM psusers WHERE psname = ?), sesi = ?, psname = ?
+        SET initial = ?, gender = ?, fakultas = ?, kampus = ?, angkatan = ?, tingkat = ?, mediakontak = ?, kontak = ?, katakunci = ?, katakunci2 = ?, psnim = (SELECT psnim FROM psusers WHERE psname = ?), sesi = ?, psname = ?
         WHERE reqid = ?
       `;
-        mysqlConn.query(updateDampinganQuery, [initial, gender, fakultas, kampus, angkatan, mediakontak, kontak, katakunci, katakunci2, psname, sesi, psname, reqid], (err, result) => {
+        mysqlConn.query(updateDampinganQuery, [initial, gender, fakultas, kampus, angkatan, tingkat, mediakontak, kontak, katakunci, katakunci2, psname, sesi, psname, reqid], (err, result) => {
             if (err) {
                 callback(err, null);
             } else {

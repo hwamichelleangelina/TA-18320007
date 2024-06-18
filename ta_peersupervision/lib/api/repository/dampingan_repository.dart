@@ -111,6 +111,22 @@ Future<List<Dampingan>> fetchDampingan(int? psnim) async {
   }
 }
 
+Future<List<Dampingan>> getReqIdByDampingan() async {
+  final response = await http.get(Uri.parse('$serverUrl/getDampingan'));
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> jsonResponse = json.decode(response.body);
+    List<dynamic> requests = jsonResponse['dampingan'];
+    return requests.map((data) => Dampingan.fromJson(data)).toList();
+  } 
+  else if (response.statusCode == 404) {
+    throw Exception('Tidak ada dampingan yang ditangani');
+  }
+  else {
+    throw Exception('Failed to load data');
+  }
+}
+
 Future<List<Dampingan>> fetchDampinganList(int? psnim) async {
   final response = await http.get(Uri.parse('$serverUrl/getDampingan/$psnim'));
   if (psnim == 0) {

@@ -126,7 +126,7 @@ class Recommendation {
 
   factory Recommendation.fromJson(Map<String, dynamic> json) {
     return Recommendation(
-      isRecommended: json['isRecommended'],
+      isRecommended: json['isRujukanNeed'],
       count: json['count'],
     );
   }

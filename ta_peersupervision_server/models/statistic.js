@@ -183,10 +183,10 @@ class Statistic {
     
     static recommendedRatio(year, callback) {
         const recommendedRatioQuery = `
-            SELECT isRecommended, COUNT(*) as count
-            FROM laporan
-            WHERE YEAR(laporanadded) = ?
-            GROUP BY isRecommended;
+            SELECT isRujukanNeed, COUNT(*) as count
+            FROM rujukan
+            WHERE YEAR(rujukanadded) = ?
+            GROUP BY isRujukanNeed;
         `;
         mysqlConn.query(recommendedRatioQuery, [year], (err, result) => {
             if (err) {
@@ -199,14 +199,16 @@ class Statistic {
    
     static potentialrujuk(year, callback) {
         const potentiallyQuery = `
-                SELECT
-                katakunci,
-                reqid,
-                initial,
+            SELECT
+                jadwal.katakunci,
+                jadwal.reqid,
+                jadwal.initial,
                 COUNT(*) AS count
             FROM jadwal
-            WHERE YEAR(jadwaladded) = ?
-            GROUP BY initial, katakunci, reqid
+            JOIN rujukan ON jadwal.reqid = rujukan.reqid
+            WHERE YEAR(jadwal.jadwaladded) = ?
+            AND rujukan.isRujukanNeed = 0
+            GROUP BY jadwal.initial, jadwal.katakunci, jadwal.reqid
             ORDER BY count DESC;
         `;
         mysqlConn.query(potentiallyQuery, [year], (err, result) => {
@@ -346,9 +348,9 @@ class Statistic {
 
     static recommendedRatioAllTime(callback) {
         const recommendedRatioQuery = `
-            SELECT isRecommended, COUNT(*) as count
-            FROM laporan
-            GROUP BY isRecommended;
+            SELECT isRujukanNeed, COUNT(*) as count
+            FROM rujukan
+            GROUP BY isRujukanNeed;
         `;
         mysqlConn.query(recommendedRatioQuery, (err, result) => {
             if (err) {

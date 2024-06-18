@@ -6,6 +6,7 @@ import 'package:ta_peersupervision/api/logic/jadwal_logic.dart';
 import 'package:ta_peersupervision/api/logic/laporan_logic.dart';
 import 'package:ta_peersupervision/api/provider/laporan_provider.dart';
 import 'package:ta_peersupervision/api/repository/laporan_repository.dart';
+import 'package:ta_peersupervision/api/repository/rujukan_repository.dart.dart';
 import 'package:ta_peersupervision/api/shared_preferences/jadwal_data_manager.dart';
 import 'package:ta_peersupervision/pages/report_list_page/apsreport_page.dart';
 
@@ -28,6 +29,7 @@ class _FillingFormState extends State<FillingForm> {
   bool isAgreeChecked = false;
 
   LaporanRepository repository = LaporanRepository();
+  RujukanRepository rujukan = RujukanRepository();
 
   String _gambar = '';
   String _proses = '';
@@ -439,6 +441,7 @@ class _FillingFormState extends State<FillingForm> {
                 );
 
                 repository.fillLaporan(laporan: laporan).then((value) async {
+                  rujukan.updateRujukan(reqid: widget.jadwal.reqid, isRujukanNeed: isRecommended,);
                   Navigator.of(context).pop();
                   Get.toNamed('/aps-laporan');
                 }); 
