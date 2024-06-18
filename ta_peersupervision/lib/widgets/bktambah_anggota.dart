@@ -63,9 +63,10 @@ class _TambahAnggotaState extends State<TambahAnggota> {
               ),
             ),
 
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 30.0),
             const Text(
-              'Kepala Divisi Kuratif',
+              'Admin (Ketua Divisi) Pendamping Sebaya ITB',
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             Row(

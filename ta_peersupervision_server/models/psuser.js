@@ -111,8 +111,8 @@ class psUser {
             psname as Nama,
             psnim as NIM,
             case 
-                when psisAdmin = 1 then 'Kadiv Kuratif'
-                else 'Anggota PS'
+                when psisAdmin = 1 then 'Admin'
+                else 'Anggota'
             end as Role
         from 
             psusers
@@ -134,8 +134,8 @@ class psUser {
             psnim as NIM,
             pstahunaktif as Tahun,
             case 
-                when psisAdmin = 1 then 'Kadiv Kuratif'
-                else 'Anggota PS'
+                when psisAdmin = 1 then 'Admin'
+                else 'Anggota'
             end as Role
         from 
             psusers

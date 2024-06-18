@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 3),
       () async {
         if (isBKLoggedIn) {
-          Get.snackbar('Bimbingan Konseling ITB', 'You are logged in',
+          Get.snackbar('Bimbingan Konseling ITB', 'You are logged in as Admin Bimbingan Konseling ITB',
               backgroundColor: Colors.green,
               colorText: Colors.white,);
           Get.toNamed('/bk-home');
@@ -47,14 +47,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
           if (psUser?.psisAdmin == 1) {
             // Jika pengguna adalah admin, navigasi ke APSHomePage
-            Get.snackbar('Pendamping Sebaya ITB', 'You are logged in as Kepala Divisi Kuratif',
+            Get.snackbar('Pendamping Sebaya ITB', 'You are logged in as Admin (Ketua Divisi) Pendamping Sebaya ITB',
               backgroundColor: Colors.green,
               colorText: Colors.white,);
             Get.toNamed('/aps-home');
           }
           else {
             // Jika pengguna adalah member, navigasi ke PSHomePage
-            Get.snackbar('Pendamping Sebaya ITB', 'You are logged in',
+            Get.snackbar('Pendamping Sebaya ITB', 'You are logged in as Pendamping Sebaya ITB',
               backgroundColor: Colors.green,
               colorText: Colors.white,);
             Get.toNamed('/ps-home');

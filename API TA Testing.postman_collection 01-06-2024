@@ -2094,7 +2094,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "[\n    {\n        \"Nama\": \"Axel Blaze Kim\",\n        \"NIM\": 13218032,\n        \"Role\": \"Anggota PS\"\n    },\n    {\n        \"Nama\": \"Marcus Evans\",\n        \"NIM\": 13218033,\n        \"Role\": \"Anggota PS\"\n    },\n    {\n        \"Nama\": \"Nelly Huntsman\",\n        \"NIM\": 12202231,\n        \"Role\": \"Anggota PS\"\n    },\n    {\n        \"Nama\": \"James Kang\",\n        \"NIM\": 10123001,\n        \"Role\": \"Anggota PS\"\n    },\n    {\n        \"Nama\": \"Geraldine Anya Louvre\",\n        \"NIM\": 18315023,\n        \"Role\": \"Kadiv Kuratif\"\n    },\n    {\n        \"Nama\": \"Cherryl Lydia\",\n        \"NIM\": 12312123,\n        \"Role\": \"Anggota PS\"\n    }\n]"
+					"body": "[\n    {\n        \"Nama\": \"Axel Blaze Kim\",\n        \"NIM\": 13218032,\n        \"Role\": \"Anggota PS\"\n    },\n    {\n        \"Nama\": \"Marcus Evans\",\n        \"NIM\": 13218033,\n        \"Role\": \"Anggota PS\"\n    },\n    {\n        \"Nama\": \"Nelly Huntsman\",\n        \"NIM\": 12202231,\n        \"Role\": \"Anggota PS\"\n    },\n    {\n        \"Nama\": \"James Kang\",\n        \"NIM\": 10123001,\n        \"Role\": \"Anggota PS\"\n    },\n    {\n        \"Nama\": \"Geraldine Anya Louvre\",\n        \"NIM\": 18315023,\n        \"Role\": \"Admin\"\n    },\n    {\n        \"Nama\": \"Cherryl Lydia\",\n        \"NIM\": 12312123,\n        \"Role\": \"Anggota PS\"\n    }\n]"
 				}
 			]
 		},
