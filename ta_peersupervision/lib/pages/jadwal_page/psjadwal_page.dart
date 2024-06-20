@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -158,18 +160,21 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
                           IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () async {
-                              // Menghapus event dari map terlebih dahulu
-                              setState(() {
-                                jadwal[selectedDate]?.remove(event);
-                                if (jadwal[selectedDate]?.isEmpty ?? false) {
-                                  jadwal.remove(selectedDate);
-                                }
+                              final confirmDelete = await _showDeleteConfirmationDialog(context, event.jadwalid);
+                              if (confirmDelete) {
+                                // Menghapus event dari map terlebih dahulu
+                                setState(() {
+                                  jadwal[selectedDate]?.remove(event);
+                                  if (jadwal[selectedDate]?.isEmpty ?? false) {
+                                    jadwal.remove(selectedDate);
+                                  }
                               });
                               // Menghapus event dari repository
                               await repository.deleteJadwal(event.jadwalid);
                               // Mengambil ulang data dari repository
                               await _fetchEvents(widget.psnim);
                               Navigator.of(context).pop();
+                            }
                             },
                           ),
                         ],
@@ -213,6 +218,31 @@ class _PSJadwalPageState extends State<PSJadwalPage> {
         );
       },
     );
+  }
+
+  Future<bool> _showDeleteConfirmationDialog(BuildContext context, int jadwalid) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Konfirmasi Hapus'),
+          content: Text('Apakah Anda yakin ingin menghapus jadwal pendampingan dengan ID: $jadwalid?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              ),
+              child: const Text('Hapus'),
+            ),
+          ],
+        );
+      },
+    ) ?? false;
   }
 
   void scrollToSection(int navIndex) {
