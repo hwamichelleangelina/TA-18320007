@@ -13,5 +13,4 @@ Bentuk sistem informasi disesuaikan dengan kebutuhan pihak Pendamping Sebaya dan
 
 ## Deployment will use:
 - Netlify for Flutter
-- Vercel app for NodeJS
-- Clever Cloud for MySQL Hosting
+- Google Cloud Platform (GCP) for NodeJS and MySQL
