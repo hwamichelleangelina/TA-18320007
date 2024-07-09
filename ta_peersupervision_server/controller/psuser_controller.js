@@ -32,7 +32,7 @@ exports.registerPSUsers = (req, res) => {
 }
 
 exports.deletePSUsers = (req, res) => {
-    const { psnim } = req.body;
+    const { psnim } = req.params;
 
     psUser.deleteaPSUsers(psnim, (err, result) => {
         if (err) {
@@ -72,6 +72,22 @@ exports.nonActiveUsers = (req, res) => {
         } else {
             if (result) {
                 res.status(200).json({ message: 'User successfully non-activated.' });
+            } else {
+                res.status(404).json({ message: 'User not found.' });
+            }
+        }
+    });
+}
+
+exports.ActiveUsers = (req, res) => {
+    const { psnim } = req.body;
+
+    psUser.ActivateUsers(psnim, (err, result) => {
+        if (err) {
+            res.status(500).json({ message: 'Error while activating user.' });
+        } else {
+            if (result) {
+                res.status(200).json({ message: 'User successfully activated.' });
             } else {
                 res.status(404).json({ message: 'User not found.' });
             }

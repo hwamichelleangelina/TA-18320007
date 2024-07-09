@@ -57,7 +57,7 @@ class _BKMainDesktopState extends State<BKMainDesktop> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              SelectableText(
                 "Selamat Datang,\nBimbingan Konseling ITB\n${_bkname ?? ''}",
                 style: const TextStyle(
                   fontSize: 30.0,

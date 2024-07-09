@@ -57,16 +57,16 @@ class _LaporanTableState extends State<LaporanTable> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Initial: ${report['initial'] ?? 'N/A'}'),
-                      Text('PS Name: ${report['psname'] ?? 'N/A'}'),
-                      Text('Jadwal ID: ${report['jadwalid'] ?? 'N/A'}'),
-                      Text('Tanggal: ${report['tanggal'] ?? 'N/A'}'),
-                      Text('Is Recommended: ${report['isRecommended'] == 1 ? 'Yes' : 'No'}'),
-                      Text('Katakunci: ${report['katakunci'] ?? 'N/A'}'),
-                      Text('Gambaran: ${report['gambaran'] ?? 'N/A'}'),
-                      Text('Proses: ${report['proses'] ?? 'N/A'}'),
-                      Text('Hasil: ${report['hasil'] ?? 'N/A'}'),
-                      Text('Kendala: ${report['kendala'] ?? 'N/A'}'),
+                      SelectableText('Initial: ${report['initial'] ?? 'N/A'}'),
+                      SelectableText('PS Name: ${report['psname'] ?? 'N/A'}'),
+                      SelectableText('Jadwal ID: ${report['jadwalid'] ?? 'N/A'}'),
+                      SelectableText('Tanggal: ${report['tanggal'] ?? 'N/A'}'),
+                      SelectableText('Is Recommended: ${report['isRecommended'] == 1 ? 'Yes' : 'No'}'),
+                      SelectableText('Katakunci: ${report['katakunci'] ?? 'N/A'}'),
+                      SelectableText('Gambaran: ${report['gambaran'] ?? 'N/A'}'),
+                      SelectableText('Proses: ${report['proses'] ?? 'N/A'}'),
+                      SelectableText('Hasil: ${report['hasil'] ?? 'N/A'}'),
+                      SelectableText('Kendala: ${report['kendala'] ?? 'N/A'}'),
                     ],
                   ),
                 ),
@@ -138,11 +138,11 @@ class _LaporanTableState extends State<LaporanTable> {
                   ],
                   rows: _filteredData.map((item) {
                     return DataRow(cells: [
-                      DataCell(Text(item['initial'] ?? 'N/A')),
-                      DataCell(Text(item['psname'] ?? 'N/A')),
-                      DataCell(Text(item['jadwalid'].toString())),
-                      DataCell(Text(item['tanggal'] ?? 'N/A')),
-                      DataCell(Text(item['isRecommended'] == 1 ? 'Yes' : 'No')),
+                      DataCell(SelectableText(item['initial'] ?? 'N/A')),
+                      DataCell(SelectableText(item['psname'] ?? 'N/A')),
+                      DataCell(SelectableText(item['jadwalid'].toString())),
+                      DataCell(SelectableText(item['tanggal'] ?? 'N/A')),
+                      DataCell(SelectableText(item['isRecommended'] == 1 ? 'Yes' : 'No')),
                       DataCell(
                         Row(
                           children: [

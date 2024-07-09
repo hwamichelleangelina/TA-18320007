@@ -205,11 +205,11 @@ class _DataTableAnggotaState extends State<DataTableAnggota> {
       users.length,
       (index) => DataRow(
         cells: [
-          DataCell(Text(users[index].role)),
-          DataCell(Text(users[index].name)),
-          DataCell(Text(users[index].nimAsString)),
-          DataCell(Text(_getFrequency(freqData, users[index].nim.toString()).toString())),
-          DataCell(Text(_getDampinganCount(dampinganData, users[index].nim.toString()).toString())),
+          DataCell(SelectableText(users[index].role)),
+          DataCell(SelectableText(users[index].name)),
+          DataCell(SelectableText(users[index].nimAsString)),
+          DataCell(SelectableText(_getFrequency(freqData, users[index].nim.toString()).toString())),
+          DataCell(SelectableText(_getDampinganCount(dampinganData, users[index].nim.toString()).toString())),
           DataCell(
             Row(
               children: [
@@ -217,7 +217,10 @@ class _DataTableAnggotaState extends State<DataTableAnggota> {
                   onPressed: () {
                     _showEditDialog(context, users[index].name, users[index].nimAsString);
                   },
-                  child: const Text('Edit'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.blue,
+                  ),
+                  child: const Icon(Icons.edit),
                 ),
                 const SizedBox(width: 8.0),
                 ElevatedButton(
@@ -320,7 +323,7 @@ class _DataTableAnggotaState extends State<DataTableAnggota> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
+                        return const Text('Belum ada dampingan ditangani');
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Text('No data available');
                       } else {
@@ -330,8 +333,8 @@ class _DataTableAnggotaState extends State<DataTableAnggota> {
                           itemBuilder: (context, index) {
                             final item = snapshot.data![index];
                             return ListTile(
-                              title: Text('ID Dampingan: ${item.reqid}'),
-                              subtitle: Text('Inisial Dampingan: ${item.initial}'),
+                              title: SelectableText('ID Dampingan: ${item.reqid}'),
+                              subtitle: SelectableText('Inisial Dampingan: ${item.initial}'),
                               onTap: () {
                               },
                             );
@@ -362,7 +365,7 @@ class _DataTableAnggotaState extends State<DataTableAnggota> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Status Anggota akan Tidak Aktif'),
-          content: Text('Anda akan menon-aktifkan $name. Aksi ini tidak dapat dibatalkan'),
+          content: Text('Anda akan menon-aktifkan $name'),
           actions: <Widget>[
             TextButton(
               onPressed: () async {
@@ -378,15 +381,16 @@ class _DataTableAnggotaState extends State<DataTableAnggota> {
               Get.snackbar('Status Anggota Pendamping Sebaya ITB', '$name telah dinon-aktifkan',
                 backgroundColor: Colors.green, colorText: Colors.white);
               },
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              ),
               child: const Text('Non-Aktifkan'),
             ),
+            const SizedBox(width: 10,),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-              ),
               child: const Text('Batal'),
             ),
           ],

@@ -88,7 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Center(
                       child: Align(alignment: Alignment.center,
-                      child: Text('Berdasarkan frekuensi pendampingan per bulan.',
+                      child: SelectableText('Berdasarkan frekuensi pendampingan per bulan.',
                         textAlign: TextAlign.center,),
                     ),),
                   ),
@@ -325,7 +325,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             padding: EdgeInsets.symmetric(horizontal: 20),
                             child: Center(
                               child: Align(alignment: Alignment.center,
-                              child: Text('Inisial dampingan yang telah melakukan pendampingan lebih dari 5 kali tetapi belum/tidak ingin dirujuk kepada Psikolog.',
+                              child: SelectableText('Inisial dampingan yang telah melakukan pendampingan lebih dari 5 kali tetapi belum/tidak ingin dirujuk kepada Psikolog.',
                                 textAlign: TextAlign.center,),
                             ),),
                           ),
@@ -378,7 +378,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             padding: EdgeInsets.symmetric(horizontal: 20),
                             child: Center(
                               child: Align(alignment: Alignment.center,
-                              child: Text('Inisial dampingan yang telah melakukan pendampingan lebih dari 5 kali tetapi belum/tidak ingin dirujuk kepada Psikolog.',
+                              child: SelectableText('Inisial dampingan yang telah melakukan pendampingan lebih dari 5 kali tetapi belum/tidak ingin dirujuk kepada Psikolog.',
                                 textAlign: TextAlign.center,),
                             ),),
                           ),
@@ -549,8 +549,8 @@ Widget _buildYearDropdown() {
               ],
               rows: snapshot.data!
                   .map((topicpairs) => DataRow(cells: [
-                        DataCell(Text('${topicpairs.katakunci} - ${topicpairs.katakunci2 ?? 'Umum'}')),
-                        DataCell(Text(topicpairs.count.toString())),
+                        DataCell(SelectableText('${topicpairs.katakunci} - ${topicpairs.katakunci2 ?? 'Umum'}')),
+                        DataCell(SelectableText(topicpairs.count.toString())),
                       ]))
                   .toList(),
             ),
@@ -575,17 +575,17 @@ Widget _buildYearDropdown() {
             scrollDirection: Axis.horizontal,
             child: DataTable(
               columns: const [
-                DataColumn(label: Text('Inisial Dampingan')),
-                DataColumn(label: Text('ID')),
-                DataColumn(label: Text('Pendampingan')),
-                DataColumn(label: Text('Permasalahan')),
+                DataColumn(label: SelectableText('Inisial Dampingan')),
+                DataColumn(label: SelectableText('ID')),
+                DataColumn(label: SelectableText('Pendampingan')),
+                DataColumn(label: SelectableText('Permasalahan')),
               ],
               rows: snapshot.data!
                   .map((potential) => DataRow(cells: [
-                        DataCell(Text(potential.initial)),
-                        DataCell(Text(potential.reqid.toString())),
-                        DataCell(Text(potential.count.toString())),
-                        DataCell(Text(potential.katakunci))
+                        DataCell(SelectableText(potential.initial)),
+                        DataCell(SelectableText(potential.reqid.toString())),
+                        DataCell(SelectableText(potential.count.toString())),
+                        DataCell(SelectableText(potential.katakunci))
                       ]))
                   .toList(),
             ),
@@ -610,13 +610,13 @@ Widget _buildYearDropdown() {
             scrollDirection: Axis.horizontal,
             child: DataTable(
               columns: const [
-                DataColumn(label: Text('Nama Pendamping')),
-                DataColumn(label: Text('Jumlah Dampingan')),
+                DataColumn(label: SelectableText('Nama Pendamping')),
+                DataColumn(label: SelectableText('Jumlah Dampingan')),
               ],
               rows: snapshot.data!
                   .map((mentor) => DataRow(cells: [
-                        DataCell(Text(mentor.psname)),
-                        DataCell(Text(mentor.dampingancount.toString())),
+                        DataCell(SelectableText(mentor.psname)),
+                        DataCell(SelectableText(mentor.dampingancount.toString())),
                       ]))
                   .toList(),
             ),
@@ -646,8 +646,8 @@ Widget _buildYearDropdown() {
               ],
               rows: snapshot.data!
                   .map((mentor) => DataRow(cells: [
-                        DataCell(Text(mentor.psname)),
-                        DataCell(Text(mentor.jadwalcount.toString())),
+                        DataCell(SelectableText(mentor.psname)),
+                        DataCell(SelectableText(mentor.jadwalcount.toString())),
                       ]))
                   .toList(),
             ),
@@ -776,8 +776,8 @@ Widget _buildYearDropdown() {
               ],
               rows: snapshot.data!
                   .map((topic) => DataRow(cells: [
-                        DataCell(Text(topic.katakunci)),
-                        DataCell(Text(topic.count.toString())),
+                        DataCell(SelectableText(topic.katakunci)),
+                        DataCell(SelectableText(topic.count.toString())),
                       ]))
                   .toList(),
             ),

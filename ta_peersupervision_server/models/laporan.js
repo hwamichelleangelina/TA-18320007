@@ -14,7 +14,7 @@ class laporan {
     }
 
     static getLaporan(callback) {
-        const getLaporanQuery = 'SELECT *, CONVERT_TZ(tanggal, \'+00:00\', \'+07:00\') AS tanggalKonversi FROM laporan;';
+        const getLaporanQuery = 'SELECT *, CONVERT_TZ(tanggal, \'+00:00\', \'+07:00\') AS tanggalKonversi FROM laporan ORDER BY tanggalKonversi;';
         mysqlConn.query(getLaporanQuery, (err, result) => {
             if (err) {
                 callback(err, null);
@@ -65,10 +65,37 @@ class laporan {
                 console.error('Error creating laporan pendampingan:', err);
                 callback(err, null);
             } else {
-                callback(null, result);
+                // Setelah menyimpan laporan, kita akan memperbarui isRujukanNeed berdasarkan laporan terbaru
+                const getLatestIsRecommendedQuery = `
+                    SELECT isRecommended FROM laporan WHERE reqid = (SELECT reqid FROM jadwal WHERE jadwalid = ?) ORDER BY tanggal DESC LIMIT 1;
+                `;
+    
+                mysqlConn.query(getLatestIsRecommendedQuery, [jadwalid], (err, rows) => {
+                    if (err) {
+                        console.error('Error fetching latest isRecommended:', err);
+                        callback(err, null);
+                    } else if (rows.length > 0) {
+                        const latestIsRecommended = rows[0].isRecommended;
+    
+                        const updateRujukanQuery = `
+                            UPDATE rujukan SET isRujukanNeed = ? WHERE reqid = (SELECT reqid FROM jadwal WHERE jadwalid = ?);
+                        `;
+    
+                        mysqlConn.query(updateRujukanQuery, [latestIsRecommended, jadwalid], (err, updateResult) => {
+                            if (err) {
+                                console.error('Error updating rujukan:', err);
+                                callback(err, null);
+                            } else {
+                                callback(null, result);
+                            }
+                        });
+                    } else {
+                        callback('No matching laporan found to update rujukan', null);
+                    }
+                });
             }
         });
-    }
+    }    
 
     static getLaporanFilled(jadwalid, callback) {
         const getLaporanFilledQuery = 'SELECT COUNT(*) as count FROM laporan WHERE jadwalid = ?;';

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'dart:convert';
 
@@ -135,10 +135,8 @@ class _APSReportPageState extends State<APSReportPage> {
                           } else if (checkSnapshot.hasError) {
                             return Text("${checkSnapshot.error}"); // Menampilkan pesan error jika terjadi kesalahan
                           } else {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: _filteredJadwalList.length,
-                              itemBuilder: (context, index) {
+                            return Column(
+                              children: List.generate(_filteredJadwalList.length, (index) {
                                 final bool checkLaporan = checkSnapshot.data![index]; // Mengambil nilai checkLaporan dari list hasil Future
                                 if (checkLaporan == false) {
                                   return APSReportTable(
@@ -154,7 +152,7 @@ class _APSReportPageState extends State<APSReportPage> {
                                     onTap: () => _showDetails(_filteredJadwalList[index]),
                                   );                                  
                                 }
-                              },
+                              }),
                             );
                           }
                         },
@@ -178,7 +176,7 @@ class _APSReportPageState extends State<APSReportPage> {
 
   String formattedTanggal(String tanggalString) {
     final DateTime dateTime = DateTime.parse(tanggalString);
-    return DateFormat('d MMMM y').format(dateTime);
+    return DateFormat('d MMMM y', 'id').format(dateTime);
   }
 
   void _showDetails(JadwalList jadwal) async {
@@ -199,24 +197,24 @@ class _APSReportPageState extends State<APSReportPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Inisial Dampingan: ${report['initial'] ?? 'N/A'}'),
+                      SelectableText('Inisial Dampingan: ${report['initial'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
-                      Text('ID Dampingan: ${report['reqid'] ?? 'N/A'}'),
+                      SelectableText('ID Dampingan: ${report['reqid'] ?? 'N/A'}'),
                       const SizedBox(height: 10),
                       const SizedBox(height: 5),
-                      Text('Pendamping Sebaya: ${report['psname'] ?? 'N/A'}'),
+                      SelectableText('Pendamping Sebaya: ${report['psname'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
-                      Text('NIM Pendamping Sebaya: ${report['psnim'] ?? 'N/A'}'),
-                      const SizedBox(height: 5),
-                      const SizedBox(height: 10),
-                      Text('Jadwal ID: ${report['jadwalid'] ?? 'N/A'}'),
-                      const SizedBox(height: 5),
-                      Text('Tanggal Pendampingan: ${formattedTanggal(report['tanggalKonversi'])}'),
+                      SelectableText('NIM Pendamping Sebaya: ${report['psnim'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
                       const SizedBox(height: 10),
-                      Text('Direkomendasikan untuk Rujuk ke Psikolog: ${report['isRecommended'] == 1 ? 'PERLU SEGERA' : 'Tidak Perlu'}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      SelectableText('Jadwal ID: ${report['jadwalid'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
-                      Text('Kata Kunci Permasalahan: ${report['katakunci'] ?? 'N/A'}'),
+                      SelectableText('Tanggal Pendampingan: ${formattedTanggal(report['tanggalKonversi'])}'),
+                      const SizedBox(height: 5),
+                      const SizedBox(height: 10),
+                      SelectableText('Direkomendasikan untuk Rujuk ke Psikolog: ${report['isRecommended'] == 1 ? 'PERLU SEGERA' : 'Tidak Perlu'}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      const SizedBox(height: 5),
+                      SelectableText('Kata Kunci Permasalahan: ${report['katakunci'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
                       const SizedBox(height: 35),
                       const Center(
@@ -227,7 +225,7 @@ class _APSReportPageState extends State<APSReportPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['gambaran'] ?? 'N/A'}'),
+                      SelectableText('${report['gambaran'] ?? 'N/A'}'),
                       const SizedBox(height: 35),
                       const Center(
                         child: Text(
@@ -237,7 +235,7 @@ class _APSReportPageState extends State<APSReportPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['proses'] ?? 'N/A'}'),
+                      SelectableText('${report['proses'] ?? 'N/A'}'),
                       const SizedBox(height: 35),
                       const Center(
                         child: Text(
@@ -247,7 +245,7 @@ class _APSReportPageState extends State<APSReportPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['hasil'] ?? 'N/A'}'),
+                      SelectableText('${report['hasil'] ?? 'N/A'}'),
                       const SizedBox(height: 35),
                       const Center(
                         child: Text(
@@ -257,7 +255,7 @@ class _APSReportPageState extends State<APSReportPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['kendala'] ?? 'N/A'}'),
+                      SelectableText('${report['kendala'] ?? 'N/A'}'),
                     ],
                   ),
                 ),

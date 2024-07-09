@@ -14,19 +14,29 @@ class Footer extends StatelessWidget {
             color: CustomColor.purpleTersier,
           ),
         ),
-
-
         Container(
           padding: const EdgeInsets.symmetric(vertical: 20),
           width: double.maxFinite,
           alignment: Alignment.center,
-          child: const Text(
-            "Oleh 18320007 untuk EB4291 Tugas Akhir II",
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w400,
-              color:  CustomColor.purpleTersier,
-            ),
+          child: const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.copyright,
+                size: 11,
+                color: CustomColor.purpleTersier,
+              ),
+              SizedBox(width: 4),
+              Text(
+                "2024 Peer Supervision App || 18320007 EB4291 Tugas Akhir II",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400,
+                  color: CustomColor.purpleTersier,
+                  fontSize: 10,
+                ),
+              ),
+            ],
           ),
         ),
       ],

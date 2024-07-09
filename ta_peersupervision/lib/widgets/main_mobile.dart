@@ -59,7 +59,7 @@ class _MainMobileState extends State<MainMobile> {
             ),
           ),
           // intro text
-          Text(
+          SelectableText(
             "Selamat Datang,\nPendamping Sebaya ITB\n${_psname ?? ''}",
             style: const TextStyle(
               fontSize: 23.0,

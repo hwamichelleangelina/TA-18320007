@@ -26,15 +26,16 @@ void logoutDialog(BuildContext context) {
                 bkrepo.logoutBKUsers();
               }
               },
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              ),
               child: const Text('Keluar'),
             ),
+            const SizedBox(width: 10,),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-              ),
               child: const Text('Batal'),
             ),
           ],

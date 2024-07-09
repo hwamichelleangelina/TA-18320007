@@ -40,7 +40,7 @@ class ListTileButton extends StatelessWidget {
                 height: 27.0, // Tinggi gambar
               ),
               const SizedBox(height: 10.0), // Spacer antara gambar dan teks
-              Text(
+              SelectableText(
                 title,
                 style: const TextStyle(
                   color: Colors.black,

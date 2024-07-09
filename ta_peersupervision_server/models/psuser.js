@@ -88,6 +88,23 @@ class psUser {
         });
     }
 
+    static ActivateUsers(psnim, callback) {
+        const ActivateQuery = 'update psusers set psisActive = 1 where psnim = ?;';
+            mysqlConn.query(ActivateQuery, [psnim], (err, result) => {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    // Jika operasi pembaruan berhasil, result berisi informasi tentang jumlah baris yang terpengaruh
+                    // Anda dapat memeriksa nilai result untuk memastikan pembaruan berhasil
+                    if (result.affectedRows > 0) {
+                        callback(null, true); // Sukses memperbarui
+                    } else {
+                        callback(null, false); // Tidak ada baris yang terpengaruh, mungkin karena data tidak ditemukan
+                    }
+                }
+            });
+    }
+
     static nonActivateUsers(psnim, callback) {
         const nonActivateQuery = 'update psusers set psisActive = 0 where psnim = ?;';
             mysqlConn.query(nonActivateQuery, [psnim], (err, result) => {
@@ -117,7 +134,10 @@ class psUser {
         from 
             psusers
         where
-            psisActive = 1;`;
+            psisActive = 1
+        order by
+            Role asc,
+            Nama asc;`;
         mysqlConn.query(query, (err, results) => {
             if (err) {
                 callback(err, null);
@@ -140,7 +160,10 @@ class psUser {
         from 
             psusers
         where
-            psisActive = 0;`;
+            psisActive = 0
+        order by
+            Role asc,
+            Nama asc;`;
         mysqlConn.query(query, (err, results) => {
             if (err) {
                 callback(err, null);
@@ -158,7 +181,9 @@ class psUser {
         FROM
             psusers
         WHERE
-            psisActive = 1;`;
+            psisActive = 1
+        order by
+            psname asc;`;
         mysqlConn.query(query, (err, results) => {
             if (err) {
                 callback(err, null);

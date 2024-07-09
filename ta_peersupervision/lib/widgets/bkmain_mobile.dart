@@ -58,7 +58,7 @@ class _BKMainMobileState extends State<BKMainMobile> {
             ),
           ),
           // intro text
-          Text(
+          SelectableText(
             "Selamat Datang,\nBimbingan Konseling ITB\n${_bkname ?? ''}",
             style: const TextStyle(
               fontSize: 23.0,

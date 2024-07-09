@@ -62,7 +62,7 @@ class _FillingFormState extends State<FillingForm> {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
-            child: Text(
+            child: SelectableText(
               'ID Dampingan: ${widget.jadwal.reqid}',
               style: const TextStyle(fontSize: 18,),
             ),
@@ -72,7 +72,7 @@ class _FillingFormState extends State<FillingForm> {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
-            child: Text(
+            child: SelectableText(
               'Inisial Dampingan: ${widget.jadwal.initial}',
               style: const TextStyle(fontSize: 18,),
             ),
@@ -82,7 +82,7 @@ class _FillingFormState extends State<FillingForm> {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
-            child: Text(
+            child: SelectableText(
               'Pendamping Sebaya: ${widget.jadwal.psname}',
               style: const TextStyle(fontSize: 18,),
             ),
@@ -92,7 +92,7 @@ class _FillingFormState extends State<FillingForm> {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
-            child: Text(
+            child: SelectableText(
               'ID Jadwal: ${widget.jadwal.jadwalid}',
               style: const TextStyle(fontSize: 18,),
             ),
@@ -102,7 +102,7 @@ class _FillingFormState extends State<FillingForm> {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),  // Margin untuk judul,
-            child: Text(
+            child: SelectableText(
               'Tanggal Pendampingan: ${widget.jadwal.formattedTanggal}',
               style: const TextStyle(fontSize: 18,),
             ),
@@ -116,11 +116,11 @@ class _FillingFormState extends State<FillingForm> {
             
 
             widget.jadwal.katakunci2 == null
-            ? Text(
+            ? SelectableText(
               'Kata Kunci Masalah Dampingan: ${widget.jadwal.katakunci}',
               style: const TextStyle(fontSize: 18,),
             )
-            : Text(
+            : SelectableText(
               'Kata Kunci Masalah Dampingan: ${widget.jadwal.katakunci}, ${widget.jadwal.katakunci2}',
               style: const TextStyle(fontSize: 18,),
             ),
@@ -351,7 +351,7 @@ class _FillingFormState extends State<FillingForm> {
           Center(  // Judul checkbox dan isinya berada di tengah
             child: Column(
               children: [
-                Text(
+                SelectableText(
                   'Saya, ${widget.jadwal.psname}, pendamping sebaya yang mendampingi ${widget.jadwal.initial} dengan sadar menyatakan bahwa pengisian laporan dan rekomendasi tindak lanjut selama kegiatan pendampingan telah diberitahukan kepada ${widget.jadwal.initial} dan ${widget.jadwal.initial} secara sadar menyetujui tindakan tersebut. Apabila terdapat tindak lanjut pendampingan, dampingan telah mengizinkan akses informasi pribadi dampingan oleh psikolog dan tenaga medis terkait.',
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 15),

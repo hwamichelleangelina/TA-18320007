@@ -58,7 +58,7 @@ class _APSMainMobileState extends State<APSMainMobile> {
             ),
           ),
           // intro text
-          Text(
+          SelectableText(
             "Selamat Datang,\nPendamping Sebaya ITB\n${_psname ?? ''}",
             style: const TextStyle(
               fontSize: 23.0,

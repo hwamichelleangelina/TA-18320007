@@ -158,7 +158,7 @@ class _UpdatePSUserDialogState extends State<UpdatePSUserDialog> {
                 Navigator.of(context).pop();
               },
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 255, 195, 191)),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
               ),
               child: const Text('Batal'),
             ),

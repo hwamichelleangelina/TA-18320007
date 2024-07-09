@@ -24,19 +24,19 @@ class PSReportsTable extends StatelessWidget {
       child: Card(
         color: CustomColor.purpleBg2,
         child: ListTile(
-          title: Text('Inisial Dampingan: ${jadwal.initial}', style: const TextStyle( color: CustomColor.purpleTersier)),
+          title: SelectableText('Inisial Dampingan: ${jadwal.initial}', style: const TextStyle( color: CustomColor.purpleTersier)),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("ID Dampingan: ${jadwal.reqid}", style: const TextStyle(fontWeight: FontWeight.bold, color: CustomColor.purpleTersier)),
-              Text("Nomor Jadwal: ${jadwal.jadwalid}"),
-              Text("Tanggal Pendampingan: ${jadwal.formattedTanggal}"),
+              SelectableText("ID Dampingan: ${jadwal.reqid}", style: const TextStyle(fontWeight: FontWeight.bold, color: CustomColor.purpleTersier)),
+              SelectableText("Nomor Jadwal: ${jadwal.jadwalid}"),
+              SelectableText("Tanggal Pendampingan: ${jadwal.formattedTanggal}"),
 
               const SizedBox(height: 5),
 
               checkLaporan
-              ? const Text('Laporan pendampingan SUDAH terisi', style: TextStyle(color: Colors.green),)
-              : const Text('Laporan pendampingan BELUM terisi', style: TextStyle(color: Colors.red),)
+              ? const SelectableText('Laporan pendampingan SUDAH terisi', style: TextStyle(color: Colors.green),)
+              : const SelectableText('Laporan pendampingan BELUM terisi', style: TextStyle(color: Colors.red),)
             ],
           ),
           trailing: IconButton(

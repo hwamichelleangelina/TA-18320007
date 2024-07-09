@@ -197,10 +197,10 @@ class _APSDataTableAnggotaState extends State<APSDataTableAnggota> {
       users.length,
       (index) => DataRow(
         cells: [
-          DataCell(Text(users[index].name)),
-          DataCell(Text(_getFrequency(freqData, users[index].nim.toString()).toString())),
-          DataCell(Text(_getDampinganCount(dampinganData, users[index].nim.toString()).toString())),
-          DataCell(Text(users[index].nimAsString)),
+          DataCell(SelectableText(users[index].name)),
+          DataCell(SelectableText(_getFrequency(freqData, users[index].nim.toString()).toString())),
+          DataCell(SelectableText(_getDampinganCount(dampinganData, users[index].nim.toString()).toString())),
+          DataCell(SelectableText(users[index].nimAsString)),
           DataCell(
             ElevatedButton(
               onPressed: () {
@@ -236,7 +236,7 @@ class _APSDataTableAnggotaState extends State<APSDataTableAnggota> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
+                        return const Text('Belum ada dampingan ditangani');
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Text('No data available');
                       } else {
@@ -246,8 +246,8 @@ class _APSDataTableAnggotaState extends State<APSDataTableAnggota> {
                           itemBuilder: (context, index) {
                             final item = snapshot.data![index];
                             return ListTile(
-                              title: Text('ID Dampingan: ${item.reqid}'),
-                              subtitle: Text('Inisial Dampingan: ${item.initial}'),
+                              title: SelectableText('ID Dampingan: ${item.reqid}'),
+                              subtitle: SelectableText('Inisial Dampingan: ${item.initial}'),
                               onTap: () {
                               },
                             );

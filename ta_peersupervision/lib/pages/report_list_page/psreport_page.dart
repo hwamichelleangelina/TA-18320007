@@ -62,7 +62,7 @@ class _PSReportPageState extends State<PSReportPage> {
   }
 
   void _navigateToForm(JadwalList jadwal) {
-    Get.to (() => PSReportForm(jadwal: jadwal));
+    Get.to(() => PSReportForm(jadwal: jadwal));
   }
 
   @override
@@ -112,15 +112,15 @@ class _PSReportPageState extends State<PSReportPage> {
                   child: TextField(
                     controller: _controller,
                     decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                    labelText: 'Pencarian',
-                    prefixIcon: Icon(Icons.search),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      labelText: 'Pencarian',
+                      prefixIcon: Icon(Icons.search),
                     ),
                     onChanged: (query) => _filterJadwal(query),
                   ),
                 ),
                 const SizedBox(height: 30),
-                
+
                 FutureBuilder<List<JadwalList>>(
                   future: futureJadwal,
                   builder: (context, snapshot) {
@@ -134,10 +134,8 @@ class _PSReportPageState extends State<PSReportPage> {
                           } else if (checkSnapshot.hasError) {
                             return Text("${checkSnapshot.error}"); // Menampilkan pesan error jika terjadi kesalahan
                           } else {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: _filteredJadwalList.length,
-                              itemBuilder: (context, index) {
+                            return Column(
+                              children: List.generate(_filteredJadwalList.length, (index) {
                                 final bool checkLaporan = checkSnapshot.data![index]; // Mengambil nilai checkLaporan dari list hasil Future
                                 if (checkLaporan == false) {
                                   return PSReportsTable(
@@ -145,15 +143,14 @@ class _PSReportPageState extends State<PSReportPage> {
                                     jadwal: _filteredJadwalList[index],
                                     onTap: () => _navigateToForm(_filteredJadwalList[index]),
                                   );
-                                }
-                                else {
+                                } else {
                                   return PSReportsTable(
                                     checkLaporan: checkLaporan,
                                     jadwal: _filteredJadwalList[index],
                                     onTap: () => _showDetails(_filteredJadwalList[index]),
-                                  );                                  
+                                  );
                                 }
-                              },
+                              }),
                             );
                           }
                         },
@@ -177,7 +174,7 @@ class _PSReportPageState extends State<PSReportPage> {
 
   String formattedTanggal(String tanggalString) {
     final DateTime dateTime = DateTime.parse(tanggalString);
-    return DateFormat('d MMMM y').format(dateTime);
+    return DateFormat('d MMMM y', 'id').format(dateTime);
   }
 
   void _showDetails(JadwalList jadwal) async {
@@ -198,24 +195,24 @@ class _PSReportPageState extends State<PSReportPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Inisial Dampingan: ${report['initial'] ?? 'N/A'}'),
+                      SelectableText('Inisial Dampingan: ${report['initial'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
-                      Text('ID Dampingan: ${report['reqid'] ?? 'N/A'}'),
+                      SelectableText('ID Dampingan: ${report['reqid'] ?? 'N/A'}'),
                       const SizedBox(height: 10),
                       const SizedBox(height: 5),
-                      Text('Pendamping Sebaya: ${report['psname'] ?? 'N/A'}'),
+                      SelectableText('Pendamping Sebaya: ${report['psname'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
-                      Text('NIM Pendamping Sebaya: ${report['psnim'] ?? 'N/A'}'),
-                      const SizedBox(height: 5),
-                      const SizedBox(height: 10),
-                      Text('Jadwal ID: ${report['jadwalid'] ?? 'N/A'}'),
-                      const SizedBox(height: 5),
-                      Text('Tanggal Pendampingan: ${formattedTanggal(report['tanggalKonversi'])}'),
+                      SelectableText('NIM Pendamping Sebaya: ${report['psnim'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
                       const SizedBox(height: 10),
-                      Text('Direkomendasikan untuk Rujuk ke Psikolog: ${report['isRecommended'] == 1 ? 'PERLU SEGERA' : 'Tidak Perlu'}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      SelectableText('Jadwal ID: ${report['jadwalid'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
-                      Text('Kata Kunci Permasalahan: ${report['katakunci'] ?? 'N/A'}'),
+                      SelectableText('Tanggal Pendampingan: ${formattedTanggal(report['tanggalKonversi'])}'),
+                      const SizedBox(height: 5),
+                      const SizedBox(height: 10),
+                      SelectableText('Direkomendasikan untuk Rujuk ke Psikolog: ${report['isRecommended'] == 1 ? 'PERLU SEGERA' : 'Tidak Perlu'}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      const SizedBox(height: 5),
+                      SelectableText('Kata Kunci Permasalahan: ${report['katakunci'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
                       const SizedBox(height: 35),
                       const Center(
@@ -226,7 +223,7 @@ class _PSReportPageState extends State<PSReportPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['gambaran'] ?? 'N/A'}'),
+                      SelectableText('${report['gambaran'] ?? 'N/A'}'),
                       const SizedBox(height: 35),
                       const Center(
                         child: Text(
@@ -236,7 +233,7 @@ class _PSReportPageState extends State<PSReportPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['proses'] ?? 'N/A'}'),
+                      SelectableText('${report['proses'] ?? 'N/A'}'),
                       const SizedBox(height: 35),
                       const Center(
                         child: Text(
@@ -246,7 +243,7 @@ class _PSReportPageState extends State<PSReportPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['hasil'] ?? 'N/A'}'),
+                      SelectableText('${report['hasil'] ?? 'N/A'}'),
                       const SizedBox(height: 35),
                       const Center(
                         child: Text(
@@ -256,7 +253,7 @@ class _PSReportPageState extends State<PSReportPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['kendala'] ?? 'N/A'}'),
+                      SelectableText('${report['kendala'] ?? 'N/A'}'),
                     ],
                   ),
                 ),

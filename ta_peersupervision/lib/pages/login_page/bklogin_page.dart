@@ -87,7 +87,7 @@ class _BKLoginPageState extends State<BKLoginPage> {
                             constraints: const BoxConstraints(maxWidth: 400),
                             child: Row(
                               children: [
-                                // NIM
+                                // Username
                                 Flexible(
                                   child: CustomTextField(
                                     controller: bkusernameController,

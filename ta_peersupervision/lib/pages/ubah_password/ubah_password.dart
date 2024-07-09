@@ -4,6 +4,7 @@ import 'package:ta_peersupervision/api/logic/bkusers_logic.dart';
 import 'package:ta_peersupervision/api/logic/resetpass_logic.dart';
 import 'package:ta_peersupervision/api/repository/resetpass_repository.dart';
 import 'package:ta_peersupervision/api/shared_preferences/bkusers_data_manager.dart';
+import 'package:ta_peersupervision/widgets/custom_text_field.dart';
 
 class UbahBKPassword extends StatefulWidget {
   const UbahBKPassword({super.key});
@@ -25,33 +26,37 @@ class _UbahBKPasswordState extends State<UbahBKPassword> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(
+          CustomTextField(
             controller: bkoldpasswordhashController,
-            decoration: const InputDecoration(labelText: 'Password Lama'),
+            hintText: 'Password Lama',
             obscureText: true,
           ),
-
           const SizedBox(height: 10),
-
-          TextField(
+          CustomTextField(
             controller: bkpasswordhashController,
-            decoration: const InputDecoration(labelText: 'Password Baru'),
+            hintText: 'Password Baru',
             obscureText: true,
           ),
         ],
       ),
-
       actions: [
         ElevatedButton(
           onPressed: () async {
             BKUsers? bkUser = await BKUsersDataManager.loadBKUsersData();
 
             if (bkUser != null) {
-              repository.verifyOldBKPassword(bkusername: bkUser.bkusername, oldPassword: bkoldpasswordhashController.text).then((isValid) {
+              repository
+                  .verifyOldBKPassword(
+                      bkusername: bkUser.bkusername,
+                      oldPassword: bkoldpasswordhashController.text)
+                  .then((isValid) {
                 if (!isValid) {
-                  Get.snackbar('Ubah Kata Sandi', 'Kata sandi lama tidak cocok',
+                  Get.snackbar(
+                    'Ubah Kata Sandi',
+                    'Kata sandi lama tidak cocok',
                     backgroundColor: Colors.red,
-                    colorText: Colors.white,); // Warna teks snackbar
+                    colorText: Colors.white,
+                  ); // Warna teks snackbar
                 } else {
                   ResetPassBK resetpassbk = ResetPassBK(
                     bkusername: bkUser.bkusername,
@@ -60,10 +65,13 @@ class _UbahBKPasswordState extends State<UbahBKPassword> {
 
                   repository.resetPassBK(resetpassbk: resetpassbk).then((value) {
                     Navigator.of(context).pop();
-                    Get.snackbar('Ubah Kata Sandi Bimbingan Konseling ITB', 'Kata sandi berhasil diubah',
+                    Get.snackbar(
+                      'Ubah Kata Sandi Bimbingan Konseling ITB',
+                      'Kata sandi berhasil diubah',
                       backgroundColor: Colors.green,
-                      colorText: Colors.white,); 
-                  }); 
+                      colorText: Colors.white,
+                    );
+                  });
                 }
               });
             }
@@ -74,9 +82,6 @@ class _UbahBKPasswordState extends State<UbahBKPassword> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-          ),
           child: const Text('Batal'),
         ),
       ],

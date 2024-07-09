@@ -58,7 +58,7 @@ class JadwalList {
   }
 
   String get formattedTanggal {
-    final DateFormat formatter = DateFormat('d MMMM y');
+    final DateFormat formatter = DateFormat('d MMMM y', 'id');
     return formatter.format(tanggalKonversi!);
   }
 }

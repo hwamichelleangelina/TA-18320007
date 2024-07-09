@@ -69,7 +69,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.yellow, // Warna hijau pada tombol
                   ),
-                  child: const Text('Dampingan tanpa PS', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                  child: const Text('Permintaan Melalui Google Form', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                 ),
                 const SizedBox(height: 10.0),
                 ElevatedButton(
@@ -80,7 +80,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.green, // Warna hijau pada tombol
                   ),
-                  child: const Text('Tambah Dampingan Baru', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                  child: const Text('Tambah Dampingan Baru Manual', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                 ),
               ]
             ),
@@ -107,55 +107,55 @@ class _AllDampinganListState extends State<AllDampinganList> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return ListTile(
-                          title: Text(item['initial'], style: const TextStyle( color: CustomColor.purpleTersier)),
+                          title: SelectableText(item['initial'], style: const TextStyle( color: CustomColor.purpleTersier)),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('ID Dampingan: ${item['reqid'] ?? 'N/A'}'),
-                              Text('Gender: ${item['gender'] ?? 'N/A'}'),
-                              Text('Fakultas: ${item['fakultas'] ?? 'N/A'}'),
-                              Text('Kampus: ${item['kampus'] ?? 'N/A'}'),
-                              Text('Angkatan: ${item['angkatan'] ?? 'N/A'}'),
-                              Text('Tingkat: ${item['tingkat'] ?? 'N/A'}'),
-                              Text('Media Kontak: ${item['mediakontak'] ?? 'N/A'}'),
-                              Text('Kontak: ${item['kontak'] ?? 'N/A'}'),
-                              Text('Sesi Pendampingan: ${item['sesi'] ?? 'N/A'}'),
+                              SelectableText('ID Dampingan: ${item['reqid'] ?? 'N/A'}'),
+                              SelectableText('Gender: ${item['gender'] ?? 'N/A'}'),
+                              SelectableText('Fakultas: ${item['fakultas'] ?? 'N/A'}'),
+                              SelectableText('Kampus: ${item['kampus'] ?? 'N/A'}'),
+                              SelectableText('Angkatan: ${item['angkatan'] ?? 'N/A'}'),
+                              SelectableText('Tingkat: ${item['tingkat'] ?? 'N/A'}'),
+                              SelectableText('Media Kontak: ${item['mediakontak'] ?? 'N/A'}'),
+                              SelectableText('Kontak: ${item['kontak'] ?? 'N/A'}'),
+                              SelectableText('Sesi Pendampingan: ${item['sesi'] ?? 'N/A'}'),
                               const SizedBox(height: 8,),
-                              Text('Nama Pendamping Sebaya: ${item['psname'] ?? 'N/A'}'),
+                              SelectableText('Nama Pendamping Sebaya: ${item['psname'] ?? 'N/A'}'),
                             ],
                           ),
                           trailing: const CircularProgressIndicator(),
                         );
                       } else if (snapshot.hasError) {
                         return ListTile(
-                          title: Text(item['initial']),
+                          title: SelectableText(item['initial']),
                           subtitle: const Text('Error loading data'),
                         );
                       } else {
                         return ListTile(
-                          title: Text(item['initial']),
+                          title: SelectableText(item['initial']),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('ID Dampingan: ${item['reqid'] ?? 'N/A'}'),
-                              Text('Gender: ${item['gender'] ?? 'N/A'}'),
-                              Text('Fakultas: ${item['fakultas'] ?? 'N/A'}'),
-                              Text('Kampus: ${item['kampus'] ?? 'N/A'}'),
-                              Text('Angkatan: ${item['angkatan'] ?? 'N/A'}'),
-                              Text('Tingkat: ${item['tingkat'] ?? 'N/A'}'),
-                              Text('Media Kontak: ${item['mediakontak'] ?? 'N/A'}'),
-                              Text('Kontak: ${item['kontak'] ?? 'N/A'}'),
-                              Text('Sesi Pendampingan: ${item['sesi'] ?? 'N/A'}'),
+                              SelectableText('ID Dampingan: ${item['reqid'] ?? 'N/A'}'),
+                              SelectableText('Gender: ${item['gender'] ?? 'N/A'}'),
+                              SelectableText('Fakultas: ${item['fakultas'] ?? 'N/A'}'),
+                              SelectableText('Kampus: ${item['kampus'] ?? 'N/A'}'),
+                              SelectableText('Angkatan: ${item['angkatan'] ?? 'N/A'}'),
+                              SelectableText('Tingkat: ${item['tingkat'] ?? 'N/A'}'),
+                              SelectableText('Media Kontak: ${item['mediakontak'] ?? 'N/A'}'),
+                              SelectableText('Kontak: ${item['kontak'] ?? 'N/A'}'),
+                              SelectableText('Sesi Pendampingan: ${item['sesi'] ?? 'N/A'}'),
                               const SizedBox(height: 8,),
                               if (item['psname'] != null)
-                                Text('Nama Pendamping Sebaya: ${item['psname']}')
+                                SelectableText('Nama Pendamping Sebaya: ${item['psname']}')
                               else
-                                const Text('BELUM ADA Pendamping Sebaya bertugas', style: TextStyle(color: Colors.red))
+                                const SelectableText('BELUM ADA Pendamping Sebaya bertugas', style: TextStyle(color: Colors.red))
                             ,                              
                               if (snapshot.data!)
-                                const Text('Pendampingan pertama: DIJADWALKAN', style: TextStyle(color: Colors.green))
+                                const SelectableText('Pendampingan pertama: DIJADWALKAN', style: TextStyle(color: Colors.green))
                               else
-                                const Text('Pendampingan pertama: BELUM DIJADWALKAN', style: TextStyle(color: Colors.red)),
+                                const SelectableText('Pendampingan pertama: BELUM DIJADWALKAN', style: TextStyle(color: Colors.red)),
                             ],
                           ),
                           trailing: Row(
@@ -168,15 +168,18 @@ class _AllDampinganListState extends State<AllDampinganList> {
                                 },
                               ),
                               const SizedBox(width: 5),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () async {
-                                  final confirmDelete = await _showDeleteConfirmationDialog(context, item['reqid']);
-                                  if (confirmDelete) {
-                                    await provider.deleteDampingan(item['reqid']);
-                                  }
-                                },
-                              ),
+                                IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    onPressed: () async {
+                                      final confirmDelete = await _showDeleteConfirmationDialog(context, item['reqid']);
+                                      if (confirmDelete) {
+                                          setState(() {
+                                            filteredList.removeAt(index);
+                                            provider.noPSdampinganList.removeWhere((d) => d['reqid'] == item['reqid']);
+                                          });
+                                        }
+                                      }
+                                  ),
                             ],
                           ),
                         );
@@ -202,15 +205,16 @@ class _AllDampinganListState extends State<AllDampinganList> {
           content: Text('Apakah Anda yakin ingin menghapus dampingan dengan ID $reqid?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Batal'),
-            ),
-            TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
               ),
               child: const Text('Hapus'),
+            ),
+            const SizedBox(width: 10,),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Batal'),
             ),
           ],
         );
@@ -272,7 +276,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
                       border: OutlineInputBorder(),
                       contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                     ),
-                    items: ['Laki-laki', 'Perempuan'].map((String gender) {
+                    items: ['Laki-laki', 'Perempuan', 'Tidak disebutkan'].map((String gender) {
                       return DropdownMenuItem<String>(
                         value: gender,
                         child: Text(gender),
@@ -291,7 +295,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
                       contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                     ),
                     items: [
-                      'STEI', 'SBM', 'FTTM', 'SITH', 'FTSL', 'FMIPA', 'SF', 'FSRD', 'FTMD', 'FTI', 'FITB', 'SAPPK', 'Lain-lain'
+                      'STEI', 'SBM', 'FTTM', 'SITH', 'FTSL', 'FMIPA', 'SF', 'FSRD', 'FTMD', 'FTI', 'FITB', 'SAPPK', 'Lain-lain', 'Tidak disebutkan'
                     ].map((String fakultas) {
                       return DropdownMenuItem<String>(
                         value: fakultas,
@@ -310,7 +314,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
                       border: OutlineInputBorder(),
                       contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                     ),
-                    items: ['ITB Ganesha', 'ITB Cirebon', 'ITB Jatinangor'].map((String kampus) {
+                    items: ['ITB Ganesha', 'ITB Cirebon', 'ITB Jatinangor', 'Tidak disebutkan'].map((String kampus) {
                       return DropdownMenuItem<String>(
                         value: kampus,
                         child: Text(kampus),
@@ -328,7 +332,7 @@ class _AllDampinganListState extends State<AllDampinganList> {
                       border: OutlineInputBorder(),
                       contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                     ),
-                    items: ['Sarjana', 'Pascasarjana'].map((String tingkat) {
+                    items: ['Sarjana', 'Pascasarjana', 'Tidak disebutkan'].map((String tingkat) {
                       return DropdownMenuItem<String>(
                         value: tingkat,
                         child: Text(tingkat),

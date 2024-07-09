@@ -4,6 +4,7 @@ import 'package:ta_peersupervision/api/logic/psusers_logic.dart';
 import 'package:ta_peersupervision/api/logic/resetpass_logic.dart';
 import 'package:ta_peersupervision/api/repository/resetpass_repository.dart';
 import 'package:ta_peersupervision/api/shared_preferences/psusers_data_manager.dart';
+import 'package:ta_peersupervision/widgets/custom_text_field.dart';
 
 class UbahPSPassword extends StatefulWidget {
   const UbahPSPassword({super.key});
@@ -25,33 +26,37 @@ class _UbahPSPasswordState extends State<UbahPSPassword> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(
+          CustomTextField(
             controller: psoldpasswordhashController,
-            decoration: const InputDecoration(labelText: 'Password Lama'),
+            hintText: 'Password Lama',
             obscureText: true,
           ),
-
           const SizedBox(height: 10),
-
-          TextField(
+          CustomTextField(
             controller: pspasswordhashController,
-            decoration: const InputDecoration(labelText: 'Password Baru'),
+            hintText: 'Password Baru',
             obscureText: true,
           ),
         ],
       ),
-
       actions: [
         ElevatedButton(
           onPressed: () async {
             PSUsers? psUser = await PSUsersDataManager.loadPSUsersData();
 
             if (psUser != null) {
-              repository.verifyOldPSPassword(psnim: psUser.psnim, oldPassword: psoldpasswordhashController.text).then((isValid) {
+              repository
+                  .verifyOldPSPassword(
+                      psnim: psUser.psnim,
+                      oldPassword: psoldpasswordhashController.text)
+                  .then((isValid) {
                 if (!isValid) {
-                  Get.snackbar('Ubah Kata Sandi', 'Kata sandi lama tidak cocok',
+                  Get.snackbar(
+                    'Ubah Kata Sandi',
+                    'Kata sandi lama tidak cocok',
                     backgroundColor: Colors.red,
-                    colorText: Colors.white,); // Warna teks snackbar
+                    colorText: Colors.white,
+                  ); // Warna teks snackbar
                 } else {
                   ResetPassPS resetpassps = ResetPassPS(
                     psnim: psUser.psnim,
@@ -60,10 +65,13 @@ class _UbahPSPasswordState extends State<UbahPSPassword> {
 
                   repository.resetPassPS(resetpassps: resetpassps).then((value) {
                     Navigator.of(context).pop();
-                    Get.snackbar('Ubah Kata Sandi Anggota PS ITB', 'Kata sandi berhasil diubah',
+                    Get.snackbar(
+                      'Ubah Kata Sandi Anggota PS ITB',
+                      'Kata sandi berhasil diubah',
                       backgroundColor: Colors.green,
-                      colorText: Colors.white,); 
-                  }); 
+                      colorText: Colors.white,
+                    );
+                  });
                 }
               });
             }
@@ -74,9 +82,6 @@ class _UbahPSPasswordState extends State<UbahPSPassword> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-          ),
           child: const Text('Batal'),
         ),
       ],

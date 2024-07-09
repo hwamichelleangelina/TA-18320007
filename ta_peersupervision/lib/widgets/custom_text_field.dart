@@ -1,54 +1,52 @@
-import 'package:flutter/material.dart';
-import 'package:ta_peersupervision/constants/colors.dart';
+// ignore_for_file: library_private_types_in_public_api
 
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key,
-    this.controller,
-    this.maxLines = 1,
-    required this.hintText,
-    required this.obscureText,
-  });
-  final TextEditingController? controller;
-  final int maxLines;
+import 'package:flutter/material.dart';
+
+class CustomTextField extends StatefulWidget {
+  final TextEditingController controller;
   final String hintText;
   final bool obscureText;
+
+  const CustomTextField({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    this.obscureText = false,
+  });
+
+  @override
+  _CustomTextFieldState createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool _obscureText = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = widget.obscureText;
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
-      maxLines: maxLines,
-      obscureText: obscureText,
-
-      style: const TextStyle(
-        color: CustomColor.purpleprimary,
-      ),
+      controller: widget.controller,
+      obscureText: _obscureText,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(16),
-        filled: true,
-        fillColor: CustomColor.whiteSecondary,
-        focusedBorder: getInputFBorder,
-        enabledBorder: getInputEBorder,
-        border: getInputEBorder,
-        hintText: hintText,
-        hintStyle: const TextStyle(color: CustomColor.hintDark,),
+        hintText: widget.hintText,
+        suffixIcon: widget.obscureText
+            ? IconButton(
+                icon: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+              )
+            : null,
       ),
     );
   }
-
-  OutlineInputBorder get getInputFBorder{
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: Color.fromARGB(255, 0, 133, 228)),
-    );
-  }
-
-  OutlineInputBorder get getInputEBorder{
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide.none,
-    );
-  }
-
 }

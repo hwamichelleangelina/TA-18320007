@@ -23,28 +23,28 @@ class _RequestTileState extends State<RequestTile> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('Detail Permintaan'),
+              title: const SelectableText('Detail Permintaan'),
               content: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: ListBody(
                   children: <Widget>[
-                    Text('Request ID: ${widget.dampingan.reqid}'),
-                    Text('Inisial Dampingan: ${widget.dampingan.initial}'),
-                    Text('Gender: ${widget.dampingan.gender}'),
-                    Text('Fakultas: ${widget.dampingan.fakultas}'),
-                    Text('Kampus: ${widget.dampingan.kampus}'),
-                    Text('Angkatan: ${widget.dampingan.angkatan}'),
-                    Text('Media Kontak: ${widget.dampingan.mediakontak}'),
-                    Text('Kontak: ${widget.dampingan.kontak}'),
-                    Text('Sesi Pendampingan: ${widget.dampingan.sesi}'),
-                    Text('Kata Kunci Masalah: ${widget.dampingan.katakunci}'),
+                    SelectableText('Request ID: ${widget.dampingan.reqid}'),
+                    SelectableText('Inisial Dampingan: ${widget.dampingan.initial}'),
+                    SelectableText('Gender: ${widget.dampingan.gender}'),
+                    SelectableText('Fakultas: ${widget.dampingan.fakultas}'),
+                    SelectableText('Kampus: ${widget.dampingan.kampus}'),
+                    SelectableText('Angkatan: ${widget.dampingan.angkatan}'),
+                    SelectableText('Media Kontak: ${widget.dampingan.mediakontak}'),
+                    SelectableText('Kontak: ${widget.dampingan.kontak}'),
+                    SelectableText('Sesi Pendampingan: ${widget.dampingan.sesi}'),
+                    SelectableText('Kata Kunci Masalah: ${widget.dampingan.katakunci}'),
                     const SizedBox(height: 16.0),
 
-                    Text('Nama Pendamping Sebaya: ${widget.dampingan.psname}'),
-                    Text('NIM Pendamping Sebaya: ${widget.dampingan.psnim}'),
+                    SelectableText('Nama Pendamping Sebaya: ${widget.dampingan.psname}'),
+                    SelectableText('NIM Pendamping Sebaya: ${widget.dampingan.psnim}'),
 
                     const SizedBox(height: 16),
-                    const Text('Tanggal Pertemuan:'),
+                    const SelectableText('Tanggal Pertemuan:'),
                     const SizedBox(height: 8.0),
                     OutlinedButton(
                       onPressed: () async {
@@ -60,7 +60,7 @@ class _RequestTileState extends State<RequestTile> {
                           });
                         }
                       },
-                      child: Text(
+                      child: SelectableText(
                         selectedDate == null
                             ? 'Pilih Tanggal'
                             : '${selectedDate!.day}-${selectedDate!.month}-${selectedDate!.year}',
@@ -103,8 +103,8 @@ class _RequestTileState extends State<RequestTile> {
         borderRadius: BorderRadius.circular(12.0), // Edge curves
       ),
       child: ListTile(
-        title: Text(widget.dampingan.initial),
-        subtitle: Text(
+        title: SelectableText(widget.dampingan.initial),
+        subtitle: SelectableText(
           selectedDate == null
               ? ''
               : '${selectedDate!.day}-${selectedDate!.month}-${selectedDate!.year}',

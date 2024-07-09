@@ -52,7 +52,7 @@ class _MainDesktopState extends State<MainDesktop> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              SelectableText(
                 "Selamat Datang,\nPendamping Sebaya ITB\n${_psname ?? ''}",
                 style: const TextStyle(
                   fontSize: 30.0,
@@ -73,7 +73,7 @@ class _MainDesktopState extends State<MainDesktop> {
                     Get.toNamed('/ps-dampingan');
                   },
                   child: const Text(
-                    "Cek Dampingan Saya Hari ini",
+                    "Cek Daftar Dampingan Saya",
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 20,

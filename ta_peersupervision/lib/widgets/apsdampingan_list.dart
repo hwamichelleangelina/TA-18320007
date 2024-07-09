@@ -30,7 +30,7 @@ class _DampinganListState extends State<DampinganList> {
     if (date == null) {
       return 'N/A';
     }
-    final DateFormat formatter = DateFormat('d MMMM y');
+    final DateFormat formatter = DateFormat('d MMMM y', 'id');
     return formatter.format(date);
   }
 
@@ -47,28 +47,28 @@ class _DampinganListState extends State<DampinganList> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Dampingan: ${item.initial}'),
+          title: SelectableText('Dampingan: ${item.initial}'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Request ID: ${item.reqid}'),
-                Text('Inisial Dampingan: ${item.initial}'),
-                Text('Gender: ${item.gender ?? 'N/A'}'),
-                Text('Fakultas: ${item.fakultas ?? 'N/A'}'),
-                Text('Angkatan: ${item.angkatan ?? 'N/A'}'),
-                Text('Tingkat: ${item.tingkat ?? 'N/A'}'),
-                Text('Kampus: ${item.kampus ?? 'N/A'}'),
-                Text('Media Kontak: ${item.mediakontak}'),
-                Text('Kontak: ${item.kontak}'),
+                SelectableText('Request ID: ${item.reqid}'),
+                SelectableText('Inisial Dampingan: ${item.initial}'),
+                SelectableText('Gender: ${item.gender ?? 'N/A'}'),
+                SelectableText('Fakultas: ${item.fakultas ?? 'N/A'}'),
+                SelectableText('Angkatan: ${item.angkatan ?? 'N/A'}'),
+                SelectableText('Tingkat: ${item.tingkat ?? 'N/A'}'),
+                SelectableText('Kampus: ${item.kampus ?? 'N/A'}'),
+                SelectableText('Media Kontak: ${item.mediakontak}'),
+                SelectableText('Kontak: ${item.kontak}'),
 
                 item.katakunci2 == null
-                ? Text('Kata Kunci Masalah: ${item.katakunci}')
-                : Text('Kata Kunci Masalah: ${item.katakunci}, ${item.katakunci2}'),
+                ? SelectableText('Kata Kunci Masalah: ${item.katakunci}')
+                : SelectableText('Kata Kunci Masalah: ${item.katakunci}, ${item.katakunci2}'),
                 
-                Text('Sesi Pendampingan: ${item.sesi}'),
+                SelectableText('Sesi Pendampingan: ${item.sesi}'),
                 const SizedBox(height: 16.0),
-                Text('Nama Pendamping Sebaya: ${item.psname}'),
-                Text('NIM Pendamping Sebaya: ${item.psnim}'),
+                SelectableText('Nama Pendamping Sebaya: ${item.psname}'),
+                SelectableText('NIM Pendamping Sebaya: ${item.psnim}'),
 
                 const SizedBox(height: 16),
 //                const Text('Tanggal Pertemuan:'),
@@ -100,7 +100,7 @@ class _DampinganListState extends State<DampinganList> {
             ),
           ),
           actions: <Widget>[
-            TextButton(
+            ElevatedButton(
               child: const Text('Jadwalkan Pendampingan'),
               onPressed: () async {
 //                print(item.reqid);
@@ -133,9 +133,6 @@ class _DampinganListState extends State<DampinganList> {
               },
             ),
             TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-              ),
               child: const Text('Tutup'),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -172,8 +169,8 @@ class _DampinganListState extends State<DampinganList> {
                       ),
                       child: 
                         ListTile(
-                          title: Text('ID Dampingan: ${item.reqid.toString()} - ${item.initial}'),
-                          subtitle: /*const Text(''),*/ Text('Kontak Dampingan: ${item.kontak}'),
+                          title: SelectableText('ID Dampingan: ${item.reqid.toString()} - ${item.initial}'),
+                          subtitle: /*const SelectableText(''),*/ SelectableText('Kontak Dampingan: ${item.kontak}'),
                           onTap: () {
                             _showDetailsDialog(item);
                           },

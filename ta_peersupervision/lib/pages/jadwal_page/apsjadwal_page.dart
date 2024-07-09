@@ -55,7 +55,7 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
         jadwal = fetchedEvents;
       });
     } catch (e) {
-   //   print('Failed to fetch events: $e');
+      // print('Failed to fetch events: $e');
       Get.snackbar('Jadwal Pendampingan', 'Belum ada Jadwal');
     }
   }
@@ -63,6 +63,7 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
   @override
   void dispose() {
     reqidController.dispose();
+    mediaController.dispose();
     super.dispose();
   }
 
@@ -109,29 +110,34 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
 
   void _showEventDialog(DateTime date, List<MyJadwal> events) {
     DateTime selectedDate = DateTime(date.year, date.month, date.day);
- //   print(selectedDate);
+    DateTime today = DateTime.now();
+    bool isPastDate = selectedDate.isBefore(DateTime(today.year, today.month, today.day));
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Tambahkan Jadwal Pendampingan ${date.day}/${date.month}/${date.year}'),
+          title: Text(isPastDate
+              ? 'Jadwal Pendampingan ${date.day}/${date.month}/${date.year}'
+              : 'Tambahkan Jadwal Pendampingan ${date.day}/${date.month}/${date.year}'),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextField(
-                  controller: reqidController,
-                  decoration: const InputDecoration(labelText: 'ID Dampingan'),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                ),
-                TextField(
-                  controller: mediaController,
-                  decoration: const InputDecoration(labelText: 'Media Pendampingan'),
-                ),
+                if (!isPastDate) ...[
+                  TextField(
+                    controller: reqidController,
+                    decoration: const InputDecoration(labelText: 'ID Dampingan'),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                  ),
+                  TextField(
+                    controller: mediaController,
+                    decoration: const InputDecoration(labelText: 'Tempat Pendampingan'),
+                  ),
+                ],
                 const SizedBox(height: 16),
                 const Text('Pendampingan Hari Ini:', style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
@@ -145,28 +151,29 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: Text('${event.initial}\nID Dampingan: ${event.reqid}\nMedia Pendampingan: ${event.mediapendampingan}\n'),
+                            child: SelectableText('${event.initial}\nID Dampingan: ${event.reqid}\nTempat Pendampingan: ${event.mediapendampingan}\n'),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () async {
-                              final confirmDelete = await _showDeleteConfirmationDialog(context, event.jadwalid);
-                              if (confirmDelete) {
-                                // Menghapus event dari map terlebih dahulu
-                                setState(() {
-                                  jadwal[selectedDate]?.remove(event);
-                                  if (jadwal[selectedDate]?.isEmpty ?? false) {
-                                    jadwal.remove(selectedDate);
-                                  }
-                              });
-                              // Menghapus event dari repository
-                              await repository.deleteJadwal(event.jadwalid);
-                              // Mengambil ulang data dari repository
-                              await _fetchEvents(widget.psnim);
-                              Navigator.of(context).pop();
-                            }
-                            },
-                          ),
+                          if (!isPastDate)
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () async {
+                                final confirmDelete = await _showDeleteConfirmationDialog(context, event.jadwalid);
+                                if (confirmDelete) {
+                                  // Menghapus event dari map terlebih dahulu
+                                  setState(() {
+                                    jadwal[selectedDate]?.remove(event);
+                                    if (jadwal[selectedDate]?.isEmpty ?? false) {
+                                      jadwal.remove(selectedDate);
+                                    }
+                                  });
+                                  // Menghapus event dari repository
+                                  await repository.deleteJadwal(event.jadwalid);
+                                  // Mengambil ulang data dari repository
+                                  await _fetchEvents(widget.psnim);
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                            ),
                         ],
                       );
                     }).toList(),
@@ -174,37 +181,45 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
               ],
             ),
           ),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                if (mediaController.text.isEmpty || reqidController.text.isEmpty) {
-                  Get.snackbar('Rencanakan jadwal Pendampingan', 'Kolom harus terisi!',
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white);
-                } else {
-                  Jadwal jadwal = Jadwal(
-                    reqid: int.parse(reqidController.text),
-                    tanggal: formatDateSQL(date),
-                    mediapendampingan: mediaController.text,
-                  );
+          actions: isPastDate
+              ? <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Tutup'),
+                  ),
+                ]
+              : <Widget>[
+                  ElevatedButton(
+                    onPressed: () {
+                      if (mediaController.text.isEmpty || reqidController.text.isEmpty) {
+                        Get.snackbar('Rencanakan jadwal Pendampingan', 'Kolom harus terisi!',
+                            backgroundColor: Colors.red, colorText: Colors.white);
+                      } else {
+                        Jadwal jadwal = Jadwal(
+                          reqid: int.parse(reqidController.text),
+                          tanggal: formatDateSQL(date),
+                          mediapendampingan: mediaController.text,
+                        );
 
-                  repository.createJadwal(jadwal: jadwal).then((value) {
-                    _fetchEvents(widget.psnim);
-                    Navigator.of(context).pop();
-                  });
-                  reqidController.clear();
-                  mediaController.clear();
-                }
-              },
-              child: const Text('Simpan'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Tutup', style: TextStyle(color: Colors.red)),
-            ),
-          ],
+                        repository.createJadwal(jadwal: jadwal).then((value) {
+                          _fetchEvents(widget.psnim);
+                          Navigator.of(context).pop();
+                        });
+                        reqidController.clear();
+                        mediaController.clear();
+                      }
+                    },
+                    child: const Text('Simpan'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Tutup'),
+                  ),
+                ],
         );
       },
     );
@@ -219,15 +234,16 @@ class _APSJadwalPageState extends State<APSJadwalPage> {
           content: Text('Apakah Anda yakin ingin menghapus jadwal pendampingan dengan ID: $jadwalid?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Batal'),
-            ),
-            TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
               ),
               child: const Text('Hapus'),
+            ),
+            const SizedBox(width: 10,),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Batal'),
             ),
           ],
         );

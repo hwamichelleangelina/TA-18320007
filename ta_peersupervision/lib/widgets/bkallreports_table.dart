@@ -19,11 +19,11 @@ class LaporanTable extends StatelessWidget {
       ],
       rows: laporanList.map((laporan) {
         return DataRow(cells: [
-          DataCell(Text(laporan['Inisial Dampingan'])),
-          DataCell(Text(laporan['Pendamping Sebaya'])),
-          DataCell(Text(laporan['Jadwal Pendampingan'])),
-          DataCell(Text(laporan['ID Jadwal'].toString())),
-          DataCell(Text(laporan['Rekomendasi Rujukan'])),
+          DataCell(SelectableText(laporan['Inisial Dampingan'])),
+          DataCell(SelectableText(laporan['Pendamping Sebaya'])),
+          DataCell(SelectableText(laporan['Jadwal Pendampingan'])),
+          DataCell(SelectableText(laporan['ID Jadwal'].toString())),
+          DataCell(SelectableText(laporan['Rekomendasi Rujukan'])),
           DataCell(
             Row(
               children: [

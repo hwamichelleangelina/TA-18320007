@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
 import 'package:ta_peersupervision/constants/psnav_icons_items.dart';
-import 'package:ta_peersupervision/constants/psnavigator_items.dart';
+import 'package:ta_peersupervision/constants/psnavigator_items_drawer.dart';
 import 'package:ta_peersupervision/widgets/popup_logout.dart';
 
 class PSDrawerMobile extends StatelessWidget {
@@ -46,7 +46,7 @@ class PSDrawerMobile extends StatelessWidget {
                 ),
                 onTap: () {
                   if (naviPSItems[i]["title"] != "Keluar") {
-                    Get.toNamed(naviPS[i]);
+                    Get.toNamed(naviPSmobile[i]);
                   }
                   else {
                     logoutDialog(context);

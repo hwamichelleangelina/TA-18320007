@@ -32,6 +32,25 @@ class PSUsers {
   }
 }
 
+class Activate {
+  int? psnim;
+
+  Activate({
+    this.psnim
+  });
+
+  Activate.fromJson(Map<String, dynamic> json) {
+    psnim = json['psnim'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['psnim'] = psnim;
+
+    return data;
+  }
+}
+
 class NonActivate {
   int? psnim;
 

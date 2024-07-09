@@ -29,7 +29,6 @@ function getAccessToken(oAuth2Client, callback) {
         oAuth2Client.getToken(code, (err, token) => {
             if (err) return console.error('Error retrieving access token', err);
             oAuth2Client.setCredentials(token);
-            // Store the token to disk for later program executions
             fs.writeFile('token.json', JSON.stringify(token), (err) => {
                 if (err) return console.error(err);
                 console.log('Token stored to token.json');
@@ -42,7 +41,7 @@ function getAccessToken(oAuth2Client, callback) {
 function listData(auth, callback) {
     const sheets = google.sheets({ version: 'v4', auth });
     const spreadsheetId = '12eujA0Wvh0hsiEGo0-MhXyekW79qylH-lnRZCloYn28';
-    const range = 'Form responses 1!B:AD'; // Ambil data dari kolom B sampai AD
+    const range = 'Form responses 1!B:AD';
 
     sheets.spreadsheets.values.get({ spreadsheetId, range }, (err, res) => {
         if (err) return console.log('The API returned an error: ' + err);
@@ -51,18 +50,19 @@ function listData(auth, callback) {
             const header = rows[0];
             const indexOfflineKonseling1 = header.indexOf('Kira-kira apakah kamu perlu konseling offline?');
             const indexOfflineKonseling2 = header.lastIndexOf('Kira-kira apakah kamu perlu konseling offline?');
+            const indexContactOrListen = header.indexOf('Apa kamu mau dikontak atau didengerin langsung terkait cerita unek2 kamu?');
 
             const filteredRows = rows.slice(1).filter(row => {
                 const answer1 = row[indexOfflineKonseling1];
                 const answer2 = row[indexOfflineKonseling2];
-                // Periksa apakah salah satu jawaban tidak null
-                return answer1 !== null || answer2 !== null;
+                const contactOrListenAnswer = row[indexContactOrListen];
+                return (answer1 !== null || answer2 !== null) && contactOrListenAnswer !== 'Tidak';
             });
 
             if (filteredRows.length) {
                 const queryCheck = 'SELECT * FROM dampingan WHERE initial = ? AND kontak = ? AND sesi = ?';
                 const queryInsert = 'INSERT INTO dampingan (initial, gender, fakultas, angkatan, tingkat, kampus, mediakontak, kontak, sesi) VALUES ?';
-                
+
                 const values = filteredRows.map(row => [
                     row[header.indexOf('Kalau boleh tau nama kamu siapa nih?? (mau Anonim juga boleh kok)')],
                     row[header.indexOf('Jenis kelamin')],
@@ -77,34 +77,95 @@ function listData(auth, callback) {
 
                 const filteredValues = [];
 
-                values.forEach((value, index) => {
+                const checkAndInsert = (index) => {
+                    if (index >= values.length) {
+                        if (filteredValues.length > 0) {
+                            mysqlConn.query(queryInsert, [filteredValues], (error) => {
+                                if (error) throw error;
+                                const getLastReqIdQuery = `
+                                    SELECT reqid FROM dampingan ORDER BY reqid DESC LIMIT 1;
+                                `;
+                                const createRujukanQuery = `
+                                    INSERT INTO rujukan (reqid, initial, isRujukanNeed)
+                                    VALUES (?, ?, 0);
+                                `;
+
+                                mysqlConn.query(getLastReqIdQuery, (err, results) => {
+                                    if (err) {
+                                        return mysqlConn.rollback(() => {
+                                            console.error('Error getting last reqid:', err);
+                                            if (typeof callback === 'function') {
+                                                callback(err, null);
+                                            }
+                                        });
+                                    }
+
+                                    const reqid = results[0].reqid;
+                                    const initial = filteredValues[0][0];
+
+                                    mysqlConn.query(createRujukanQuery, [reqid, initial], (err, result) => {
+                                        if (err) {
+                                            return mysqlConn.rollback(() => {
+                                                console.error('Error creating rujukan:', err);
+                                                if (typeof callback === 'function') {
+                                                    callback(err, null);
+                                                }
+                                            });
+                                        }
+
+                                        mysqlConn.commit((err) => {
+                                            if (err) {
+                                                return mysqlConn.rollback(() => {
+                                                    console.error('Error committing transaction:', err);
+                                                    if (typeof callback === 'function') {
+                                                        callback(err, null);
+                                                    }
+                                                });
+                                            }
+
+                                            if (typeof callback === 'function') {
+                                                callback(null, result);
+                                            }
+                                        });
+                                    });
+                                });
+                                console.log('Data inserted into MySQL');
+                                if (typeof callback === 'function') {
+                                    callback(filteredRows);
+                                }
+                            });
+                        } else if (typeof callback === 'function') {
+                            callback(filteredRows);
+                        }
+                        return;
+                    }
+
+                    const value = values[index];
                     const [initial, , , , , , , kontak, sesi] = value;
 
                     mysqlConn.query(queryCheck, [initial, kontak, sesi], (error, results) => {
-                        if (error) throw error;
+                        if (error) {
+                            console.error('Error executing query:', error.message);
+                            return checkAndInsert(index + 1);
+                        }
 
                         if (results.length === 0) {
-                            // If no duplicate found, add to filteredValues
                             filteredValues.push(value);
-
-                            // If this is the last row, insert the filtered values
-                            if (index === values.length - 1 && filteredValues.length > 0) {
-                                mysqlConn.query(queryInsert, [filteredValues], (error) => {
-                                    if (error) throw error;
-                                    console.log('Data inserted into MySQL');
-                                });
-                            }
                         }
+                        checkAndInsert(index + 1);
                     });
-                });
+                };
 
-                if (callback) {
-                    callback(filteredRows);
+                checkAndInsert(0);
+            } else {
+                console.log('No data found.');
+                if (typeof callback === 'function') {
+                    callback([]);
                 }
             }
         } else {
             console.log('No data found.');
-            if (callback) {
+            if (typeof callback === 'function') {
                 callback([]);
             }
         }

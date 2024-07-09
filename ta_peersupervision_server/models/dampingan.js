@@ -76,82 +76,82 @@ class dampingan {
 
         */
     
-    static createDampingan(dampinganData, callback) {
-        if (!dampinganData || Object.keys(dampinganData).length === 0) {
-            callback('Dampingan data is empty', null);
-            return;
-        }
-    
-        const { initial, fakultas, gender, angkatan, tingkat, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname } = dampinganData;
-        const createDampinganQuery = `
-        INSERT INTO dampingan (initial, fakultas, gender, angkatan, tingkat, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psnim, psname)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT psnim FROM psusers WHERE psname = ?), ?);
-        `;
-    
-        const getLastReqIdQuery = `
-        SELECT reqid FROM dampingan ORDER BY reqid DESC LIMIT 1;
-        `;
-    
-        const createRujukanQuery = `
-        INSERT INTO rujukan (reqid, initial, isRujukanNeed)
-        VALUES (?, ?, 0);
-        `;
-    
-        // Mulai transaksi
-        mysqlConn.beginTransaction((err) => {
-            if (err) {
-                console.error('Error starting transaction:', err);
-                callback(err, null);
+        static createDampingan(dampinganData, callback) {
+            if (!dampinganData || Object.keys(dampinganData).length === 0) {
+                callback('Dampingan data is empty', null);
                 return;
             }
-    
-            // Jalankan query untuk membuat data dampingan
-            mysqlConn.query(createDampinganQuery, [
-                initial, fakultas, gender, angkatan, tingkat, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname, psname
-            ], (err, result) => {
+        
+            const { initial, fakultas, gender, angkatan, tingkat, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname } = dampinganData;
+            const createDampinganQuery = `
+            INSERT INTO dampingan (initial, fakultas, gender, angkatan, tingkat, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psnim, psname)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT psnim FROM psusers WHERE psname = ?), ?);
+            `;
+        
+            const getLastReqIdQuery = `
+            SELECT reqid FROM dampingan ORDER BY reqid DESC LIMIT 1;
+            `;
+        
+            const createRujukanQuery = `
+            INSERT INTO rujukan (reqid, initial, isRujukanNeed)
+            VALUES (?, ?, 0);
+            `;
+        
+            // Mulai transaksi
+            mysqlConn.beginTransaction((err) => {
                 if (err) {
-                    return mysqlConn.rollback(() => {
-                        console.error('Error creating dampingan:', err);
-                        callback(err, null);
-                    });
+                    console.error('Error starting transaction:', err);
+                    callback(err, null);
+                    return;
                 }
-    
-                // Ambil reqid dari baris paling bawah (baru)
-                mysqlConn.query(getLastReqIdQuery, (err, results) => {
+        
+                // Jalankan query untuk membuat data dampingan
+                mysqlConn.query(createDampinganQuery, [
+                    initial, fakultas, gender, angkatan, tingkat, kampus, mediakontak, kontak, katakunci, katakunci2, sesi, psname, psname
+                ], (err, result) => {
                     if (err) {
                         return mysqlConn.rollback(() => {
-                            console.error('Error getting last reqid:', err);
+                            console.error('Error creating dampingan:', err);
                             callback(err, null);
                         });
                     }
-    
-                    const reqid = results[0].reqid;
-    
-                    // Buat data baru dalam tabel rujukan
-                    mysqlConn.query(createRujukanQuery, [reqid, initial], (err, result) => {
+        
+                    // Ambil reqid dari baris paling bawah (baru)
+                    mysqlConn.query(getLastReqIdQuery, (err, results) => {
                         if (err) {
                             return mysqlConn.rollback(() => {
-                                console.error('Error creating rujukan:', err);
+                                console.error('Error getting last reqid:', err);
                                 callback(err, null);
                             });
                         }
-    
-                        // Commit transaksi jika semua query berhasil
-                        mysqlConn.commit((err) => {
+        
+                        const reqid = results[0].reqid;
+        
+                        // Buat data baru dalam tabel rujukan
+                        mysqlConn.query(createRujukanQuery, [reqid, initial], (err, result) => {
                             if (err) {
                                 return mysqlConn.rollback(() => {
-                                    console.error('Error committing transaction:', err);
+                                    console.error('Error creating rujukan:', err);
                                     callback(err, null);
                                 });
                             }
-    
-                            callback(null, result);
+        
+                            // Commit transaksi jika semua query berhasil
+                            mysqlConn.commit((err) => {
+                                if (err) {
+                                    return mysqlConn.rollback(() => {
+                                        console.error('Error committing transaction:', err);
+                                        callback(err, null);
+                                    });
+                                }
+        
+                                callback(null, result);
+                            });
                         });
                     });
                 });
             });
-        });
-    }
+        }
         
     
     static updateDataDampingan(reqid, newData, callback) {
@@ -171,15 +171,51 @@ class dampingan {
     }
 
     static deleteDampingan(reqid, callback) {
-        const deleteDampinganQuery = 'delete from dampingan where reqid = ?;';
-        mysqlConn.query(deleteDampinganQuery, [reqid], (err, result) => {
+        const deleteDampinganQuery = 'DELETE FROM dampingan WHERE reqid = ?;';
+        const deleteRujukanQuery = 'DELETE FROM rujukan WHERE reqid = ?;';
+
+        mysqlConn.beginTransaction((err) => {
             if (err) {
-                callback(err, null);
-            } else {
-                callback(null, result);
+                console.error('Error starting transaction:', err);
+                return callback(err, null);
             }
+
+            mysqlConn.query(deleteDampinganQuery, [reqid], (err, result) => {
+                if (err) {
+                    console.error('Error deleting from dampingan:', err);
+                    return mysqlConn.rollback(() => {
+                        callback(err, null);
+                    });
+                }
+
+                console.log('Deleted from dampingan:', result);
+
+                mysqlConn.query(deleteRujukanQuery, [reqid], (err, result) => {
+                    if (err) {
+                        console.error('Error deleting from rujukan:', err);
+                        return mysqlConn.rollback(() => {
+                            callback(err, null);
+                        });
+                    }
+
+                    console.log('Deleted from rujukan:', result);
+
+                    mysqlConn.commit((err) => {
+                        if (err) {
+                            console.error('Error committing transaction:', err);
+                            return mysqlConn.rollback(() => {
+                                callback(err, null);
+                            });
+                        }
+
+                        console.log('Transaction committed successfully');
+                        callback(null, result);
+                    });
+                });
+            });
         });
     }
+
 
     static getCountPendampingan(reqid, callback) {
         const getCountPendampinganQuery = 'SELECT COUNT(*) as count FROM jadwal WHERE reqid = ?;';

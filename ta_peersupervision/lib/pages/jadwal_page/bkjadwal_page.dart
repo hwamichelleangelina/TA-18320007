@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:ta_peersupervision/api/provider/laporan_provider.dart';
 import 'package:ta_peersupervision/api/repository/event.dart';
 import 'package:ta_peersupervision/api/repository/jadwal_repository.dart';
 import 'package:ta_peersupervision/constants/colors.dart';
@@ -12,6 +13,8 @@ import 'package:ta_peersupervision/widgets/bkheader_kembali.dart';
 import 'package:ta_peersupervision/widgets/calendar_widget.dart';
 import 'package:ta_peersupervision/widgets/footer.dart';
 import 'package:ta_peersupervision/widgets/bkheader_mobile.dart';
+
+import 'package:provider/provider.dart';
 
 class BKJadwalPage extends StatefulWidget {
   const BKJadwalPage({super.key});
@@ -58,47 +61,50 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Scaffold(
-          key: scaffoldKey,
-          backgroundColor: CustomColor.purpleBg,
-          endDrawer: constraints.maxWidth >= minDesktopWidth
-              ? null
-              : const BKDrawerMobile(),
-          body: SingleChildScrollView(
-            controller: scrollController,
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (constraints.maxWidth >= minDesktopWidth)
-                  HeaderBKKembali(
-                    onNavMenuTap: (int navIndex) {
-                      scrollToSection(navIndex);
-                    },
-                    navi: '/bk-home',
-                  )
-                else
-                  BKHeaderMobile(
-                    onLogoTap: () {},
-                    onMenuTap: () {
-                      scaffoldKey.currentState?.openEndDrawer();
-                    },
+    return ChangeNotifierProvider(
+      create: (context) => LaporanProvider(),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Scaffold(
+            key: scaffoldKey,
+            backgroundColor: CustomColor.purpleBg,
+            endDrawer: constraints.maxWidth >= minDesktopWidth
+                ? null
+                : const BKDrawerMobile(),
+            body: SingleChildScrollView(
+              controller: scrollController,
+              scrollDirection: Axis.vertical,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (constraints.maxWidth >= minDesktopWidth)
+                    HeaderBKKembali(
+                      onNavMenuTap: (int navIndex) {
+                        scrollToSection(navIndex);
+                      },
+                      navi: '/bk-home',
+                    )
+                  else
+                    BKHeaderMobile(
+                      onLogoTap: () {},
+                      onMenuTap: () {
+                        scaffoldKey.currentState?.openEndDrawer();
+                      },
+                    ),
+                  const SizedBox(height: 30),
+                  CalendarWidget(
+                    onDaySelected: _showEventDialog,
+                    jadwal: jadwal,
+                    initialFocusedDay: DateTime.now(),
                   ),
-                const SizedBox(height: 30),
-                CalendarWidget(
-                  onDaySelected: _showEventDialog,
-                  jadwal: jadwal,
-                  initialFocusedDay: DateTime.now(),
-                ),
-                const SizedBox(height: 30),
-                const Footer(),
-              ],
+                  const SizedBox(height: 30),
+                  const Footer(),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -121,13 +127,31 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: events.map((event) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text('Nomor Jadwal: ${event.jadwalid}\n${event.initial} - ID Dampingan: ${event.reqid}\nPendamping Sebaya: ${event.psname}\nMedia Pendampingan: ${event.mediapendampingan}\n'),
-                          ),
-                        ],
+                      return FutureBuilder<bool>(
+                        future: Provider.of<LaporanProvider>(context, listen: false).fetchCheckLaporan(event.jadwalid),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            bool isReported = snapshot.data ?? false;
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: SelectableText(
+                                    'Nomor Jadwal: ${event.jadwalid}\n${event.initial} - ID Dampingan: ${event.reqid}\nPendamping Sebaya: ${event.psname}\nTempat Pendampingan: ${event.mediapendampingan}\n',
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                isReported
+                                ? const SelectableText("")
+                                : const SelectableText("  Laporan Belum ada", style: TextStyle(color: Colors.red)),
+                              ],
+                            );
+                          }
+                        },
                       );
                     }).toList(),
                   ),
@@ -139,7 +163,7 @@ class _BKJadwalPageState extends State<BKJadwalPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Tutup', style: TextStyle(color: Colors.red)),
+              child: const Text('Tutup'),
             ),
           ],
         );

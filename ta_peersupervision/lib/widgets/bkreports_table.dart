@@ -33,7 +33,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
 
   String formattedTanggal(String tanggalString) {
     final DateTime dateTime = DateTime.parse(tanggalString);
-    return DateFormat('d MMMM y').format(dateTime);
+    return DateFormat('d MMMM y', 'id').format(dateTime);
   }
 
   Future<void> _fetchData() async {
@@ -73,24 +73,24 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Inisial Dampingan: ${report['initial'] ?? 'N/A'}'),
+                      SelectableText('Inisial Dampingan: ${report['initial'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
-                      Text('ID Dampingan: ${report['reqid'] ?? 'N/A'}'),
+                      SelectableText('ID Dampingan: ${report['reqid'] ?? 'N/A'}'),
                       const SizedBox(height: 10),
                       const SizedBox(height: 5),
-                      Text('Pendamping Sebaya: ${report['psname'] ?? 'N/A'}'),
+                      SelectableText('Pendamping Sebaya: ${report['psname'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
-                      Text('NIM Pendamping Sebaya: ${report['psnim'] ?? 'N/A'}'),
-                      const SizedBox(height: 5),
-                      const SizedBox(height: 10),
-                      Text('Jadwal ID: ${report['jadwalid'] ?? 'N/A'}'),
-                      const SizedBox(height: 5),
-                      Text('Tanggal Pendampingan: ${formattedTanggal(report['tanggalKonversi'])}'),
+                      SelectableText('NIM Pendamping Sebaya: ${report['psnim'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
                       const SizedBox(height: 10),
-                      Text('Direkomendasikan untuk Rujuk ke Psikolog: ${report['isRecommended'] == 1 ? 'PERLU SEGERA' : 'Tidak Perlu'}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      SelectableText('Jadwal ID: ${report['jadwalid'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
-                      Text('Kata Kunci Permasalahan: ${report['katakunci'] ?? 'N/A'}'),
+                      SelectableText('Tanggal Pendampingan: ${formattedTanggal(report['tanggalKonversi'])}'),
+                      const SizedBox(height: 5),
+                      const SizedBox(height: 10),
+                      SelectableText('Direkomendasikan untuk Rujuk ke Psikolog: ${report['isRecommended'] == 1 ? 'PERLU SEGERA' : 'Tidak Perlu'}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      const SizedBox(height: 5),
+                      SelectableText('Kata Kunci Permasalahan: ${report['katakunci'] ?? 'N/A'}'),
                       const SizedBox(height: 5),
                       const SizedBox(height: 35),
                       const Center(
@@ -101,7 +101,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['gambaran'] ?? 'N/A'}'),
+                      SelectableText('${report['gambaran'] ?? 'N/A'}'),
                       const SizedBox(height: 35),
                       const Center(
                         child: Text(
@@ -111,7 +111,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['proses'] ?? 'N/A'}'),
+                      SelectableText('${report['proses'] ?? 'N/A'}'),
                       const SizedBox(height: 35),
                       const Center(
                         child: Text(
@@ -121,7 +121,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['hasil'] ?? 'N/A'}'),
+                      SelectableText('${report['hasil'] ?? 'N/A'}'),
                       const SizedBox(height: 35),
                       const Center(
                         child: Text(
@@ -131,7 +131,7 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('${report['kendala'] ?? 'N/A'}'),
+                      SelectableText('${report['kendala'] ?? 'N/A'}'),
                     ],
                   ),
                 ),
@@ -259,11 +259,11 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
                 ],
                 rows: _filteredData.map((item) {
                   return DataRow(cells: [
-                    DataCell(Text(item['initial'] ?? 'N/A')),
-                    DataCell(Text(item['psname'] ?? 'N/A')),
-                    DataCell(Text(item['jadwalid'].toString())),
-                    DataCell(Text(formattedTanggal(item['tanggalKonversi']))),
-                    DataCell(Text(item['isRecommended'] == 1
+                    DataCell(SelectableText(item['initial'] ?? 'N/A')),
+                    DataCell(SelectableText(item['psname'] ?? 'N/A')),
+                    DataCell(SelectableText(item['jadwalid'].toString())),
+                    DataCell(SelectableText(formattedTanggal(item['tanggalKonversi']))),
+                    DataCell(SelectableText(item['isRecommended'] == 1
                       ? 'PERLU SEGERA'
                       : 'Tidak Perlu')),
                     DataCell(
@@ -302,15 +302,6 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
           content: Text('Anda akan mendownload file untuk $name - ID Jadwal: $jadwalid.'),
           actions: <Widget>[
             TextButton(
-              onPressed: () async {
-                await _downloadFile(jadwalid);
-                Navigator.of(context).pop();
-                Get.snackbar('Pengunduhan Dokumen Laporan Proses Pendampingan', 'Laporan Proses Pendampingan dengan ID Jadwal: $jadwalid berhasil diunduh',
-                  backgroundColor: Colors.green, colorText: Colors.white);
-              },
-              child: const Text('Download'),
-            ),
-            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -318,6 +309,16 @@ class _DataTableWithDownloadButtonState extends State<DataTableWithDownloadButto
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
               ),
               child: const Text('Batal'),
+            ),
+            const SizedBox(width: 10,),
+            TextButton(
+              onPressed: () async {
+                await _downloadFile(jadwalid);
+                Navigator.of(context).pop();
+                Get.snackbar('Pengunduhan Dokumen Laporan Proses Pendampingan', 'Laporan Proses Pendampingan dengan ID Jadwal: $jadwalid berhasil diunduh',
+                  backgroundColor: Colors.green, colorText: Colors.white);
+              },
+              child: const Text('Unduh'),
             ),
           ],
         );
